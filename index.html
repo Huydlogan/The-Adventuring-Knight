@@ -2,14 +2,25 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#07060a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Hiệp Sĩ">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Hi%E1%BB%87p%20S%C4%A9%20Phi%C3%AAu%20L%C6%B0u%22%2C%22short_name%22%3A%22Hi%E1%BB%87p%20S%C4%A9%22%2C%22display%22%3A%22fullscreen%22%2C%22orientation%22%3A%22landscape%22%2C%22background_color%22%3A%22%2307060a%22%2C%22theme_color%22%3A%22%2307060a%22%2C%22start_url%22%3A%22.%22%7D">
 <title>Hiệp Sĩ Phiêu Lưu</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@500;700;900&family=Alegreya+SC:wght@700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap');
 :root{--u:9.6px}
 html,body{margin:0;height:100%;background:#07060a;overflow:hidden;font-family:"Segoe UI",system-ui,sans-serif;color:#fff;user-select:none;-webkit-user-select:none;touch-action:none}
 #wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
-#stage{position:relative;width:min(100vw,calc(100vh*16/9));aspect-ratio:16/9}
+#stage{position:relative;width:min(100vw,calc(100vh*16/9));width:min(100vw,calc(100dvh*16/9));aspect-ratio:16/9}
+#rotate{position:fixed;inset:0;z-index:50;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#07060a;color:#f1e2bc;font-family:"Noto Serif","Times New Roman",serif;font-size:18px;text-align:center;padding:20px}
+#rotate .ph{font-size:64px;animation:rot 1.6s ease-in-out infinite}
+@keyframes rot{0%,20%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
+@media (orientation:portrait) and (pointer:coarse){#rotate{display:flex}}
+#fsBtn{position:absolute;right:calc(var(--u)*2);bottom:calc(var(--u)*10.5);z-index:6;min-width:0}
 canvas{width:100%;height:100%;display:block;border-radius:6px}
 .ov{--gold:#e6c36a;--gold2:#a07a2c;--ink:#f1e2bc;position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;background:radial-gradient(ellipse at center,rgba(10,8,6,.35) 0%,rgba(6,5,4,.82) 75%);border-radius:6px;overflow:hidden;padding:calc(var(--u)*1.2);box-sizing:border-box;z-index:5;font-family:"Noto Serif","Times New Roman",serif;color:var(--ink)}
 .ov.show{display:flex;animation:ovIn .25s ease-out}
@@ -43,6 +54,14 @@ h2{font-size:calc(var(--u)*4);margin-bottom:calc(var(--u)*.8)}
 .codein{width:calc(var(--u)*34);font-family:"Alegreya SC","Times New Roman",serif;font-size:calc(var(--u)*2);letter-spacing:calc(var(--u)*.3);text-align:center;text-transform:uppercase;color:#ffe8a8;background:#140e09;border:calc(var(--u)*.2) solid #a07a2c;border-radius:calc(var(--u)*.5);padding:calc(var(--u)*.8);outline:none;user-select:text;-webkit-user-select:text}
 .codein:focus{border-color:#ffd43b;box-shadow:0 0 calc(var(--u)*1) rgba(255,212,59,.35)}
 .codemsg{min-height:1.6em;margin:calc(var(--u)*.8) 0;font-size:calc(var(--u)*1.4);text-align:center}.codemsg.ok{color:#8ce99a}.codemsg.err{color:#ff8787}
+.klist{width:100%;flex:1;overflow:auto;display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u)*.5) calc(var(--u)*2);align-content:start;margin:calc(var(--u)*.6) 0}
+.krow{display:flex;align-items:center;gap:calc(var(--u)*.5);padding:calc(var(--u)*.25) calc(var(--u)*.6);background:rgba(255,255,255,.04);border:1px solid #4a3a24;border-radius:calc(var(--u)*.4)}
+.krow .kn{flex:1;font-size:calc(var(--u)*1.3);color:#f1e2bc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kslot{min-width:calc(var(--u)*6.4);height:calc(var(--u)*2.8);font-family:"Alegreya SC","Times New Roman",serif;font-weight:700;font-size:calc(var(--u)*1.25);color:#2a1a08;background:linear-gradient(180deg,#f3e6c6,#c9b48a);border:none;border-radius:calc(var(--u)*.35);box-shadow:0 calc(var(--u)*.2) 0 #6a5228;cursor:pointer;padding:0 calc(var(--u)*.5)}
+.kslot.empty{background:rgba(255,255,255,.08);color:#8a7a5a;box-shadow:none;border:1px dashed #6a5228}
+.kslot.wait{background:#ffd43b;animation:pulse 1s infinite}
+.kh{font-size:calc(var(--u)*1.15);color:#cbb88c;text-align:center;margin-top:calc(var(--u)*.3)}
+.kh kbd{background:#f3e6c6;color:#2a1a08;border-radius:3px;padding:0 4px;font-size:.9em}
 .volbox{position:absolute;right:calc(var(--u)*2);bottom:calc(var(--u)*2);display:flex;flex-direction:column;gap:calc(var(--u)*.6);background:linear-gradient(180deg,rgba(46,36,26,.92),rgba(24,18,13,.92));border:calc(var(--u)*.2) solid var(--gold2);border-radius:calc(var(--u)*.6);padding:calc(var(--u)*.9) calc(var(--u)*1.4);font-size:calc(var(--u)*1.25);color:#e6d4a6;box-shadow:0 calc(var(--u)*.4) calc(var(--u)*1.2) rgba(0,0,0,.6)}
 .volbox label{display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*1)}
 .volbox input{width:calc(var(--u)*11);accent-color:#d9a63a}
@@ -181,6 +200,7 @@ h2{font-size:calc(var(--u)*4);margin-bottom:calc(var(--u)*.8)}
 </style>
 </head>
 <body>
+<div id="rotate"><div class="ph">📱</div><div>Hãy xoay ngang điện thoại để chơi</div><button class="btn sm main" onclick="goFull()">⛶ Toàn màn hình</button></div>
 <div id="wrap"><div id="stage">
 <canvas id="c" width="960" height="540"></canvas>
 
@@ -214,7 +234,7 @@ h2{font-size:calc(var(--u)*4);margin-bottom:calc(var(--u)*.8)}
  <button class="btn blue" id="bLevels">🗺 Bản Đồ Chọn Màn</button>
  <button class="btn green" id="bShop">⚒ Lò Rèn &amp; Cửa Hàng</button>
  <button class="btn gray" id="bHelp">📜 Hướng Dẫn</button></div>
- </div><button class="btn gray sm mq" id="bGift" style="top:calc(var(--u)*6.4)">🎁 Giftcode</button><button class="btn gray sm mq" id="bQuest">📜 Sổ Nhiệm Vụ<span class="qbadge" id="mqBadge"></span></button><div class="volbox"><label><span>🎵 Nhạc nền</span><input type="range" id="vMus" min="0" max="100"></label><label><span>🔊 Hiệu ứng</span><input type="range" id="vSfx" min="0" max="100"></label></div></div>
+ </div><button class="btn gray sm" id="fsBtn" onclick="toggleFull()">⛶ Toàn màn hình</button><button class="btn gray sm mq" id="bKeys" style="top:calc(var(--u)*10.8)">⌨ Cài đặt phím</button><button class="btn gray sm mq" id="bGift" style="top:calc(var(--u)*6.4)">🎁 Giftcode</button><button class="btn gray sm mq" id="bQuest">📜 Sổ Nhiệm Vụ<span class="qbadge" id="mqBadge"></span></button><div class="volbox"><label><span>🎵 Nhạc nền</span><input type="range" id="vMus" min="0" max="100"></label><label><span>🔊 Hiệu ứng</span><input type="range" id="vSfx" min="0" max="100"></label></div></div>
 <div class="ov" id="levels"><div class="panel"><i class="rv l"></i><i class="rv r"></i>
  <div class="hdr"><div class="side"><button class="btn gray sm" data-back>◀ Quay lại</button></div><h2>Bản Đồ Vương Quốc</h2><div class="side r"><div class="bank" id="lbank"></div></div></div>
  <div class="wmap" id="lvlist"></div></div></div>
@@ -223,15 +243,14 @@ h2{font-size:calc(var(--u)*4);margin-bottom:calc(var(--u)*.8)}
  <div class="tabs"><button class="tab" data-tab="up">⚒ Nâng cấp</button><button class="tab" data-tab="con">🧪 Bình thuốc</button><button class="tab" data-tab="skin">🛡 Trang phục</button></div>
  <div class="shop" id="shopList"></div></div></div>
 <div class="ov" id="helpOv"><div class="panel"><i class="rv l"></i><i class="rv r"></i><h2>Hướng Dẫn</h2><div class="orn"></div><div class="help">
- <b>Di chuyển:</b> <kbd>A</kbd><kbd>D</kbd>/<kbd>←</kbd><kbd>→</kbd> đi • <kbd>W</kbd>/<kbd>↑</kbd>/<kbd>Space</kbd> nhảy (bấm 2 lần để nhảy đôi), <kbd>W</kbd>/<kbd>S</kbd> leo thang/dây • <kbd>S</kbd> rơi xuyên sàn gỗ.<br>
- <b>Chiến đấu:</b> <kbd>J</kbd>/<kbd>0</kbd>/chuột trái: chém (combo 3 nhát) • <kbd>U</kbd>/<kbd>1</kbd>/nút cạnh chuột trên: Lốc Xoáy • <kbd>I</kbd>/<kbd>2</kbd>/nút cạnh chuột dưới: Kiếm Khí • <kbd>O</kbd>/<kbd>Q</kbd>/<kbd>3</kbd> Cường Hóa • <kbd>K</kbd>/<kbd>6</kbd>/chuột phải: giữ để chặn • <kbd>Shift</kbd>/<kbd>L</kbd> lướt • <kbd>N</kbd>/<kbd>X</kbd>/<kbd>4</kbd> bình máu • <kbd>M</kbd>/<kbd>C</kbd>/<kbd>5</kbd> bình mana • <kbd>B</kbd>/<kbd>7</kbd> ném thuốc nổ • <kbd>Esc</kbd>/<kbd>P</kbd> tạm dừng.<br>
+ <span id="helpKeys"></span>
  <b>Hòm đồ:</b> chạm vào hòm để mở — có thể ra bình máu, bình mana, túi vàng hoặc 3 quả thuốc nổ. Thuốc nổ gây sát thương diện rộng, cẩn thận đứng gần sẽ bị vạ lây!<br>
  <b>Nhiệm vụ:</b> nói chuyện với NPC có dấu <b>!</b> bằng phím <kbd>F</kbd> (hoặc nút 💬). Bảng nhiệm vụ nằm dưới ảnh đại diện — bấm để mở rộng (<kbd>T</kbd>). Nhận thưởng trong bảng hoặc ở Sổ Nhiệm Vụ ngoài menu.<br>
  <b>Điện thoại:</b> cần điều hướng bên trái (đi trái/phải, leo lên/xuống), nút nhảy bên phải. Tạm dừng → <b>Chỉnh Vị Trí Nút</b> để kéo nút theo ý bạn.<br>
  <b>Mana</b> hồi khi chém trúng, khi bị đánh, hoặc nhặt pha lê xanh dương. Ngọc xanh lá hồi máu. Kẻ địch rơi vàng để mua đồ.<br>
  <b>Địa hình:</b> đẩy thùng gỗ / thùng rượu sát tường thành rồi đứng lên để nhảy đôi lên cao. Leo thang lên nhà gỗ, đu dây qua vực.<br>
  Mỗi màn giấu <b>3 viên ngọc ◆</b>. Màn cuối mỗi vùng đất có <b>Trùm</b>.</div><button class="btn gray" data-back style="margin-top:calc(var(--u)*1.2)">◀ Quay lại</button></div></div>
-<div class="ov" id="pauseOv"><div class="panel" style="padding:calc(var(--u)*2.4) calc(var(--u)*4)"><i class="rv l"></i><i class="rv r"></i><h2>Tạm Dừng</h2><div class="orn"></div><div class="mcol"><button class="btn main" id="bResume">▶ Tiếp Tục</button><button class="btn blue" id="bRestart">↻ Chơi Lại Màn</button><button class="btn gray" id="bLayout">🎮 Chỉnh Vị Trí Nút</button><button class="btn gray" id="bPcBtn">🖥 Nút Trên Màn Hình</button><button class="btn gray" id="bQuit">🏰 Menu Chính</button></div>
+<div class="ov" id="pauseOv"><div class="panel" style="padding:calc(var(--u)*2.4) calc(var(--u)*4)"><i class="rv l"></i><i class="rv r"></i><h2>Tạm Dừng</h2><div class="orn"></div><div class="mcol"><button class="btn main" id="bResume">▶ Tiếp Tục</button><button class="btn blue" id="bRestart">↻ Chơi Lại Màn</button><button class="btn gray" onclick="toggleFull()" id="bFull2">⛶ Toàn Màn Hình</button><button class="btn gray" id="bKeys2">⌨ Cài Đặt Phím</button><button class="btn gray" id="bLayout">🎮 Chỉnh Vị Trí Nút</button><button class="btn gray" id="bPcBtn">🖥 Nút Trên Màn Hình</button><button class="btn gray" id="bQuit">🏰 Menu Chính</button></div>
  <div class="vol"><label>🎵<input type="range" id="vMus2" min="0" max="100"></label><label>🔊<input type="range" id="vSfx2" min="0" max="100"></label></div></div></div>
 <div class="ov" id="questOv"><div class="panel"><i class="rv l"></i><i class="rv r"></i>
  <div class="hdr"><div class="side"><button class="btn gray sm" data-back>◀ Quay lại</button></div><h2>Sổ Nhiệm Vụ</h2><div class="side r"></div></div>
@@ -240,6 +259,11 @@ h2{font-size:calc(var(--u)*4);margin-bottom:calc(var(--u)*.8)}
  <input id="codeIn" class="codein" maxlength="24" placeholder="Nhập mã quà tặng…" autocomplete="off" spellcheck="false">
  <div id="codeMsg" class="codemsg"></div>
  <div class="mcol" style="flex-direction:row"><button class="btn main" id="codeOk">🎁 Nhận quà</button><button class="btn gray" data-back>◀ Quay lại</button></div></div></div>
+<div class="ov" id="keysOv"><div class="panel" style="width:calc(var(--u)*80);height:calc(var(--u)*52)"><i class="rv l"></i><i class="rv r"></i>
+ <div class="hdr"><div class="side"><button class="btn gray sm" id="keysBack">◀ Quay lại</button></div><h2>Cài Đặt Phím</h2><div class="side r"><button class="btn red sm" id="keysReset">↺ Mặc định</button></div></div>
+ <div class="kh">Bấm vào một ô rồi nhấn phím mới. <kbd>Esc</kbd> để hủy, <kbd>Backspace</kbd> để xóa phím. Phím trùng sẽ tự chuyển sang chức năng mới.</div>
+ <div id="keysList" class="klist"></div>
+ <div class="kh">Chuột: trái = đánh thường · phải = chặn · nút cạnh trên = Skill 1 · nút cạnh dưới = Skill 2</div></div></div>
 <div class="ov" id="resultOv"><div class="panel" style="padding:calc(var(--u)*2.4) calc(var(--u)*4)"><i class="rv l"></i><i class="rv r"></i><h2 id="rTitle"></h2><div class="orn"></div><div class="stats" id="rStats"></div><div id="rBtns" class="rbtns"></div></div></div>
 </div></div>
 
@@ -1616,7 +1640,7 @@ function questIntro(){const qs=qIntro;qIntro=[];const lines=[];for(const q of qs
  if(lines.length&&state==='play')dialog(lines,[],null)}
 
 /* ================= GIAO DIỆN ================= */
-const OVS=['menu','levels','shopOv','helpOv','pauseOv','resultOv','questOv','codeOv'];
+const OVS=['menu','levels','shopOv','helpOv','pauseOv','resultOv','questOv','codeOv','keysOv'];
 function hideAll(){OVS.forEach(o=>$(o).classList.remove('show'))}
 function show(id){hideAll();$(id).classList.add('show');updBank()}
 function updBank(){const t='<i class="coin"></i>'+S.bank.toLocaleString('vi-VN');['mbank','lbank','sbank'].forEach(i=>$(i).innerHTML=t)}
@@ -1688,19 +1712,48 @@ MUS.play('menu');
 $('bResume').onclick=togglePause;$('bLayout').onclick=()=>startEdit();$('bPcBtn').onclick=()=>{S.pcBtn={ro:'mo',mo:'an',an:'ro'}[S.pcBtn];save();applyLayout()};if(isTouch)$('bPcBtn').style.display='none';$('bRestart').onclick=()=>startLevel(curId,true);$('bQuit').onclick=toMenu;
 
 /* ================= ĐIỀU KHIỂN ================= */
-const KM={KeyA:'left',ArrowLeft:'left',KeyD:'right',ArrowRight:'right',KeyW:'up',ArrowUp:'up',Space:'jh',KeyS:'down',ArrowDown:'down'};
-const AM={KeyJ:'atk',Digit0:'atk',Numpad0:'atk',KeyU:'q',Digit1:'q',Numpad1:'q',KeyI:'e',Digit2:'e',Numpad2:'e',KeyO:'r',KeyQ:'r',Digit3:'r',Numpad3:'r',
- ShiftLeft:'dash',ShiftRight:'dash',KeyL:'dash',KeyN:'hp',KeyX:'hp',Digit4:'hp',Numpad4:'hp',KeyM:'mp',KeyC:'mp',Digit5:'mp',Numpad5:'mp',KeyB:'bomb',Digit7:'bomb',Numpad7:'bomb'};
-const BLK={KeyK:1,Digit6:1,Numpad6:1};
-let editing=false;
-addEventListener('keydown',e=>{if(editing)return;if(state==='talk'){if(['Space','Enter','KeyJ','KeyF','NumpadEnter'].includes(e.code)){e.preventDefault();if(!e.repeat)dlgNext()}else if(e.code==='Escape'){e.preventDefault();dlgSkip()}return}
- if(e.code==='KeyF'&&state==='play'){pressed.talk=1;e.preventDefault()}if((e.code==='KeyT'||e.code==='Tab')&&state==='play'){e.preventDefault();if(!e.repeat){qOpen=!qOpen;renderQPanel()}}
- const k=KM[e.code],a=AM[e.code];
- if(k){if(!keys[k]){if(k==='up'||k==='jh')pressed.jump=1;else pressed[k]=1}keys[k]=1;e.preventDefault()}
- if(a&&state==='play'){if(!e.repeat)pressed[a]=1;e.preventDefault()}
- if(BLK[e.code]){keys.block=1;e.preventDefault()}
- if(e.code==='Escape'||e.code==='KeyP'){e.preventDefault();if(!e.repeat)togglePause()}});
-addEventListener('keyup',e=>{const k=KM[e.code];if(k)keys[k]=0;if(BLK[e.code])keys.block=0});
+const BINDS=[
+ ['left','Đi trái','move',['KeyA','ArrowLeft']],['right','Đi phải','move',['KeyD','ArrowRight']],
+ ['up','Nhảy / leo lên','move',['KeyW','ArrowUp']],['down','Leo xuống / rơi xuyên sàn','move',['KeyS','ArrowDown']],
+ ['jh','Nhảy','move',['Space']],['atk','Đánh thường','act',['KeyJ','Digit0']],
+ ['q','Skill 1 – Lốc Xoáy','act',['KeyU','Digit1']],['e','Skill 2 – Kiếm Khí','act',['KeyI','Digit2']],
+ ['r','Skill 3 – Cường Hóa','act',['KeyO','KeyQ','Digit3']],['dash','Lướt','act',['ShiftLeft','ShiftRight','KeyL']],
+ ['block','Chặn (giữ)','hold',['KeyK','Digit6']],['hp','Bình máu','act',['KeyN','KeyX','Digit4']],
+ ['mp','Bình mana','act',['KeyM','KeyC','Digit5']],['bomb','Ném thuốc nổ','act',['KeyB','Digit7']],
+ ['talk','Nói chuyện với NPC','sys',['KeyF']],['quest','Mở bảng nhiệm vụ','sys',['KeyT','Tab']],['pause','Tạm dừng','sys',['Escape','KeyP']]];
+const BK={};BINDS.forEach(b=>BK[b[0]]=b);
+if(!S.keys)S.keys={};
+const keyOf=id=>(S.keys[id]||BK[id][3]).slice(0,3);
+let CODE={};function rebuildKeys(){CODE={};for(const b of BINDS)for(const c of keyOf(b[0]))if(c&&!CODE[c])CODE[c]=b[0];updKeyLabels()}
+const KNAME=c=>{if(!c)return'';const m={Space:'Space',ArrowLeft:'←',ArrowRight:'→',ArrowUp:'↑',ArrowDown:'↓',ShiftLeft:'Shift',ShiftRight:'Shift P',ControlLeft:'Ctrl',ControlRight:'Ctrl P',AltLeft:'Alt',AltRight:'Alt P',Escape:'Esc',Enter:'Enter',Tab:'Tab',Backquote:'`',Minus:'-',Equal:'=',BracketLeft:'[',BracketRight:']',Backslash:'\\',Semicolon:';',Quote:"'",Comma:',',Period:'.',Slash:'/',CapsLock:'Caps'};
+ if(m[c])return m[c];if(c.startsWith('Key'))return c.slice(3);if(c.startsWith('Digit'))return c.slice(5);if(c.startsWith('Numpad'))return'Num'+c.slice(6);return c}
+function updKeyLabels(){const map={bAtk:'atk',bQ:'q',bE:'e',bR:'r',bDash:'dash',bHp:'hp',bMp:'mp',bBomb:'bomb',bBlock:'block',bTalk:'talk',bJump:'jh',bPause:'pause'};
+ for(const id in map){const el=$(id);if(!el)continue;const k=el.querySelector('.key');if(k)k.textContent=KNAME(keyOf(map[id]).find(Boolean)).toUpperCase()}
+ const hk=$('helpKeys');if(hk){const K=id=>keyOf(id).filter(Boolean).map(c=>'<kbd>'+KNAME(c)+'</kbd>').join('/')||'<i>chưa gán</i>';
+  hk.innerHTML='<b>Di chuyển:</b> '+K('left')+' '+K('right')+' đi • '+K('up')+' / '+K('jh')+' nhảy (bấm 2 lần để nhảy đôi), leo thang/dây • '+K('down')+' leo xuống, rơi xuyên sàn gỗ.<br>'+
+  '<b>Chiến đấu:</b> '+K('atk')+'/chuột trái: chém (combo 3 nhát) • '+K('q')+'/nút cạnh chuột trên: Lốc Xoáy • '+K('e')+'/nút cạnh chuột dưới: Kiếm Khí • '+K('r')+' Cường Hóa • '+K('block')+'/chuột phải: giữ để chặn • '+K('dash')+' lướt • '+K('hp')+' bình máu • '+K('mp')+' bình mana • '+K('bomb')+' ném thuốc nổ • '+K('talk')+' nói chuyện • '+K('quest')+' bảng nhiệm vụ • '+K('pause')+' tạm dừng. <i>(Đổi phím trong ⌨ Cài đặt phím)</i><br>'}}
+let editing=false,kWait=null;
+function renderKeys(){const box=$('keysList');box.innerHTML='';for(const b of BINDS){const row=document.createElement('div');row.className='krow';row.innerHTML='<span class="kn">'+b[1]+'</span>';
+  const ks=keyOf(b[0]);for(let i=0;i<3;i++){const btn=document.createElement('button');const c=ks[i];const waiting=kWait&&kWait[0]===b[0]&&kWait[1]===i;btn.className='kslot'+(waiting?' wait':c?'':' empty');btn.textContent=waiting?'…':c?KNAME(c):'+';btn.onclick=ev=>{ev.stopPropagation();kWait=[b[0],i];renderKeys()};row.appendChild(btn)}box.appendChild(row)}}
+function setKey(id,slot,code){for(const b of BINDS){const arr=keyOf(b[0]).slice();let ch=false;for(let i=0;i<arr.length;i++)if(arr[i]===code&&!(b[0]===id&&i===slot)){arr[i]=null;ch=true}if(ch)S.keys[b[0]]=arr}
+ const a=keyOf(id).slice();while(a.length<3)a.push(null);a[slot]=code;S.keys[id]=a;save();rebuildKeys()}
+if(isTouch){$('bKeys').style.display='none';$('bKeys2').style.display='none'}
+$('bKeys').onclick=()=>{kWait=null;renderKeys();show('keysOv')};
+$('bKeys2').onclick=()=>{kWait=null;renderKeys();hideAll();$('keysOv').classList.add('show')};
+$('keysBack').onclick=()=>{kWait=null;if(state==='pause')show('pauseOv');else toMenu()};
+$('keysReset').onclick=()=>{S.keys={};save();rebuildKeys();kWait=null;renderKeys()};
+addEventListener('keydown',e=>{if(!kWait)return;e.preventDefault();e.stopImmediatePropagation();const [id,slot]=kWait;kWait=null;
+ if(e.code==='Escape'){}else if(e.code==='Backspace'||e.code==='Delete'){const a=keyOf(id).slice();while(a.length<3)a.push(null);a[slot]=null;S.keys[id]=a;save();rebuildKeys()}else setKey(id,slot,e.code);renderKeys()},true);
+addEventListener('keydown',e=>{if(editing||kWait)return;const id=CODE[e.code];
+ if(state==='talk'){if(['Space','Enter','NumpadEnter'].includes(e.code)||id==='atk'||id==='talk'||id==='jh'){e.preventDefault();if(!e.repeat)dlgNext()}else if(e.code==='Escape'||id==='pause'){e.preventDefault();dlgSkip()}return}
+ if(!id)return;const t=BK[id][2];
+ if(t==='move'){if(!keys[id]){if(id==='up'||id==='jh')pressed.jump=1;else pressed[id]=1}keys[id]=1;e.preventDefault()}
+ else if(t==='act'){if(state==='play'){if(!e.repeat)pressed[id]=1;e.preventDefault()}}
+ else if(t==='hold'){keys.block=1;e.preventDefault()}
+ else if(id==='talk'){if(state==='play'){pressed.talk=1;e.preventDefault()}}
+ else if(id==='quest'){if(state==='play'){e.preventDefault();if(!e.repeat){qOpen=!qOpen;renderQPanel()}}}
+ else if(id==='pause'){if(state==='play'||(state==='pause'&&$('pauseOv').classList.contains('show'))){e.preventDefault();if(!e.repeat)togglePause()}}});
+addEventListener('keyup',e=>{const id=CODE[e.code];if(!id)return;const t=BK[id][2];if(t==='move')keys[id]=0;else if(t==='hold')keys.block=0});
 addEventListener('blur',()=>{for(const k in keys)keys[k]=0;if(state==='play')togglePause()});
 /* chuột: phải = chặn, nút cạnh trên = skill 1, nút cạnh dưới = skill 2 */
 addEventListener('mousedown',e=>{if(state!=='play'||editing)return;if(e.button===2){keys.block=1;e.preventDefault()}else if(e.button===4){pressed.q=1;e.preventDefault()}else if(e.button===3){pressed.e=1;e.preventDefault()}});
@@ -1746,7 +1799,20 @@ function updateUI(){if(!P||state!=='play')return;
  $('bTalk').style.display=(nearNpc||editing)?'flex':'none';$('bHp').classList.toggle('off',!S.pot.hp);const nb=S.bomb||0;$('bBomb').querySelector('.cnt').textContent=nb;$('bBomb').style.display=nb>0||editing?'flex':'none';setCd('bBomb',P.bombCd||0,24,0);$('bMp').classList.toggle('off',!S.pot.mp)}
 function resize(){const st=$('stage');st.style.setProperty('--u',st.clientWidth/100+'px')}
 addEventListener('resize',resize);resize();
-updBank();loadAssets();renderQuestOv();
+/* ---- toàn màn hình ---- */
+const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
+function goFull(){const d=document.documentElement,rq=d.requestFullscreen||d.webkitRequestFullscreen;if(!rq||fsEl())return Promise.resolve();
+ let p;try{p=rq.call(d,{navigationUI:'hide'})}catch(e){p=null}return Promise.resolve(p).then(()=>{try{screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape').catch(()=>{})}catch(e){}}).catch(()=>{})}
+function toggleFull(){if(fsEl()){(document.exitFullscreen||document.webkitExitFullscreen).call(document)}else goFull()}
+const canFS=!!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen);
+const standalone=(window.matchMedia&&matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches)||navigator.standalone;
+if(!canFS||standalone){$('fsBtn').style.display='none';$('bFull2').style.display='none'}
+function updFsLabel(){const t=fsEl()?'⛶ Thoát toàn màn hình':'⛶ Toàn màn hình';$('fsBtn').textContent=t;$('bFull2').textContent=fsEl()?'⛶ Thoát Toàn Màn Hình':'⛶ Toàn Màn Hình';setTimeout(resize,200)}
+document.addEventListener('fullscreenchange',updFsLabel);document.addEventListener('webkitfullscreenchange',updFsLabel);
+/* điện thoại: tự vào toàn màn hình ở lần chạm đầu tiên */
+if(isTouch&&canFS&&!standalone){const once=e=>{if(e.target.closest&&e.target.closest('#fsBtn,#bFull2'))return;goFull();removeEventListener('pointerup',once,true)};addEventListener('pointerup',once,true)}
+addEventListener('orientationchange',()=>setTimeout(resize,300));
+rebuildKeys();updBank();loadAssets();renderQuestOv();
 let last=0,acc=0;
 function loop(t){requestAnimationFrame(loop);const dt=Math.min(100,t-last);last=t;
  if(state==='pause'||state==='result'||state==='talk'){render();return}
