@@ -318,7 +318,7 @@ input[type=range].kfoc{scale:1.08;accent-color:#ffe066}
  <b>Combo &amp; chiêu thức:</b> đánh trúng liên tục để nối <b>combo</b> (bộ đếm bên phải); cứ đủ 10 hit, nhát chém cuối của chuỗi thành đòn <b>Kết Liễu</b>. Nút <b>🥋 Chiêu</b> (phím <kbd>G</kbd>): đứng yên → <b>Hất Tung</b> (cận chiến: chém hất địch lên trời, mình bật theo để chém tiếp; Sylva/Ignis: bắn tên/cầu lửa lên trời, sóng xung kích đẩy văng địch hai bên); đang chạy → <b>Đá Trượt</b>; đang trên không → <b>Đập Đất</b> (cận chiến lao chéo xuống; Sylva/Ignis bắn chéo xuống). Hai chiêu sau cùng <b>Khiên Hộ Thể</b> học ở <b>Lò Rèn › Chiêu thức</b>. Đòn mạnh hất văng kẻ địch va vào nhau hoặc đập vào tường.<br>
  <b>Phục kích &amp; bí mật:</b> giữa màn có đoạn bị rào lửa chặn hai đầu — hạ hết các đợt quái để thông đường. Đập <b>bình gốm, thùng gỗ</b> lấy vàng; <b>thùng TNT</b> đỏ nổ sau 0,5 giây (tránh xa!). Tường/sàn có <b>vết nứt lấp lánh</b> che phòng bí mật — tường thì chém thường, sàn thì cần đòn mạnh (nhát cuối, Hất Tung, Đập Đất) hoặc thuốc nổ. Quái và thùng gỗ đôi khi rơi <b>vũ khí</b> — nhặt lên thì nút Đánh dùng vũ khí đó thay kiếm: <b>🪓 Rìu</b> bổ cực mạnh, phá khiên; <b>🔱 Giáo</b> đâm xa, xuyên hàng; <b>🏹 Nỏ</b> bắn tên xuyên. Thanh độ bền hiện ở góc trái, hết thì vũ khí gãy.<br>
  <b>Kẻ địch đặc biệt:</b> <b>Lính Khiên</b> chặn đòn trước mặt — vòng ra sau hoặc dùng đòn mạnh phá thế; <b>Quỷ Túm</b> ôm chặt — bấm liên tục để thoát; <b>Yêu Tinh Cảm Tử</b> lao tới tự nổ — hạ sớm hoặc né; <b>Lính Quăng Lưới</b> làm bạn chậm lại.<br>
- <b>Sao &amp; thử thách:</b> mỗi màn có 3 sao (Nhanh · trúng ≤ 3 đòn · tìm bí mật), đủ mốc sao nhận thưởng. Mỗi ngày có 1 thử thách ở menu chính.<br>
+ <b>Sao &amp; thử thách:</b> mỗi màn có 3 sao: <b>Thời gian</b> (về đích kịp giờ) · <b>Khám phá</b> (đủ ma thạch + tìm phòng bí mật) · <b>Bền bỉ</b> (về đích còn ≥ 80% máu), đủ mốc sao nhận thưởng. Mỗi ngày có 1 thử thách ở menu chính.<br>
  <b>Nhiệm vụ:</b> nói chuyện với NPC có dấu <b>!</b> bằng phím <kbd>F</kbd> (hoặc nút 💬). Bảng nhiệm vụ nằm dưới ảnh đại diện — bấm để mở rộng (<kbd>T</kbd>). Nhận thưởng trong bảng hoặc ở Sổ Nhiệm Vụ ngoài menu.<br>
  <b>Chỉ dùng bàn phím:</b> ở mọi bảng chọn, dùng <kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> để di chuyển khung sáng vàng, <kbd>Enter</kbd> để chọn, <kbd>Esc</kbd> để quay lại. Trong trận, khi có nhiệm vụ hoàn thành, bấm <kbd>Enter</kbd> để nhận thưởng ngay.<br>
  <b>Điện thoại:</b> cần điều hướng bên trái (đi trái/phải, leo lên/xuống), nút nhảy bên phải. Tạm dừng → <b>Chỉnh Vị Trí Nút</b> để kéo nút theo ý bạn.<br>
@@ -764,15 +764,38 @@ function autoBot(){const p=P,hk={left:keys.left,right:keys.right,up:keys.up,down
   if(p.dashCd<=0&&cA<=cB){setDir(away);pressed.dash=1;return hk}
   if(S.hero==='ignis'&&p.mp>=10&&p.onGround){BOT.blk=16;BOT.bx=thr.x;keys.block=1;p.atk=null;return hk}
   if(p.onGround){pressed.jump=1;BOT.jt=12;setDir(cA<=cB?away:-away);return hk}}
- if(!tgt){let dr=null,dd=700;for(const r of drops){if(r.dead||r.t==='gold')continue;const d=Math.abs(r.x-pc);if(d<dd){dd=d;dr=r}}if(dr&&dd>12)setDir(dr.x-pc);return hk}
- const dx=tgt.x+tgt.w/2-pc,adx=Math.abs(dx),dy=tgt.y+tgt.h-pf,dir=Math.sign(dx)||1;
- const want=H.ranged?200:Math.max(26,tgt.w/2+14);
- if(H.ranged){if(adx>want+70)setDir(dir);else if(adx<(S.hero==='ignis'?120:100)&&p.onGround)setDir(-dir)}else if(adx>want)setDir(dir);
- if(!H.ranged&&dy<-70&&adx<110){if(p.onGround){pressed.jump=1;BOT.jt=14}else if(p.vy>-1&&p.jumps<2&&dy<-60)pressed.jump=1}
- const inRange=H.ranged?adx<430&&dy>-170&&dy<120:adx<want+((H.rng&&H.rng[1])||62)&&Math.abs(dy)<110;
+ const wp=p.wp?p.wp.k:null,RNG=wp?wp==='xbow':!!H.ranged;let busyE=false;
+ for(const e of enemies){if(e.dead||!e.alive)continue;if(Math.abs(e.x+e.w/2-pc)<150&&Math.abs(e.y+e.h-pf)<110&&!(e.def&&e.def.k==='flyer'))busyE=true}
+ // nhặt vàng / vật phẩm / vũ khí
+ let dr=null,dd=1e9;for(const r of drops){if(r.dead||r.taken)continue;const rx=r.x+(r.w||14)/2-pc,ry=r.y+(r.h||14)-pf;if(ry<-150||ry>130)continue;let d=Math.abs(rx)+Math.max(0,Math.abs(ry)-30)*1.5;
+  if(r.t==='wp')d-=wp&&p.wp.n>4?-40:220;else if(r.t==='heal'&&p.hp<p.maxhp*.7)d-=150;if(d<dd){dd=d;dr=r}}
+ if(dr&&(!tgt||!busyE)&&dd<(tgt?(dr.t==='wp'?420:300):900)){const rx=dr.x+(dr.w||14)/2-pc,ry=dr.y-pf;if(Math.abs(rx)>10){setDir(rx);if(ry<-50&&p.onGround&&Math.abs(rx)<90){pressed.jump=1;BOT.jt=14}return hk}}
+ if(!tgt)return hk;
+ const dx=tgt.x+tgt.w/2-pc,adx=Math.abs(dx),dy=tgt.y+tgt.h-pf,dir=Math.sign(dx)||1,fly=tgt.def&&tgt.def.k==='flyer';
+ const want=RNG?200:wp==='spear'?95:wp==='axe'?55:Math.max(26,tgt.w/2+14),reach=wp==='spear'?145:wp==='axe'?100:want+((H.rng&&H.rng[1])||62);
+ if(RNG&&!(fly&&dy<-60)){if(adx>want+70)setDir(dir);else if(adx<(S.hero==='ignis'?120:100)&&p.onGround)setDir(-dir)}else if(adx>(RNG?40:want))setDir(dir);
+ // quái bay: nhảy lên, đứng lên địa hình cao, hoặc chém/bắn lên
+ if(!RNG&&dy<-70&&adx<110){if(p.onGround){pressed.jump=1;BOT.jt=14}else if(p.vy>-1&&p.jumps<2&&dy<-60)pressed.jump=1}
+ if(fly&&dy<-150&&!RNG){const pr=botPerch(tgt,pf);if(pr){const px=pr-pc;keys.left=keys.right=0;if(Math.abs(px)>14)setDir(px);if(Math.abs(px)<70&&p.onGround){pressed.jump=1;BOT.jt=18}}}
+ const inRange=RNG?adx<430&&dy>-90&&dy<120:adx<reach&&Math.abs(dy)<110;
  if(inRange&&!keys.left&&!keys.right&&!p.atk)p.face=dir;
+ if(botSpecial(p,tgt,dx,adx,dy,fly,near)){if(!(BOT.wl>0))botSkills(p,tgt,dx,adx,dy,near,near2);return hk}
  const retreat=(keys.left&&dir>0)||(keys.right&&dir<0);if(inRange&&!hAtk&&!retreat&&p.face===dir&&frame%3===0)pressed.atk=1;
  botSkills(p,tgt,dx,adx,dy,near,near2);return hk}
+function botPerch(t,pf){const tc=Math.floor((t.x+t.w/2)/TS),pr=Math.floor(pf/TS);let best=null,bd=99;
+ for(let c=tc-5;c<=tc+5;c++)for(let r=pr-1;r>=Math.max(2,pr-6);r--){if(!(solidAt(c,r)||oneWayAt(c,r))||solidAt(c,r-1)||solidAt(c,r-2))continue;const h=pf-r*TS;if(h<50||h>200)continue;const d=Math.abs(c-tc);if(d<bd){bd=d;best=c*TS+18}break}
+ return best}
+function botSpecial(p,t,dx,adx,dy,fly,near){if(!BOT.wl&&p.onGround&&!HH().ranged&&!t.boss&&!t.elite&&!(t.def&&(t.def.k==='heavy'||t.def.k==='flyer'))&&adx<80&&Math.abs(dy)<40&&!(p.atk&&p.atk.lau)&&rnd()<.03)BOT.wl=100;if(BOT.wl>0&&p.atk&&!p.atk.lau){BOT.wl--;if(p.atk)p.atk.queued=false;return true}if(BOT.wl>0){BOT.wl--;if(!p.atk&&!p.whirl&&!(p.cast>0)&&!(p.flame>0)&&!(p.dash>0)&&!p.block&&p.onGround&&adx<90&&!(p.spCd>0)){BOT.wl=0;keys.left=keys.right=0;p.face=Math.sign(dx)||p.face;pressed.sp=1}return true}if((p.spCd||0)>0||p.atk||p.dash>0||p.plunge||p.block||p.cast>0||p.whirl||p.flame>0)return false;const R=!!HH().ranged,heavy=t.boss||t.elite||(t.def&&t.def.k==='heavy'),fwd=Math.sign(dx)===p.face;
+ if(p.onGround){
+  if(S.sk.slide&&!fly&&adx>110&&adx<230&&Math.abs(dy)<30&&p.dashCd<=0&&Math.abs(p.vx)>2.4&&Math.sign(p.vx)===Math.sign(dx)&&rnd()<.25){pressed.sp=1;return true}
+  if(R){if((fly&&adx<90&&dy<-50)||(near>=2&&adx<110&&rnd()<.08)){pressed.sp=1;return true}}
+  
+  if(S.sk.slam&&!R&&near>=3&&adx<120&&rnd()<.012){pressed.jump=1;BOT.jt=12;return true}
+  return false}
+ if(!S.sk.slam)return false;
+ if(!R&&!fly&&dy>40&&adx<190&&fwd){pressed.sp=1;return true}
+ if(R&&!fly&&dy>20&&adx>50&&adx<280&&fwd&&p.vy>-3){pressed.sp=1;return true}
+ return false}
 function botSkills(p,t,dx,adx,dy,near,near2){if(p.cast>0||p.flame>0||p.whirl>0||p.dash>0)return;const H=HH(),h=S.hero,hpOK=h!=='mordred'||p.hp>p.maxhp*.55,face=()=>{p.face=Math.sign(dx)||p.face};
  if(p.mp>=p.maxmp&&!p.ult&&!(p.cdR>0)&&adx<420&&(near2>=3||t.boss||t.elite)){pressed.r=1;return}
  if(p.cdQ<=0&&canPay(H.cost.q)&&hpOK){let ok=false;
@@ -1731,7 +1754,7 @@ function updBreaks(){let any=false;for(const b of breaks){if(b.fuse>0&&--b.fuse=
 function breakX(tx,ty){if(tileAt(tx,ty)!=='X')return;G[ty][tx]='.';burst(tx*TS+18,ty*TS+18,'#a89a86',10,4,5);burst(tx*TS+18,ty*TS+18,'#5a5048',6,3,4);
  for(const [a,b] of[[1,0],[-1,0],[0,1],[0,-1]])breakX(tx+a,ty+b);
  if(!lvlSecret){lvlSecret=true;if(runMem)runMem.secret=1;noise(.3,500,.16);seq([660,880,1100,1320],70,.1,'triangle',.06);shake=Math.max(shake,8);pop(tx*TS-40,ty*TS-20,'PHÒNG BÍ MẬT!','#7cf3ff',1);toast('🔍 Đã tìm ra phòng bí mật!','main');dailyProg('secret',1)}}
-function hitWorld(box,o){const fy=P?P.y+P.h-6:1e9,big=o&&(o.big||o.launch);for(const b of breaks)if(!b.dead&&overlap(box,b))breakObj(b);
+function hitWorld(box,o){const fy=P?P.y+P.h-6:1e9,big=o&&(o.big||o.launch||o.proj);for(const b of breaks)if(!b.dead&&overlap(box,b))breakObj(b);
  const x0=Math.floor(box.x/TS),x1=Math.floor((box.x+box.w)/TS),y0=Math.floor(box.y/TS),y1=Math.floor((box.y+box.h)/TS);if(x1-x0>12||y1-y0>12)return;
  for(let ty=y0;ty<=y1;ty++)for(let tx=x0;tx<=x1;tx++)if(tileAt(tx,ty)==='X'&&(big||ty*TS<fy))breakX(tx,ty)}
 function breakRadius(cx,cy,R){for(const b of breaks)if(!b.dead&&Math.hypot(b.x+b.w/2-cx,b.y+b.h/2-cy)<R)breakObj(b,1);
@@ -1788,14 +1811,15 @@ function dtmGen(L,g){const R=rng(4242+L.id*313),ch=p=>R()<p,pk=a=>a[Math.floor(R
 const STAR_R=[[6,'300 vàng',()=>{S.bank+=300}],[12,'500 vàng + 2 bình máu',()=>{S.bank+=500;S.pot.hp=Math.min(9,S.pot.hp+2)}],[18,'600 vàng + 1 vé tự động',()=>{S.bank+=600;S.autoTk=(S.autoTk||0)+1}],[27,'1.000 vàng',()=>{S.bank+=1000}],[36,'1.200 vàng + 2 vé tự động',()=>{S.bank+=1200;S.autoTk=(S.autoTk||0)+2}],[45,'1.500 vàng',()=>{S.bank+=1500}],[54,'3.000 vàng + 3 vé tự động',()=>{S.bank+=3000;S.autoTk=(S.autoTk||0)+3}]];
 const starStr=v=>[0,1,2].map(i=>v>>i&1?'★':'☆').join('');
 function starTotal(){let n=0;for(const k in S.stars){let v=S.stars[k];while(v){n+=v&1;v>>=1}}return n}
-function starCalc(){const secs=Math.round(((runMem&&runMem.t)||0)/60+lvlTime/60),hits=Math.floor((runMem&&runMem.hits)||0);return{secs,hits,a:secs<=lvlPar?1:0,b:hits<=3?1:0,c:lvlSecret?1:0}}
+function starCalc(){const secs=Math.round(((runMem&&runMem.t)||0)/60+lvlTime/60),own=S.gems[curId]||[],gn=gems.length,gg=gems.filter(g=>own[g.i]||g.taken).length,hp=P?Math.round(P.hp/P.maxhp*100):0;
+ const tm=secs<=lvlPar?1:0,gm=gg>=gn?1:0,sc=lvlSecret?1:0,hv=hp>=80?1:0;return{secs,gg,gn,hp,tm,gm,sc,hv,a:tm,b:gm&&sc?1:0,c:hv}}
 function starFinish(){const st=starCalc(),old=S.stars[curId]||0;S.stars[curId]=old|st.a|st.b<<1|st.c<<2;const got=[],t=starTotal();
  while(S.starR<STAR_R.length&&t>=STAR_R[S.starR][0]){STAR_R[S.starR][2]();got.push('🎁 Mốc '+STAR_R[S.starR][0]+'★: '+STAR_R[S.starR][1]);S.starR++}
- if(runMem&&!runMem.pot)dailyProg('nopot',1);if(st.b)dailyProg('star',1);save();
+ if(runMem&&!runMem.pot)dailyProg('nopot',1);if(st.c)dailyProg('star',1);save();
  const ok=v=>v?'<b style="color:#8ce99a">✔</b>':'<b style="color:#ff8787">✘</b>';
- return'<br><span style="color:#ffd43b;font-size:1.25em;letter-spacing:.12em">'+starStr(st.a|st.b<<1|st.c<<2)+'</span><br><small>'+ok(st.a)+' Nhanh: '+st.secs+'s / '+lvlPar+'s &nbsp; '+ok(st.b)+' Dẻo dai: trúng '+st.hits+' / 3 đòn &nbsp; '+ok(st.c)+(secRooms.length?' Tìm phòng bí mật':' Màn này không có bí mật')+'</small><br><small>Tổng sao: <b style="color:#ffd43b">'+t+' / '+NL*3+' ★</b>'+(S.starR<STAR_R.length?' · mốc kế: '+STAR_R[S.starR][0]+'★ → '+STAR_R[S.starR][1]:'')+'</small>'+got.map(g=>'<br><b style="color:#ffe066">'+g+'</b>').join('')}
-function starSum(){const t=starTotal();return'Sao đã đạt: <b style="color:#ffd43b">'+t+' / '+NL*3+' ★</b> — mỗi màn 3 sao: <b>Nhanh</b> · <b>Dẻo dai</b> (trúng ≤ 3 đòn) · <b>Bí mật</b> (tìm tường nứt).'+(S.starR<STAR_R.length?' Mốc thưởng kế: <b>'+STAR_R[S.starR][0]+'★</b> → '+STAR_R[S.starR][1]+'.':' Đã nhận hết mốc thưởng!')}
-const DAILY=[{k:'kill',n:40,t:'Hạ 40 kẻ địch'},{k:'combo',n:30,t:'Đạt combo 30 hit',max:1},{k:'brk',n:20,t:'Đập vỡ 20 thùng / bình'},{k:'lock',n:2,t:'Vượt qua 2 trận phục kích'},{k:'secret',n:1,t:'Tìm 1 phòng bí mật'},{k:'nopot',n:1,t:'Qua 1 màn không dùng bình máu'},{k:'star',n:1,t:'Qua 1 màn mà trúng không quá 3 đòn'},{k:'boss',n:1,t:'Hạ 1 trùm'},{k:'wave',n:10,t:'Tới đợt 10 ở Chiến Đấu Vô Tận',max:1}];
+ return'<br><span style="color:#ffd43b;font-size:1.25em;letter-spacing:.12em">'+starStr(st.a|st.b<<1|st.c<<2)+'</span><br><small>★ '+ok(st.tm)+' Thời gian: '+st.secs+'s / '+lvlPar+'s &nbsp; ★ '+ok(st.b)+' Khám phá: ma thạch '+st.gg+'/'+st.gn+' '+ok(st.gm)+(secRooms.length?' + phòng bí mật '+ok(st.sc):' (màn không có bí mật)')+' &nbsp; ★ '+ok(st.hv)+' Máu khi về đích: '+st.hp+'% / 80%</small><br><small>Tổng sao: <b style="color:#ffd43b">'+t+' / '+NL*3+' ★</b>'+(S.starR<STAR_R.length?' · mốc kế: '+STAR_R[S.starR][0]+'★ → '+STAR_R[S.starR][1]:'')+'</small>'+got.map(g=>'<br><b style="color:#ffe066">'+g+'</b>').join('')}
+function starSum(){const t=starTotal();return'Sao đã đạt: <b style="color:#ffd43b">'+t+' / '+NL*3+' ★</b> — mỗi màn 3 sao: <b>Thời gian</b> (về đích kịp giờ) · <b>Khám phá</b> (đủ ma thạch + tìm phòng bí mật) · <b>Bền bỉ</b> (về đích còn ≥ 80% máu).'+(S.starR<STAR_R.length?' Mốc thưởng kế: <b>'+STAR_R[S.starR][0]+'★</b> → '+STAR_R[S.starR][1]+'.':' Đã nhận hết mốc thưởng!')}
+const DAILY=[{k:'kill',n:40,t:'Hạ 40 kẻ địch'},{k:'combo',n:30,t:'Đạt combo 30 hit',max:1},{k:'brk',n:20,t:'Đập vỡ 20 thùng / bình'},{k:'lock',n:2,t:'Vượt qua 2 trận phục kích'},{k:'secret',n:1,t:'Tìm 1 phòng bí mật'},{k:'nopot',n:1,t:'Qua 1 màn không dùng bình máu'},{k:'star',n:1,t:'Qua 1 màn mà còn ≥ 80% máu'},{k:'boss',n:1,t:'Hạ 1 trùm'},{k:'wave',n:10,t:'Tới đợt 10 ở Chiến Đấu Vô Tận',max:1}];
 const DAILY_GOLD=250;
 function dayKey(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
 function daily(){const k=dayKey();if(!S.daily||S.daily.d!==k){let h=7;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))%9973;S.daily={d:k,i:h%DAILY.length,p:0,done:0}}return S.daily}
@@ -1827,7 +1851,7 @@ function dtmHUD(){if(COMBO.pulse>0)COMBO.pulse--;const F='"Segoe UI",sans-serif'
  if(P&&P.wp){const w=WPN[P.wp.k],x=14,y=hudBelowQ();ctx.fillStyle='rgba(15,10,6,.78)';ctx.fillRect(x,y,170,40);ctx.strokeStyle=w.c;ctx.lineWidth=2;ctx.strokeRect(x,y,170,40);ctx.save();ctx.translate(x+(P.wp.k==='spear'?10:P.wp.k==='axe'?8:12),y+20);ctx.scale(.42,.42);wpShape(P.wp.k);ctx.restore();txt(w.n,x+52,y+16,w.c,'left','bold 13px "Segoe UI",sans-serif');ctx.fillStyle='#333';ctx.fillRect(x+52,y+24,108,8);ctx.fillStyle=w.c;ctx.fillRect(x+52,y+24,108*P.wp.n/w.u,8);txt(P.wp.n+'/'+w.u,x+164,y+33,'#fff','right','bold 10px "Segoe UI",sans-serif')}
  if(P&&P.slow>0)txt('🕸 Dính lưới',20,hudBelowQ()+(P.wp?58:14),'#dee2e6','left','bold 13px '+F);
  if(!ENDLESS&&P&&(state==='play'||state==='pause')){const st=starCalc(),mm=s=>Math.floor(s/60)+':'+('0'+s%60).slice(-2);
-  txt('⏱ '+mm(st.secs)+' / '+mm(lvlPar),VW-12,128,st.a?'#b2f2bb':'#868e96','right','bold 12px '+F);txt('💢 '+st.hits+' / 3',VW-12,144,st.b?'#b2f2bb':'#868e96','right','bold 12px '+F);txt(!secRooms.length?'🔍 Không có bí mật':st.c?'🔍 Bí mật ✔':'🔍 Bí mật ?',VW-12,160,st.c?'#7cf3ff':'#868e96','right','bold 12px '+F)}
+  const ln=(t,y,c)=>txt(t,VW-12,y,c,'right','bold 12px '+F);ln('★ ⏱ '+mm(st.secs)+' / '+mm(lvlPar),128,st.tm?'#b2f2bb':'#868e96');ln('★ 💎 '+st.gg+'/'+st.gn+'  '+(!secRooms.length?'🔍 —':st.sc?'🔍 ✔':'🔍 ?'),144,st.b?'#7cf3ff':'#868e96');ln('★ ❤ '+st.hp+'% / 80%',160,st.hv?'#b2f2bb':'#ff8787')}
  ctx.textAlign='left'}
 /* ================= ĐIỀU KHIỂN BẰNG BÀN PHÍM CHO MENU ================= */
 const KNV={el:null,root:null,ring:null,mouse:0};
