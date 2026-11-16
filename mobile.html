@@ -290,6 +290,7 @@ input[type=range].kfoc{scale:1.08;accent-color:#ffe066}
  <div class="sb ctl" id="bAtk" data-a="atk" style="width:calc(var(--u)*11.5);height:calc(var(--u)*11.5);right:calc(var(--u)*14.4 + var(--sr));bottom:calc(var(--u)*1.6 + var(--sb));font-size:calc(var(--u)*4.4)">⚔<i class="sw up">▲</i><i class="sw dn">▼</i><span class="emb">⚡ CƯỜNG KÍCH</span><span class="key">J</span></div>
  <div class="sb ctl" id="bJump" data-a="jump" style="width:calc(var(--u)*10.5);height:calc(var(--u)*10.5);right:calc(var(--u)*2 + var(--sr));bottom:calc(var(--u)*2.1 + var(--sb));font-size:calc(var(--u)*4)">⤒<span class="key">SPACE</span></div>
  <div class="sb ctl" id="bBlock" data-a="block" style="width:calc(var(--u)*8.4);height:calc(var(--u)*8.4);right:calc(var(--u)*16 + var(--sr));bottom:calc(var(--u)*15 + var(--sb));font-size:calc(var(--u)*3.2)">🛡<span class="key">K</span></div>
+ <div class="sb ctl" id="bDash" data-a="dash" style="width:calc(var(--u)*7.4);height:calc(var(--u)*7.4);right:calc(var(--u)*26.2 + var(--sr));bottom:calc(var(--u)*14.4 + var(--sb));font-size:calc(var(--u)*3)">💨<div class="cd"></div><span class="key">L</span></div>
  <div class="sb ctl" id="bR" data-a="r" style="width:calc(var(--u)*8.4);height:calc(var(--u)*8.4);right:calc(var(--u)*3.1 + var(--sr));bottom:calc(var(--u)*14.6 + var(--sb));font-size:calc(var(--u)*3.2)">👑<div class="cd"></div><span class="key">O</span></div>
  <div class="sb ctl" id="bTalk" data-a="talk" style="width:calc(var(--u)*8);height:calc(var(--u)*8);right:calc(var(--u)*27.6 + var(--sr));bottom:calc(var(--u)*3.2 + var(--sb));display:none;border-color:#ffd43b">💬<span class="key">F</span></div>
  <div class="sb ctl small" id="bHp" data-a="hp" style="width:calc(var(--u)*4.8);height:calc(var(--u)*4.8);left:calc(var(--u)*1.2 + var(--sl));top:calc(var(--u)*8.2)">🧪<div class="cd"></div><span class="cnt">0</span><span class="key">X</span></div>
@@ -1112,7 +1113,7 @@ function mobSwipe(p,d){delete pressed.atk;if(p.climb||p.dead)return;
  if(S.sk.slide)dtmSpecial(p,'run');else if((p._nsh||0)<frame){p._nsh=frame+90;pop(p.x-50,p.y-30,'Chưa học Đá Trượt (Lò Rèn › Chiêu thức)','#adb5bd')}}
 function climbHint(){const p=P;if(!p||p.dead)return 0;if(p.climb)return 3;const cx=Math.floor((p.x+p.w/2)/TS),mid=tileAt(cx,Math.floor((p.y+p.h/2)/TS)),ft=tileAt(cx,Math.floor((p.y+p.h-4)/TS)),by=Math.floor((p.y+p.h+2)/TS),bl=tileAt(cx,by);
  let f=0;if(isClimb(mid)||isClimb(ft))f|=3;if(p.onGround&&(bl==='H'||oneWayAt(cx,by)))f|=2;return f}
-function updatePlayer0(){const p=P,pr=pressed;delete pr.q;delete pr.e;delete pr.dash;delete pr.bomb;
+function updatePlayer0(){const p=P,pr=pressed;delete pr.q;delete pr.e;delete pr.bomb;
  if(keys.atkH){keys.atkHt=(keys.atkHt||0)+1;if(keys.atkHt>14&&keys.atkHt%8===0)pr.atk=1}else keys.atkHt=0;
  if(pr.swipe){const d=pr.swipe;delete pr.swipe;mobSwipe(p,d)}
  if(pr.atk&&EMP.ready&&!p.knock&&!p.climb&&!p.cast&&!p.whirl&&!(p.flame>0)&&!(p.dash>0)&&!p.block&&!p.grab&&!p.dead&&empCast(p))delete pr.atk;
@@ -2876,7 +2877,7 @@ const keyOf=id=>(S.keys[id]||BK[id][3]).slice(0,3);
 let CODE={};function rebuildKeys(){CODE={};for(const b of BINDS)for(const c of keyOf(b[0]))if(c&&!CODE[c])CODE[c]=b[0];updKeyLabels()}
 const KNAME=c=>{if(!c)return'';const m={Space:'Space',ArrowLeft:'←',ArrowRight:'→',ArrowUp:'↑',ArrowDown:'↓',ShiftLeft:'Shift',ShiftRight:'Shift P',ControlLeft:'Ctrl',ControlRight:'Ctrl P',AltLeft:'Alt',AltRight:'Alt P',Escape:'Esc',Enter:'Enter',Tab:'Tab',Backquote:'`',Minus:'-',Equal:'=',BracketLeft:'[',BracketRight:']',Backslash:'\\',Semicolon:';',Quote:"'",Comma:',',Period:'.',Slash:'/',CapsLock:'Caps'};
  if(m[c])return m[c];if(c.startsWith('Key'))return c.slice(3);if(c.startsWith('Digit'))return c.slice(5);if(c.startsWith('Numpad'))return'Num'+c.slice(6);return c}
-function updKeyLabels(){const map={bAuto:'auto',bAtk:'atk',bQ:'q',bE:'e',bR:'r',bDash:'dash',bHp:'hp',bMp:'mp',bBomb:'bomb',bBlock:'block',bTalk:'talk',bJump:'jh',bPause:'pause'};
+function updKeyLabels(){const map={bAuto:'auto',bAtk:'atk',bQ:'q',bE:'e',bR:'r',bHp:'hp',bMp:'mp',bBomb:'bomb',bBlock:'block',bTalk:'talk',bJump:'jh',bPause:'pause'};
  for(const id in map){const el=$(id);if(!el)continue;const k=el.querySelector('.key');if(k)k.textContent=KNAME(keyOf(map[id]).find(Boolean)).toUpperCase()}
  const hk=$('helpKeys');if(hk){const K=id=>keyOf(id).filter(Boolean).map(c=>'<kbd>'+KNAME(c)+'</kbd>').join('/')||'<i>chưa gán</i>';
   hk.innerHTML=isTouch?'':'<b>Bàn phím:</b> '+K('left')+' '+K('right')+' đi • '+K('up')+' / '+K('jh')+' nhảy, leo • '+K('down')+' leo xuống, rơi xuyên sàn • '+K('atk')+'/chuột trái: đánh (giữ '+K('down')+' + đánh: Hất Tung / Đập Đất) • '+K('block')+' chặn • '+K('r')+' tuyệt kỹ • '+K('hp')+' / '+K('mp')+' bình • '+K('talk')+' nói chuyện • '+K('pause')+' tạm dừng.<br>'}}
@@ -2963,7 +2964,7 @@ $('ctlSize').oninput=e=>{S.ctlMS=+e.target.value;applyLayout()};$('ctlAlpha').on
 $('edReset').onclick=()=>{S.ctlM={};S.ctlMS=100;S.ctlMA=90;$('ctlSize').value=100;$('ctlAlpha').value=90;applyLayout()};$('edDone').onclick=endEdit;
 function setCd(id,cur,max,txt){const el=$(id),cd=el.querySelector('.cd');const p=max>0?Math.round(cur/max*100):0;if(el._p!==p){el._p=p;cd.style.setProperty('--p',p);cd.textContent=cur>0&&txt?Math.ceil(cur/60):''}}
 function updateUI(){updAutoBtn();if(!P||state!=='play')return;
- setCd('bHp',P.potCd,60,0);setCd('bMp',P.potCd,60,0);
+ setCd('bDash',P.dashCd,HH().dashCd||90,1);setCd('bHp',P.potCd,60,0);setCd('bMp',P.potCd,60,0);
  if(P.cdR>0&&!P.ult)setCd('bR',P.cdR,P.cdRm||1,1);else{const rp=P.ult>0||S.hero==='mordred'?0:100-Math.round(P.mp/P.maxmp*100);setCd('bR',rp,100,0)}$('bR').classList.toggle('ready',(S.hero==='mordred'?P.hp>P.maxhp*.1+1:P.mp>=P.maxmp)&&!P.ult&&!(P.cdR>0));
  $('bHp').querySelector('.cnt').textContent=S.pot.hp;$('bMp').querySelector('.cnt').textContent=S.pot.mp;$('bHp').classList.toggle('off',!S.pot.hp);$('bMp').classList.toggle('off',!S.pot.mp);
  $('bTalk').style.display=(nearNpc||nearInt||editing)?'flex':'none';$('bAtk').classList.toggle('emp',!!EMP.ready);
