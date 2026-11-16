@@ -298,7 +298,7 @@ input[type=range].kfoc{scale:1.08;accent-color:#ffe066}
 <div id="ctrl">
  <div class="mpad ctl" id="mvPad" style="left:calc(var(--u)*1.4 + var(--sl));bottom:calc(var(--u)*7 + var(--sb))"><div class="mk l" id="mvL">◀</div><div class="mk r" id="mvR">▶</div></div>
  <div class="ctl" id="mvUD" style="left:calc(var(--u)*9.4 + var(--sl));bottom:calc(var(--u)*.8 + var(--sb));gap:calc(var(--u)*12.8)"><div class="mk2" id="mvU">▲</div><div class="mk2" id="mvD">▼</div></div>
- <div class="sb ctl" id="bAtk" data-a="atk" style="width:calc(var(--u)*11.5);height:calc(var(--u)*11.5);right:calc(var(--u)*14.4 + var(--sr));bottom:calc(var(--u)*1.6 + var(--sb));font-size:calc(var(--u)*4.4)">⚔<i class="sw up">▲</i><i class="sw dn">▼</i><span class="emb">⚡ CƯỜNG KÍCH</span><span class="key">J</span></div>
+ <div class="sb ctl" id="bAtk" data-a="atk" style="width:calc(var(--u)*11.5);height:calc(var(--u)*11.5);right:calc(var(--u)*14.4 + var(--sr));bottom:calc(var(--u)*1.6 + var(--sb));font-size:calc(var(--u)*4.4)">⚔<i class="sw up">▲</i><i class="sw dn">▼</i><span class="emb">⚡ KẾT LIỄU</span><span class="key">J</span></div>
  <div class="sb ctl" id="bJump" data-a="jump" style="width:calc(var(--u)*10.5);height:calc(var(--u)*10.5);right:calc(var(--u)*2 + var(--sr));bottom:calc(var(--u)*2.1 + var(--sb));font-size:calc(var(--u)*4)">⤒<span class="key">SPACE</span></div>
  <div class="sb ctl" id="bBlock" data-a="block" style="width:calc(var(--u)*8.4);height:calc(var(--u)*8.4);right:calc(var(--u)*16 + var(--sr));bottom:calc(var(--u)*15 + var(--sb));font-size:calc(var(--u)*3.2)">🛡<span class="key">K</span></div>
  <div class="sb ctl" id="bDash" data-a="dash" style="width:calc(var(--u)*7.4);height:calc(var(--u)*7.4);right:calc(var(--u)*26.2 + var(--sr));bottom:calc(var(--u)*14.4 + var(--sb));font-size:calc(var(--u)*3)">💨<div class="cd"></div><span class="key">L</span></div>
@@ -348,10 +348,10 @@ input[type=range].kfoc{scale:1.08;accent-color:#ffe066}
 <div class="ov" id="helpOv"><div class="panel"><i class="rv l"></i><i class="rv r"></i><h2>Hướng Dẫn</h2><div class="orn"></div><div class="help">
  <span id="helpKeys"></span>
  <b>Hòm đồ &amp; giải cứu:</b> đứng cạnh hòm hoặc người bị trói, <b>giữ F</b> (hoặc giữ nút 💬) 0,5 giây — thả tay hoặc bị đánh trúng là phải làm lại. Từ vùng IV có <b>hòm bẫy</b> (thỉnh thoảng rung lắc): quái vật chui ra, hạ nó để nhận thưởng gấp đôi. Hòm có thể ra bình máu, bình mana hoặc túi vàng.<br>
- <b>Combo &amp; Cường Kích:</b> đánh trúng liên tục để nối <b>combo</b> (bộ đếm bên phải). Cứ đủ <b>10 hit</b> (Aria: 8 hit), nút ⚔ sáng vàng <b>⚡ CƯỜNG KÍCH</b> — lần bấm Đánh tiếp theo tung kỹ năng của nhân vật miễn phí, mạnh hơn 50%: có địch sát bên thì dùng chiêu <b>diện rộng</b>, địch ở xa thì dùng chiêu <b>tầm xa</b>. Cường Kích được giữ tới khi bạn dùng.<br>
+ <b>Combo &amp; Kết Liễu:</b> đánh trúng liên tục để nối <b>combo</b> (bộ đếm bên phải). Cứ đủ <b>10 hit</b>, nút ⚔ sáng vàng <b>⚡ KẾT LIỄU</b> — nhát chém cuối của chuỗi thành đòn <b>Kết Liễu</b> (sát thương lớn, hất văng, màn hình lóe sáng).<br>
  <b>Nút Kỹ năng 🌀:</b> <b>chạm</b> = Skill 1, <b>vuốt lên</b> = Skill 2 (tốn mana, có hồi chiêu; vòng trên nút là hồi chiêu Skill 1, ô xanh nhỏ là Skill 2).<br>
  <b>Chiêu thức (vuốt trên nút ⚔):</b> <b>vuốt lên</b> khi đứng trên đất → <b>Hất Tung</b> (cận chiến: chém hất địch lên trời, mình bật theo để chém tiếp; Sylva/Ignis: bắn lên trời + sóng xung kích); <b>vuốt xuống</b> khi đang chạy/đứng → <b>Đá Trượt</b>; <b>vuốt xuống</b> khi đang trên không → <b>Đập Đất</b>. Hai chiêu sau cùng <b>Quyền Năng Ma Thuật</b> và <b>Bậc Thầy Combo</b> học ở <b>Lò Rèn › Chiêu thức</b>. Đòn mạnh hất văng kẻ địch va vào nhau hoặc đập vào tường.<br>
- <b>Phục kích &amp; bí mật:</b> giữa màn có đoạn bị rào lửa chặn hai đầu — hạ hết các đợt quái để thông đường. Đập <b>bình gốm, thùng gỗ</b> lấy vàng; <b>thùng TNT</b> đỏ nổ sau 0,5 giây (tránh xa!). Tường/sàn có <b>vết nứt lấp lánh</b> che phòng bí mật — tường thì chém thường, sàn thì cần đòn mạnh (nhát cuối, Hất Tung, Đập Đất, Cường Kích). Quái và thùng gỗ đôi khi rơi <b>vũ khí</b> — nhặt lên thì nút Đánh dùng vũ khí đó thay kiếm: <b>🪓 Rìu</b> bổ cực mạnh, phá khiên; <b>🔱 Giáo</b> đâm xa, xuyên hàng; <b>🏹 Nỏ</b> bắn tên xuyên. Thanh độ bền hiện ở góc trái, hết thì vũ khí gãy.<br>
+ <b>Phục kích &amp; bí mật:</b> giữa màn có đoạn bị rào lửa chặn hai đầu — hạ hết các đợt quái để thông đường. Đập <b>bình gốm, thùng gỗ</b> lấy vàng; <b>thùng TNT</b> đỏ nổ sau 0,5 giây (tránh xa!). Tường/sàn có <b>vết nứt lấp lánh</b> che phòng bí mật — tường thì chém thường, sàn thì cần đòn mạnh (nhát cuối, Kết Liễu, Hất Tung, Đập Đất). Quái và thùng gỗ đôi khi rơi <b>vũ khí</b> — nhặt lên thì nút Đánh dùng vũ khí đó thay kiếm: <b>🪓 Rìu</b> bổ cực mạnh, phá khiên; <b>🔱 Giáo</b> đâm xa, xuyên hàng; <b>🏹 Nỏ</b> bắn tên xuyên. Thanh độ bền hiện ở góc trái, hết thì vũ khí gãy.<br>
  <b>Kẻ địch đặc biệt:</b> <b>Lính Khiên</b> chặn đòn trước mặt — vòng ra sau hoặc dùng đòn mạnh phá thế; <b>Quỷ Túm</b> ôm chặt — bấm liên tục để thoát; <b>Yêu Tinh Cảm Tử</b> lao tới tự nổ — hạ sớm hoặc né; <b>Lính Quăng Lưới</b> làm bạn chậm lại.<br>
  <b>Sao &amp; thử thách:</b> mỗi màn có 3 sao: <b>Thời gian</b> (về đích kịp giờ) · <b>Khám phá</b> (đủ ma thạch + tìm phòng bí mật) · <b>Bền bỉ</b> (về đích còn ≥ 80% máu), đủ mốc sao nhận thưởng. Mỗi ngày có 1 thử thách ở menu chính.<br>
  <b>Nhiệm vụ:</b> nói chuyện với NPC có dấu <b>!</b> bằng phím <kbd>F</kbd> (hoặc nút 💬). Bảng nhiệm vụ nằm dưới ảnh đại diện — bấm để mở rộng (<kbd>T</kbd>). Nhận thưởng trong bảng hoặc ở Sổ Nhiệm Vụ ngoài menu.<br>
@@ -698,8 +698,8 @@ const SKINS={
 const UPS=[{k:'hp',name:'❤ Giáp Sinh Lực',desc:'+7 máu tối đa mỗi cấp.',max:30,price:l=>30+12*l},
  {k:'atk',name:'⚔ Rèn Vũ Khí',desc:'+1 sát thương mỗi cấp (đánh thường và kỹ năng).',max:30,price:l=>40+14*l},
  {k:'arm',name:'🛡 Gia Cố Giáp',desc:'Giảm 1,8% sát thương nhận vào mỗi cấp.',max:30,price:l=>35+13*l},
- {k:'q',sk:'q',desc:'Chiêu Q của Cường Kích: +4% sát thương mỗi cấp.',max:30,price:l=>45+15*l},
- {k:'e',sk:'e',desc:'Chiêu E của Cường Kích: +4% sát thương mỗi cấp.',max:30,price:l=>45+15*l},
+ {k:'q',sk:'q',desc:'Kỹ năng Q: +4% sát thương, hồi chiêu nhanh hơn 1% mỗi cấp.',max:30,price:l=>45+15*l},
+ {k:'e',sk:'e',desc:'Kỹ năng E: +4% sát thương, hồi chiêu nhanh hơn 1% mỗi cấp.',max:30,price:l=>45+15*l},
  {k:'r',sk:'r',desc:'Tuyệt kỹ R: +1% sát thương, kéo dài thêm 0,13 giây, hồi chiêu nhanh hơn 0,5% mỗi cấp.',max:30,price:l=>50+16*l},
  {k:'mag',name:'🧲 Túi Hút Vàng',desc:'Tăng bán kính tự nhặt vàng và vật phẩm.',max:10,price:l=>25+12*l}];
 const POTS=[{k:'hp',name:'🧪 Bình Máu',desc:'Hồi 50% máu tối đa. Nút 🧪 dưới ảnh đại diện. Mang tối đa 9.',price:40},{k:'mp',name:'💧 Bình Mana',desc:'Hồi 50 mana. Nút 💧 dưới ảnh đại diện. Mang tối đa 9.',price:40}];
@@ -1700,7 +1700,7 @@ const HEROES={
   psv:['Kiên Cường','Chặn đòn thành công hồi 3% HP. Khi HP dưới 30%, nhận ít hơn 25% sát thương.'],
   sk:{atk:'Liên hoàn kiếm',q:'Lốc Xoáy',e:'Kiếm Khí',r:'Cường Hóa',b:'Chặn khiên'},cost:{q:[25,480],e:[20,300]}},
  lady:{rcd:45,name:'Nữ hiệp sĩ Aria',short:'Aria',pre:'f',cls:'Hiệp sĩ',fem:1,spd:1.1,dashCd:60,desc:'Nữ hiệp sĩ tóc vàng của đội cận vệ hoàng gia — giáp nhẹ, nhanh nhẹn và kiên cường.',
-  psv:['Thân Pháp','Chạy nhanh hơn 10%. Chỉ cần 8 hit combo (thay vì 10) để có Cường Kích.'],
+  psv:['Thân Pháp','Chạy nhanh hơn 10%, thời gian hồi lướt giảm 33%.'],
   sk:{atk:'Liên hoàn kiếm',q:'Lốc Xoáy',e:'Kiếm Khí',r:'Cường Hóa',b:'Chặn khiên'},cost:{q:[25,480],e:[20,300]}},
  sylva:{rcd:42,name:'Cung thủ Sylva',short:'Sylva',spr:'sy',cls:'Cung thủ',fem:1,hp:.85,atk:.95,spd:1.08,ranged:1,price:800,quest:'r_sy',uc:'#b2f2bb',castA:'k_atk1',
   adur:[0,15,15,19],desc:'Em gái của thợ săn Lyra — tiễn thuật bách phát bách trúng của Hẻm Núi Đá Đỏ.',
@@ -1785,7 +1785,7 @@ if(!S.sk)S.sk={};if(S.sk.parry||S.sk.ward){S.sk.mag=1;delete S.sk.parry;delete S
 function rmNew(id){return{lv:id,coins:new Set(),chests:new Set(),qi:new Set(),locks:new Set(),brk:new Set(),hits:0,t:0,secret:0,pot:0}}
 const comboWin=()=>S.sk.combo?210:150;
 function comboHit(e,o){COMBO.n++;COMBO.t=comboWin();COMBO.pulse=10;
- if(COMBO.n%(S.hero==='lady'?8:10)===0&&!EMP.ready){EMP.ready=1;if(P){pop(P.x-70,P.y-34,'⚡ CƯỜNG KÍCH SẴN SÀNG!','#ffe066',1);seq([660,880,1320],60,.1,'triangle',.06)}}
+ if(COMBO.n%10===0&&!COMBO.fin){COMBO.fin=1;if(P){pop(P.x-60,P.y-34,'⚡ KẾT LIỄU SẴN SÀNG!','#ffe066',1);seq([660,880,1320],60,.1,'triangle',.06)}}
  dailyProg('combo',COMBO.n);
  if(!AUTO&&frame-hitStopL>5){hitStop=Math.max(hitStop,o.fin?9:o.big?4:2);hitStopL=frame}}
 function comboEnd(){const n=COMBO.n;if(n>=10&&P&&!P.dead){const g=Math.floor(n/2);S.bank+=g;lvlGold+=g;pop(P.x-50,P.y-30,'COMBO '+n+' · +'+g+' vàng','#ffd43b',1);SFX.gold()}COMBO.n=0;COMBO.t=0;COMBO.fin=0}
@@ -1796,7 +1796,7 @@ function dtmGuard(e,o){if(!e.def.shield||!P||e.dead)return false;if(e.gbT>0||e.s
  if(o.big||o.launch||o.stun){e.gbT=130;pop(e.x-14,e.y-22,'VỠ THẾ!','#ffa94d',1);SFX.metal();burst(e.x+e.w/2+e.face*14,e.y+e.h/2,'#ced4da',10,4,3);return false}
  if((e._gb||0)<frame){e._gb=frame+10;pop(e.x+e.w/2-16,e.y-8,'CHẶN','#adb5bd');SFX.metal();spark(e.x+e.w/2+e.face*14,e.y+e.h/2,'#ced4da');e.vx=-e.face*1.2}return true}
 function dtmPre(e,amt,o){amt*=comboMul();
- if(o.finOK&&COMBO.fin&&!o.chain&&0){COMBO.fin=0;o.fin=1;o.big=1;o.crit=1;o.kb=Math.max(o.kb||0,11);amt*=1.8;shake=Math.max(shake,10);scrFlash=7;FXS.push({k:'x',x:e.x+e.w/2,y:e.y+e.h/2,life:26});pop(e.x-30,e.y-34,'KẾT LIỄU!','#ff922b',1);burst(e.x+e.w/2,e.y+e.h/2,'#ffd43b',18,6,4);SFX.boom()}
+ if(o.finOK&&COMBO.fin&&!o.chain){COMBO.fin=0;o.fin=1;o.big=1;o.crit=1;o.kb=Math.max(o.kb||0,11);amt*=1.8;shake=Math.max(shake,10);scrFlash=7;FXS.push({k:'x',x:e.x+e.w/2,y:e.y+e.h/2,life:26});pop(e.x-30,e.y-34,'KẾT LIỄU!','#ff922b',1);burst(e.x+e.w/2,e.y+e.h/2,'#ffd43b',18,6,4);SFX.boom()}
  return amt}
 function dtmPost(e,o){if(o.slow){e.slowT=Math.max(e.slowT||0,o.slow)}if(!o.chain&&!o.blast)comboHit(e,o);
  const heavy=e.boss||e.elite||e.def.k==='heavy',fl=e.def.k==='flyer',dir=e.x+e.w/2>P.x+P.w/2?1:-1;
@@ -2042,7 +2042,7 @@ function hudBelowQ(){const q=$('qpanel'),c=$('c');if(!q||q.style.display==='none
 function dtmHUD(){magHUD();if(COMBO.pulse>0)COMBO.pulse--;const F='"Segoe UI",sans-serif';
  if(COMBO.n>=2&&(state==='play'||state==='pause')){const s=1+COMBO.pulse*.035,col=COMBO.n>=30?'#ff6b6b':COMBO.n>=10?'#ffa94d':'#ffe066';ctx.save();ctx.globalAlpha=Math.min(1,COMBO.t/30);ctx.translate(VW-96,196);ctx.scale(s,s);
   txt(''+COMBO.n,0,0,col,'center','bold 46px '+F);txt('HIT'+(COMBO.n>=10?'!':''),0,20,'#fff','center','bold 16px '+F);ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(-40,28,80,5);ctx.fillStyle=col;ctx.fillRect(-40,28,80*COMBO.t/comboWin(),5);
-  if(EMP.ready&&frame%30<21)txt('⚡ CƯỜNG KÍCH!',0,52,'#ffd43b','center','bold 15px '+F);ctx.restore()}
+  if(COMBO.fin&&frame%30<21)txt('⚡ KẾT LIỄU!',0,52,'#ffd43b','center','bold 15px '+F);ctx.restore()}
  const L=LOCKS.find(l=>l.st===1);if(L)txt('⚔ PHỤC KÍCH · Đợt '+L.wave+' / '+L.waves,VW/2+60,58,'#ffa94d','center','bold 16px '+F);
  if(P&&P.wp){const w=WPN[P.wp.k],x=14,y=hudBelowQ();ctx.fillStyle='rgba(15,10,6,.78)';ctx.fillRect(x,y,170,40);ctx.strokeStyle=w.c;ctx.lineWidth=2;ctx.strokeRect(x,y,170,40);ctx.save();ctx.translate(x+(P.wp.k==='spear'?10:P.wp.k==='axe'?8:12),y+20);ctx.scale(.42,.42);wpShape(P.wp.k);ctx.restore();txt(w.n,x+52,y+16,w.c,'left','bold 13px "Segoe UI",sans-serif');ctx.fillStyle='#333';ctx.fillRect(x+52,y+24,108,8);ctx.fillStyle=w.c;ctx.fillRect(x+52,y+24,108*P.wp.n/w.u,8);txt(P.wp.n+'/'+w.u,x+164,y+33,'#fff','right','bold 10px "Segoe UI",sans-serif')}
  if(P&&P.slow>0)txt('🕸 Dính lưới',20,hudBelowQ()+(P.wp?58:14),'#dee2e6','left','bold 13px '+F);
@@ -2828,7 +2828,7 @@ function renderShop(){const box=$('shopList');box.innerHTML='';box.className='sh
   UPS.forEach(u=>{const lv=U[u.k]||0,lim=Math.min(u.max,cap),maxed=lv>=u.max,locked=!maxed&&lv>=lim,pr=u.price(lv);const title=u.sk?u.sk.toUpperCase()+' · '+H.sk[u.sk]:strip(u.name);
    add({icon:UPICON[u.k],title,desc:u.desc,meta:'<span class="upbar"><b style="width:'+Math.round(lv/u.max*100)+'%"></b><i style="left:'+Math.round(lim/u.max*100)+'%"></i></span><span class="uplv">Cấp '+lv+'/'+u.max+'</span>',price:pr,can:!maxed&&!locked&&S.bank>=pr,fn:()=>{S.bank-=pr;U[u.k]=lv+1;if(P){P.maxhp=stats().maxhp}},label:maxed?'Tối đa':locked?'🔒 Giới hạn':null,cls:maxed||locked?'gray':'green'})})}
  else if(shopTab==='con'){add({icon:'🎟',title:'Vé Tự Động Đánh',desc:'Bật tự động đánh 10 phút ở chế độ Chiến Đấu Vô Tận. Vé cộng dồn, thời gian chưa dùng được giữ lại. Mỗi ngày mua tối đa '+AUTO_DAY+' vé.',meta:'Đang có: <b style="font-size:1em">'+(S.autoTk||0)+'</b> vé'+(S.autoT>0?' + '+fmtT(S.autoT/60):'')+' · hôm nay còn '+autoBuyLeft()+'/'+AUTO_DAY,price:AUTO_PRICE,can:S.bank>=AUTO_PRICE&&autoBuyLeft()>0,label:autoBuyLeft()>0?null:'Hết lượt hôm nay',cls:autoBuyLeft()>0?'green':'gray',fn:()=>{if(autoBuy())S.autoTk=(S.autoTk||0)+1}});POTS.forEach(c=>{const n=S.pot[c.k]||0;add({icon:POTICON[c.k],title:strip(c.name),desc:c.desc,meta:'Đang có: <b style="font-size:1em">'+n+'</b>/9',price:c.price,can:S.bank>=c.price&&n<9,fn:()=>{S.bank-=c.price;S.pot[c.k]=n+1}})})}
- else if(shopTab==='sk'){box.insertAdjacentHTML('beforeend','<div class="upnote">Chiêu thức dùng chung cho mọi nhân vật, ra chiêu bằng cách <b>vuốt trên nút ⚔ Đánh</b>: vuốt lên khi đứng trên đất → <b>Hất Tung</b> (miễn phí — cận chiến: chém hất địch lên trời, mình bật theo; Sylva/Ignis: bắn lên trời + sóng xung kích); vuốt xuống trên đất → <b>Đá Trượt</b>; vuốt xuống trên không → <b>Đập Đất</b>. Mỗi 10 hit combo nhận <b>⚡ Cường Kích</b>: lần đánh kế tiếp tung kỹ năng tầm xa hoặc diện rộng của nhân vật.</div>');
+ else if(shopTab==='sk'){box.insertAdjacentHTML('beforeend','<div class="upnote">Chiêu thức dùng chung cho mọi nhân vật, ra chiêu bằng cách <b>vuốt trên nút ⚔ Đánh</b>: vuốt lên khi đứng trên đất → <b>Hất Tung</b> (miễn phí — cận chiến: chém hất địch lên trời, mình bật theo; Sylva/Ignis: bắn lên trời + sóng xung kích); vuốt xuống trên đất → <b>Đá Trượt</b>; vuốt xuống trên không → <b>Đập Đất</b>. Đủ 10 hit combo thì nhát chém cuối thành <b>Kết Liễu</b> (màn hình lóe sáng, chữ X đỏ).</div>');
   SKILLS.forEach(k=>{const own=S.sk[k.k];add({icon:k.ic,title:k.n,desc:k.d+'<br><span style="color:#ffe066">▶ '+k.how+'</span>',price:k.p,can:!own&&S.bank>=k.p,fn:()=>{S.bank-=k.p;S.sk[k.k]=1;setTimeout(()=>skillHow(k),60)},label:own?'✔ Đã học':null,cls:own?'gray':'green'})})}
  else if(shopTab==='hero'){box.className='hgrid';renderHeroes(box)}
  else{const h=S.hero,H=HH(),list=OSKINS[h]||[];const cur=(S.oskin||{})[h]||'';
@@ -2906,7 +2906,7 @@ function renderHeroes(box){box=box||$('shopList');box.innerHTML='';clearInterval
  for(const k of HORDER){const H=HEROES[k],own=!H.price||S.heroOwn[k],unl=own||S.heroUnl[k],q=H.quest&&QM[H.quest];const d=document.createElement('div');d.className='hcard'+(S.hero===k?' on':'')+(unl?'':' lock');
   const c=document.createElement('canvas');c.width=180;c.height=160;d.appendChild(c);cvs.push([c,k,unl]);
   d.insertAdjacentHTML('beforeend','<div class="hn">'+(unl?H.name:'??? · '+H.cls)+'</div><div class="hd">'+(unl?H.desc:'🔒 Hoàn thành nhiệm vụ “'+q.title+'” ('+WORLDS[LEVELS[q.lv].w].name+') để chiêu mộ.')+'</div>'+
-   (own?'<div class="hp" style="color:#ffd43b">Cấp '+HL(k).lv+' · ⚔ Chiến lực '+fmtN(power(k))+'</div>':'')+(unl?'<div class="hp">✦ Nội tại · <b>'+H.psv[0]+'</b>: '+H.psv[1]+'</div><div class="hs">⚔ '+H.sk.atk+' · ⚡ Cường Kích: '+H.sk.q+' / '+H.sk.e+' · 👑 '+H.sk.r+' · 🛡 '+H.sk.b+'</div>':''));
+   (own?'<div class="hp" style="color:#ffd43b">Cấp '+HL(k).lv+' · ⚔ Chiến lực '+fmtN(power(k))+'</div>':'')+(unl?'<div class="hp">✦ Nội tại · <b>'+H.psv[0]+'</b>: '+H.psv[1]+'</div><div class="hs">⚔ '+H.sk.atk+' · 🌀 '+H.sk.q+' · ↑ '+H.sk.e+' · 👑 '+H.sk.r+' · 🛡 '+H.sk.b+'</div>':''));
   const b=document.createElement('button');
   if(own){b.className='btn sm '+(S.hero===k?'gray':'main');b.textContent=S.hero===k?'✔ Đang dùng':'Chọn';b.disabled=S.hero===k;b.onclick=()=>{S.hero=k;save();SFX.buy();for(const x in PORT)delete PORT[x];renderHeroes(box);updMenu()}}
   else if(unl){b.className='btn sm green';b.innerHTML='<span class="price"><i class="coin"></i>'+H.price+'</span>';b.disabled=S.bank<H.price;b.onclick=()=>{if(S.bank<H.price)return;S.bank-=H.price;S.heroOwn[k]=1;S.hero=k;save();SFX.buy();updBank();for(const x in PORT)delete PORT[x];toast('⚔ '+H.name+' đã gia nhập đội!','main');renderHeroes(box)}}
@@ -2988,7 +2988,7 @@ function updateUI(){updAutoBtn();if(!P||state!=='play')return;
  setCd('bDash',P.dashCd,HH().dashCd||90,1);setCd('bSk',P.cdQ,P.cdQm||HH().cost.q[1],1);{const k2=$('bSk2'),c2=P.cdE>0;k2.textContent=c2?Math.ceil(P.cdE/60):'2';k2.classList.toggle('cdw',c2)}setCd('bHp',P.potCd,60,0);setCd('bMp',P.potCd,60,0);
  if(P.cdR>0&&!P.ult)setCd('bR',P.cdR,P.cdRm||1,1);else{const rp=P.ult>0||S.hero==='mordred'?0:100-Math.round(P.mp/P.maxmp*100);setCd('bR',rp,100,0)}$('bR').classList.toggle('ready',(S.hero==='mordred'?P.hp>P.maxhp*.1+1:P.mp>=P.maxmp)&&!P.ult&&!(P.cdR>0));
  $('bHp').querySelector('.cnt').textContent=S.pot.hp;$('bMp').querySelector('.cnt').textContent=S.pot.mp;$('bHp').classList.toggle('off',!S.pot.hp);$('bMp').classList.toggle('off',!S.pot.mp);
- $('bTalk').style.display=(nearNpc||nearInt||editing)?'flex':'none';$('bAtk').classList.toggle('emp',!!EMP.ready);
+ $('bTalk').style.display=(nearNpc||nearInt||editing)?'flex':'none';$('bAtk').classList.toggle('emp',!!COMBO.fin);
  const ch=3;/* nút ▲▼ luôn hiện để leo thang/dây */if(ch!==updateUI.ch){updateUI.ch=ch;$('mvU').style.display=ch&1?'flex':'none';$('mvD').style.display=ch&2?'flex':'none';if(!(ch&1)){keys.up=0;$('mvU').classList.remove('on')}if(!(ch&2)&&!P.climb){keys.down=0;$('mvD').classList.remove('on')}}}
 function resize(){const st=$('stage'),ww=innerWidth,hh=innerHeight;if(!ww||!hh)return;const asp=Math.max(4/3,Math.min(2.4,ww/hh)),w=Math.min(ww,hh*asp),h=w/asp;
  st.style.width=w+'px';st.style.height=h+'px';const nv=Math.round(VH*asp);if(nv!==VW){VW=nv;cv.width=VW;cv.height=VH;try{render()}catch(_){}}
