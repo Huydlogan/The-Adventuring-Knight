@@ -160,3 +160,9 @@ Sprite và tileset từ các gói pixel art miễn phí: Gothicvania / Legacy Co
 ## 🛠️ Công nghệ
 
 HTML5 Canvas + JavaScript thuần, không dùng thư viện hay framework. Khung hình 960×540, tự co giãn theo màn hình.
+
+## 📱 Bản điện thoại
+
+- Link bản điện thoại: `https://huydlogan.github.io/The-Adventuring-Knight/mobile.html` (cùng tài khoản, cùng dữ liệu với bản máy tính).
+- Mở link bản máy tính trên điện thoại sẽ có bảng gợi ý chuyển sang bản điện thoại.
+- Bản điện thoại có đủ: đăng nhập, cấp độ & chiến lực, Xếp hạng PvP / Leo Tháp / Đấu trực tiếp (nút 🏆 góc trên phải menu), nút ▲▼ để leo thang/dây.

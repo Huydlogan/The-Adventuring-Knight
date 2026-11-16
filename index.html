@@ -275,7 +275,7 @@ input[type=range].kfoc{scale:1.08;accent-color:#ffe066}
  <div class="sb ctl small" id="bDash" data-a="dash" style="width:calc(var(--u)*5.6);height:calc(var(--u)*5.6);right:calc(var(--u)*25.5);bottom:calc(var(--u)*2.5)">💨<div class="cd"></div><span class="key">SHIFT</span></div>
  <div class="sb ctl small" id="bHp" data-a="hp" style="width:calc(var(--u)*5);height:calc(var(--u)*5);right:calc(var(--u)*32.5);bottom:calc(var(--u)*2.5)">🧪<div class="cd"></div><span class="cnt">0</span><span class="key">X</span></div>
  <div class="sb ctl small" id="bMp" data-a="mp" style="width:calc(var(--u)*5);height:calc(var(--u)*5);right:calc(var(--u)*38.5);bottom:calc(var(--u)*2.5)">💧<div class="cd"></div><span class="cnt">0</span><span class="key">C</span></div>
- <div class="sb ctl small" id="bBomb" data-a="bomb" style="width:calc(var(--u)*5);height:calc(var(--u)*5);right:calc(var(--u)*32.5);bottom:calc(var(--u)*9)">💣<div class="cd"></div><span class="cnt">0</span><span class="key">B</span></div>
+ 
  <div class="sb ctl" id="bTalk" data-a="talk" style="width:calc(var(--u)*7);height:calc(var(--u)*7);right:calc(var(--u)*25);bottom:calc(var(--u)*17);display:none;border-color:#ffd43b">💬<span class="key">F</span></div>
  <div class="sb" id="bAuto" data-a="auto" style="left:calc(var(--u)*32.6);top:calc(var(--u)*1.2);width:calc(var(--u)*13);height:calc(var(--u)*3.6);border-radius:calc(var(--u)*.9);font-size:calc(var(--u)*1.2);font-weight:800;gap:calc(var(--u)*.4);display:none">🤖 <span id="autoLbl">TỰ ĐỘNG</span><span class="key">V</span></div>
  <div class="sb small" id="bPause" data-a="pause" style="width:calc(var(--u)*4.4);height:calc(var(--u)*4.4);right:calc(var(--u)*1.5);top:calc(var(--u)*6);border-radius:22%">II<span class="key">ESC</span></div>
@@ -315,9 +315,9 @@ input[type=range].kfoc{scale:1.08;accent-color:#ffe066}
  <div class="shop" id="shopList"></div></div></div>
 <div class="ov" id="helpOv"><div class="panel"><i class="rv l"></i><i class="rv r"></i><h2>Hướng Dẫn</h2><div class="orn"></div><div class="help">
  <span id="helpKeys"></span>
- <b>Hòm đồ &amp; giải cứu:</b> đứng cạnh hòm hoặc người bị trói, <b>giữ F</b> (hoặc giữ nút 💬) 0,5 giây — thả tay hoặc bị đánh trúng là phải làm lại. Từ vùng IV có <b>hòm bẫy</b> (thỉnh thoảng rung lắc): quái vật chui ra, hạ nó để nhận thưởng gấp đôi. Hòm có thể ra bình máu, bình mana, túi vàng hoặc 3 quả thuốc nổ. Thuốc nổ gây sát thương diện rộng, cẩn thận đứng gần sẽ bị vạ lây!<br>
+ <b>Hòm đồ &amp; giải cứu:</b> đứng cạnh hòm hoặc người bị trói, <b>giữ F</b> (hoặc giữ nút 💬) 0,5 giây — thả tay hoặc bị đánh trúng là phải làm lại. Từ vùng IV có <b>hòm bẫy</b> (thỉnh thoảng rung lắc): quái vật chui ra, hạ nó để nhận thưởng gấp đôi. Hòm có thể ra bình máu, bình mana hoặc túi vàng.<br>
  <b>Combo &amp; chiêu thức:</b> đánh trúng liên tục để nối <b>combo</b> (bộ đếm bên phải); cứ đủ 10 hit, nhát chém cuối của chuỗi thành đòn <b>Kết Liễu</b>. Nút <b>🥋 Chiêu</b> (phím <kbd>G</kbd>): đứng yên → <b>Hất Tung</b> (cận chiến: chém hất địch lên trời, mình bật theo để chém tiếp; Sylva/Ignis: bắn tên/cầu lửa lên trời, sóng xung kích đẩy văng địch hai bên); đang chạy → <b>Đá Trượt</b>; đang trên không → <b>Đập Đất</b> (cận chiến lao chéo xuống; Sylva/Ignis bắn chéo xuống). Hai chiêu sau cùng <b>Quyền Năng Ma Thuật</b> học ở <b>Lò Rèn › Chiêu thức</b>. Đòn mạnh hất văng kẻ địch va vào nhau hoặc đập vào tường.<br>
- <b>Phục kích &amp; bí mật:</b> giữa màn có đoạn bị rào lửa chặn hai đầu — hạ hết các đợt quái để thông đường. Đập <b>bình gốm, thùng gỗ</b> lấy vàng; <b>thùng TNT</b> đỏ nổ sau 0,5 giây (tránh xa!). Tường/sàn có <b>vết nứt lấp lánh</b> che phòng bí mật — tường thì chém thường, sàn thì cần đòn mạnh (nhát cuối, Hất Tung, Đập Đất) hoặc thuốc nổ. Quái và thùng gỗ đôi khi rơi <b>vũ khí</b> — nhặt lên thì nút Đánh dùng vũ khí đó thay kiếm: <b>🪓 Rìu</b> bổ cực mạnh, phá khiên; <b>🔱 Giáo</b> đâm xa, xuyên hàng; <b>🏹 Nỏ</b> bắn tên xuyên. Thanh độ bền hiện ở góc trái, hết thì vũ khí gãy.<br>
+ <b>Phục kích &amp; bí mật:</b> giữa màn có đoạn bị rào lửa chặn hai đầu — hạ hết các đợt quái để thông đường. Đập <b>bình gốm, thùng gỗ</b> lấy vàng; <b>thùng TNT</b> đỏ nổ sau 0,5 giây (tránh xa!). Tường/sàn có <b>vết nứt lấp lánh</b> che phòng bí mật — tường thì chém thường, sàn thì cần đòn mạnh (nhát cuối, Hất Tung, Đập Đất). Quái và thùng gỗ đôi khi rơi <b>vũ khí</b> — nhặt lên thì nút Đánh dùng vũ khí đó thay kiếm: <b>🪓 Rìu</b> bổ cực mạnh, phá khiên; <b>🔱 Giáo</b> đâm xa, xuyên hàng; <b>🏹 Nỏ</b> bắn tên xuyên. Thanh độ bền hiện ở góc trái, hết thì vũ khí gãy.<br>
  <b>Kẻ địch đặc biệt:</b> <b>Lính Khiên</b> chặn đòn trước mặt — vòng ra sau hoặc dùng đòn mạnh phá thế; <b>Quỷ Túm</b> ôm chặt — bấm liên tục để thoát; <b>Yêu Tinh Cảm Tử</b> lao tới tự nổ — hạ sớm hoặc né; <b>Lính Quăng Lưới</b> làm bạn chậm lại.<br>
  <b>Sao &amp; thử thách:</b> mỗi màn có 3 sao: <b>Thời gian</b> (về đích kịp giờ) · <b>Khám phá</b> (đủ ma thạch + tìm phòng bí mật) · <b>Bền bỉ</b> (về đích còn ≥ 80% máu), đủ mốc sao nhận thưởng. Mỗi ngày có 1 thử thách ở menu chính.<br>
  <b>Nhiệm vụ:</b> nói chuyện với NPC có dấu <b>!</b> bằng phím <kbd>F</kbd> (hoặc nút 💬). Bảng nhiệm vụ nằm dưới ảnh đại diện — bấm để mở rộng (<kbd>T</kbd>). Nhận thưởng trong bảng hoặc ở Sổ Nhiệm Vụ ngoài menu.<br>
@@ -372,6 +372,25 @@ input[type=range].kfoc{scale:1.08;accent-color:#ffe066}
  <div class="tabs"><button class="tab" data-rk="pvp" onclick="rkTab='pvp';rkRender()">⚔ PvP</button><button class="tab" data-rk="tower" onclick="rkTab='tower';rkRender()">🗼 Leo Tháp</button><button class="tab" data-rk="live" onclick="rkTab='live';rkRender()">⚡ Trực tiếp</button><button class="tab" data-rk="board" onclick="rkTab='board';rkRender()">🏆 Bảng Xếp Hạng</button></div>
  <div class="rk-top" id="rkTop"></div><div class="rk-body" id="rkBody"></div></div></div>
 
+
+<!-- ================= GỢI Ý CHUYỂN SANG BẢN ĐIỆN THOẠI ================= -->
+<div id="mobAsk" style="position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;background:rgba(5,3,2,.9);font-family:'Alegreya','Times New Roman',serif">
+ <div style="width:min(92vw,460px);background:linear-gradient(180deg,#2e241a,#18120d);border:3px solid #a07a2c;border-radius:10px;padding:20px 22px;text-align:center;color:#f1e2bc;box-shadow:0 10px 40px #000">
+  <div style="font-size:40px;line-height:1">📱</div>
+  <div style="font-size:18px;line-height:1.5;margin:10px 0 16px">Bạn đang chơi ở phiên bản cho máy tính, bạn có muốn đổi sang phiên bản tối ưu nhất cho điện thoại không?</div>
+  <a id="mobGo" href="mobile.html" style="display:block;padding:12px;margin:8px 0;border-radius:8px;border:2px solid #ffd43b;background:linear-gradient(180deg,#a8322a,#521010);color:#fff1c8;font-weight:700;font-size:17px;text-decoration:none">📱 Chuyển sang bản điện thoại</a>
+  <button id="mobNo" style="display:block;width:100%;padding:11px;margin:8px 0 0;border-radius:8px;border:2px solid #a07a2c;background:linear-gradient(180deg,#5a4630,#2a1f15);color:#f1e2bc;font-size:16px;font-family:inherit;cursor:pointer">Hủy — tiếp tục dùng bản máy tính</button>
+ </div>
+</div>
+<script>
+(function(){ // điện thoại (màn hình cảm ứng, cạnh ngắn nhỏ) mở nhầm link bản máy tính
+ try{const coarse=matchMedia('(pointer:coarse)').matches&&!matchMedia('(any-pointer:fine)').matches,small=Math.min(screen.width,screen.height)<=820;
+  if(!(coarse&&small)||sessionStorage.getItem('knight_pc_ok'))return;
+  const ov=document.getElementById('mobAsk');ov.style.display='flex';
+  document.getElementById('mobGo').href='mobile.html'+location.hash;
+  document.getElementById('mobNo').onclick=()=>{try{sessionStorage.setItem('knight_pc_ok','1')}catch(e){}ov.style.display='none'};
+  ov.addEventListener('keydown',e=>e.stopPropagation())}catch(e){}})();
+</script>
 <!-- ================= TÀI KHOẢN (Firebase) ================= -->
 <style>
 #authOv{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,rgba(30,22,14,.88),rgba(5,3,2,.97));font-family:"Alegreya","Times New Roman",serif;color:#f1e2bc}
@@ -400,6 +419,7 @@ input[type=range].kfoc{scale:1.08;accent-color:#ffe066}
 #authOv .abox{position:relative}#authOv .x{position:absolute;top:8px;right:10px;z-index:5;width:36px;height:36px;background:rgba(0,0,0,.35);border:2px solid #a07a2c;border-radius:50%;color:#ffe7a0;font-size:22px;cursor:pointer;line-height:1;padding:0}#authOv .x:hover{border-color:#ffd43b;filter:brightness(1.3)}
 #authOv .spin{width:34px;height:34px;margin:14px auto;border:4px solid #5a4630;border-top-color:#ffd43b;border-radius:50%;animation:aspin 1s linear infinite}
 @keyframes aspin{to{transform:rotate(360deg)}}
+@media (max-height:520px){#authOv .abox{padding:10px 18px}#authOv h2{font-size:22px}#authOv .sub{margin-bottom:6px;font-size:12px}#authOv input{padding:6px 10px;font-size:14px;margin:3px 0}#authOv .ab{padding:7px;font-size:14px;margin:4px 0}#authOv .sep{margin:5px 0}#authOv .warn{font-size:11px;margin:3px 0}#authOv .info{font-size:12px;padding:5px 10px}}
 </style>
 <div id="authOv">
  <div class="abox">
@@ -1264,7 +1284,7 @@ function updateEProj(){for(const p of eproj){p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.lif
 function updateBoxes(){for(const c of boxes){c.vy=Math.min(c.vy+.6,12);moveY(c);if(c.y>ROWS*TS+40||tileAt(Math.floor((c.x+c.w/2)/TS),Math.floor((c.y+c.h-2)/TS))==='L'){c.x=c.hx;c.y=c.hy-200;c.vy=0;burst(c.x+17,c.hy,'#fff',6)}}}
 const LOOT_NAME={pot_hp:'+1 Bình máu',pot_mp:'+1 Bình mana',bag:'Túi vàng!',bomb:'+3 Thuốc nổ'};
 function openChest(c){c.open=true;if(runMem)runMem.chests.add(chests.indexOf(c));SFX.open();setTimeout(()=>SFX.gem(),120);burst(c.x+20,c.y+8,'#ffe08a',14,3,3);
- const r=rnd(),t=c.sec?'bag':r<.25?'pot_hp':r<.45?'pot_mp':r<.72?'bag':'bomb';if(c.sec){drops.push({t:'pot_hp',x:c.x+4,y:c.y-6,w:18,h:20,vx:-1.5,vy:-7,life:1500,delay:40},{t:'bomb',x:c.x+20,y:c.y-6,w:18,h:20,vx:1.5,vy:-7,life:1500,delay:40});for(let i=0;i<10;i++)drops.push({t:'gold',x:c.x+20,y:c.y,w:14,h:14,vx:(rnd()-.5)*6,vy:-4-rnd()*4,life:1500,v:1})}
+ const r=rnd(),t=c.sec?'bag':r<.25?'pot_hp':r<.45?'pot_mp':'bag';if(c.sec){drops.push({t:'pot_hp',x:c.x+4,y:c.y-6,w:18,h:20,vx:-1.5,vy:-7,life:1500,delay:40},{t:'pot_mp',x:c.x+20,y:c.y-6,w:18,h:20,vx:1.5,vy:-7,life:1500,delay:40});for(let i=0;i<10;i++)drops.push({t:'gold',x:c.x+20,y:c.y,w:14,h:14,vx:(rnd()-.5)*6,vy:-4-rnd()*4,life:1500,v:1})}
  drops.push({t,x:c.x+12,y:c.y-6,w:18,h:20,vx:(rnd()-.5)*2,vy:-7,life:1500,delay:40});
  if(rnd()<.6)for(let i=0;i<4;i++)drops.push({t:'gold',x:c.x+20,y:c.y,w:14,h:14,vx:(rnd()-.5)*6,vy:-4-rnd()*3,life:1200,v:1})}
 function collect(){for(const c of chests)if(c.mimicE&&c.mimicE.dead&&!c.open)mimicReward(c);
@@ -2544,8 +2564,8 @@ const QUESTS=[
   say:{offer:'Hai thợ săn bị lạc và bị yêu ma vây quanh. Xin hãy cứu họ!',prog:'Họ vẫn ở sâu trong rừng.',done:'Họ đã về an toàn rồi. Cảm ơn ngươi.'}},
  {id:'s9',lv:12,giver:'gorm',t:'race',dist:40,time:32,title:'Chạy trốn dung nham',desc:'Chạy tới lá cờ trong 32 giây trước khi dung nham dâng lên.',gold:140,
   say:{offer:'Dung nham sắp dâng lên! Thử xem ngươi có chạy tới lá cờ kia trong 32 giây không.',prog:'Thử lại chứ?',done:'Đôi chân ngươi nhanh thật đấy!'}},
- {id:'s10',lv:13,giver:'gorm',t:'craft',need:{vay:5},drop:['worm'],dropItem:'vay',chance:.45,title:'Thuốc nổ đặc chế',desc:'Mang 5 Vảy sâu lửa cho Gorm để chế thuốc nổ.',gold:150,bombs:5,
-  say:{offer:'Vảy sâu lửa cháy cực mạnh. Mang 5 cái tới, ta chế thuốc nổ cho ngươi.',prog:'Cần thêm vảy sâu lửa.',done:'Cầm lấy 5 quả thuốc nổ đặc chế này!'}}];
+ {id:'s10',lv:13,giver:'gorm',t:'craft',need:{vay:5},drop:['worm'],dropItem:'vay',chance:.45,title:'Thuốc nổ đặc chế',desc:'Mang 5 Vảy sâu lửa cho Gorm để chế thuốc nổ.',gold:300,
+  say:{offer:'Vảy sâu lửa cháy cực mạnh. Mang 5 cái tới, ta chế thuốc nổ cho ngươi.',prog:'Cần thêm vảy sâu lửa.',done:'Thuốc nổ bán được giá lắm — phần vàng này của ngươi!'}}];
 QUESTS.push(
  {id:'me0',main:1,lv:1,gate:1,t:'kill',targets:['mage_elite'],n:1,title:'Phù Thủy Băng Cướp',desc:'Hạ gục Phù Thủy Băng Cướp đang trấn giữ cuối đường làng.',gold:120,say:{offer:'',prog:'',done:''}},
  {id:'me1',main:1,lv:4,gate:4,t:'kill',targets:['lizard_king'],n:1,title:'Vua Thằn Lằn',desc:'Hạ gục Vua Thằn Lằn khổng lồ trong hang đá.',gold:150,say:{offer:'',prog:'',done:''}},
@@ -2602,7 +2622,7 @@ function qProgText(q){if(qst(q.id)>=2)return'Hoàn thành';if(q.t==='craft')retu
  if(q.t==='dodge'||q.t==='race')return'Gặp '+SPK[q.giver].n+' để bắt đầu';return qprog(q)+'/'+qtotal(q)}
 function qActivate(q,quiet){if(qst(q.id))return;S.q[q.id]={st:1,n:0};save();if(P&&(state==='play'||state==='talk')&&!quiet)qSpawn(q);if(!quiet)toast('📜 Nhiệm vụ mới: '+q.title,q.main?'main':'');qDirty=1;qCheck()}
 function qDone(q){const s=S.q[q.id];if(!s||s.st!==1)return;s.st=2;save();if(q.hero)heroRecruit(q);toast('✔ Hoàn thành: '+q.title+' — mở bảng nhiệm vụ để nhận thưởng','done');seq([660,880,1100],90,.12,'triangle',.06);qDirty=1}
-function qClaim(q){const s=S.q[q.id];if(!s||s.st!==2)return;s.st=3;S.bank+=q.gold;if(q.pot)S.pot[q.pot]=Math.min(9,S.pot[q.pot]+1);if(q.bombs)S.bomb=(S.bomb||0)+q.bombs;
+function qClaim(q){const s=S.q[q.id];if(!s||s.st!==2)return;s.st=3;S.bank+=q.gold;if(q.pot)S.pot[q.pot]=Math.min(9,S.pot[q.pot]+1);if(q.bombs)S.bank+=q.bombs*30;
  if(q.upg){const U=HU();if(U[q.upg]<UP_MAX)U[q.upg]=Math.min(UP_MAX,U[q.upg]+3);else S.bank+=150}
  if(q.t==='collect')S.items[q.item]=Math.max(0,qhave(q.item)-q.n);
  SFX.buy();save();updBank();toast('🪙 +'+q.gold+' vàng — '+q.title,'gold');qDirty=1;renderQuestOv()}
@@ -2827,7 +2847,7 @@ const BINDS=[
  ['q','Skill 1 – Lốc Xoáy','act',['KeyQ','KeyU','Digit1']],['e','Skill 2 – Kiếm Khí','act',['KeyE','KeyI','Digit2']],
  ['r','Skill 3 – Cường Hóa','act',['KeyR','KeyO','Digit3']],['dash','Lướt','act',['ShiftLeft','ShiftRight','KeyL']],['sp','Chiêu đặc biệt (Hất Tung · Đá Trượt · Đập Đất)','act',['KeyG','Digit8']],
  ['block','Chặn (giữ)','hold',['KeyK','Digit6']],['hp','Bình máu','act',['KeyN','KeyX','Digit4']],
- ['mp','Bình mana','act',['KeyM','KeyC','Digit5']],['bomb','Ném thuốc nổ','act',['KeyB','Digit7']],
+ ['mp','Bình mana','act',['KeyM','KeyC','Digit5']],
  ['talk','Nói chuyện với NPC','sys',['KeyF']],['quest','Mở bảng nhiệm vụ','sys',['KeyT','Tab']],['pause','Tạm dừng','sys',['Escape','KeyP']]];
 const BK={};BINDS.forEach(b=>BK[b[0]]=b);
 if(!S.keys)S.keys={};
@@ -2835,11 +2855,11 @@ const keyOf=id=>(S.keys[id]||BK[id][3]).slice(0,3);
 let CODE={};function rebuildKeys(){CODE={};for(const b of BINDS)for(const c of keyOf(b[0]))if(c&&!CODE[c])CODE[c]=b[0];updKeyLabels()}
 const KNAME=c=>{if(!c)return'';const m={Space:'Space',ArrowLeft:'←',ArrowRight:'→',ArrowUp:'↑',ArrowDown:'↓',ShiftLeft:'Shift',ShiftRight:'Shift P',ControlLeft:'Ctrl',ControlRight:'Ctrl P',AltLeft:'Alt',AltRight:'Alt P',Escape:'Esc',Enter:'Enter',Tab:'Tab',Backquote:'`',Minus:'-',Equal:'=',BracketLeft:'[',BracketRight:']',Backslash:'\\',Semicolon:';',Quote:"'",Comma:',',Period:'.',Slash:'/',CapsLock:'Caps'};
  if(m[c])return m[c];if(c.startsWith('Key'))return c.slice(3);if(c.startsWith('Digit'))return c.slice(5);if(c.startsWith('Numpad'))return'Num'+c.slice(6);return c}
-function updKeyLabels(){const map={bAuto:'auto',bAtk:'atk',bQ:'q',bE:'e',bR:'r',bDash:'dash',bHp:'hp',bMp:'mp',bBomb:'bomb',bBlock:'block',bTalk:'talk',bJump:'jh',bPause:'pause'};
+function updKeyLabels(){const map={bAuto:'auto',bAtk:'atk',bQ:'q',bE:'e',bR:'r',bDash:'dash',bHp:'hp',bMp:'mp',bBlock:'block',bTalk:'talk',bJump:'jh',bPause:'pause'};
  for(const id in map){const el=$(id);if(!el)continue;const k=el.querySelector('.key');if(k)k.textContent=KNAME(keyOf(map[id]).find(Boolean)).toUpperCase()}
  const hk=$('helpKeys');if(hk){const K=id=>keyOf(id).filter(Boolean).map(c=>'<kbd>'+KNAME(c)+'</kbd>').join('/')||'<i>chưa gán</i>';
   hk.innerHTML='<b>Di chuyển:</b> '+K('left')+' '+K('right')+' đi • '+K('up')+' / '+K('jh')+' nhảy (bấm 2 lần để nhảy đôi), leo thang/dây • '+K('down')+' leo xuống, rơi xuyên sàn gỗ.<br>'+
-  '<b>Chiến đấu:</b> '+K('atk')+'/chuột trái: chém (combo 3 nhát) • '+K('q')+'/nút cạnh chuột trên: Lốc Xoáy • '+K('e')+'/nút cạnh chuột dưới: Kiếm Khí • '+K('r')+' Cường Hóa • '+K('block')+'/chuột phải: giữ để chặn • '+K('dash')+' lướt • '+K('hp')+' bình máu • '+K('mp')+' bình mana • '+K('bomb')+' ném thuốc nổ • '+K('talk')+' nói chuyện • '+K('quest')+' bảng nhiệm vụ • '+K('pause')+' tạm dừng. <i>(Đổi phím trong ⌨ Cài đặt phím)</i><br>'}}
+  '<b>Chiến đấu:</b> '+K('atk')+'/chuột trái: chém (combo 3 nhát) • '+K('q')+'/nút cạnh chuột trên: Lốc Xoáy • '+K('e')+'/nút cạnh chuột dưới: Kiếm Khí • '+K('r')+' Cường Hóa • '+K('block')+'/chuột phải: giữ để chặn • '+K('dash')+' lướt • '+K('hp')+' bình máu • '+K('mp')+' bình mana • '+K('talk')+' nói chuyện • '+K('quest')+' bảng nhiệm vụ • '+K('pause')+' tạm dừng. <i>(Đổi phím trong ⌨ Cài đặt phím)</i><br>'}}
 let editing=false,kWait=null;
 function renderKeys(){const box=$('keysList');box.innerHTML='';for(const b of BINDS){const row=document.createElement('div');row.className='krow';row.innerHTML='<span class="kn">'+b[1]+'</span>';
   const ks=keyOf(b[0]);for(let i=0;i<3;i++){const btn=document.createElement('button');const c=ks[i];const waiting=kWait&&kWait[0]===b[0]&&kWait[1]===i;btn.className='kslot'+(waiting?' wait':c?'':' empty');btn.textContent=waiting?'…':c?KNAME(c):'+';btn.onclick=ev=>{ev.stopPropagation();kWait=[b[0],i];renderKeys()};row.appendChild(btn)}box.appendChild(row)}}
@@ -2918,7 +2938,7 @@ function updateUI(){updAutoBtn();if(!P||state!=='play')return;
  if(P.cdR>0&&!P.ult)setCd('bR',P.cdR,P.cdRm||1,1);else{const rp=P.ult>0||S.hero==='mordred'?0:100-Math.round(P.mp/P.maxmp*100);setCd('bR',rp,100,0)}$('bR').classList.toggle('ready',(S.hero==='mordred'?P.hp>P.maxhp*.1+1:P.mp>=P.maxmp)&&!P.ult&&!(P.cdR>0));
  $('bQ').classList.toggle('off',!canPay(HH().cost.q));$('bE').classList.toggle('off',!canPay(HH().cost.e));
  $('bHp').querySelector('.cnt').textContent=S.pot.hp;$('bMp').querySelector('.cnt').textContent=S.pot.mp;
- $('bTalk').style.display=(nearNpc||nearInt||editing)?'flex':'none';$('bHp').classList.toggle('off',!S.pot.hp);const nb=S.bomb||0;$('bBomb').querySelector('.cnt').textContent=nb;$('bBomb').style.display=nb>0||editing?'flex':'none';setCd('bBomb',P.bombCd||0,24,0);$('bMp').classList.toggle('off',!S.pot.mp)}
+ $('bTalk').style.display=(nearNpc||nearInt||editing)?'flex':'none';$('bHp').classList.toggle('off',!S.pot.hp);$('bMp').classList.toggle('off',!S.pot.mp)}
 function resize(){const st=$('stage');st.style.setProperty('--u',st.clientWidth/100+'px')}
 addEventListener('resize',resize);resize();
 /* ---- toàn màn hình ---- */
