@@ -369,7 +369,7 @@ input[type=range].kfoc{scale:1.08;accent-color:#ffe066}
 </style>
 <div class="ov" id="rankOv"><div class="panel"><i class="rv l"></i><i class="rv r"></i>
  <div class="hdr"><div class="side"><button class="btn gray sm" data-back>◀ Quay lại</button></div><h2>Đấu Trường Xếp Hạng</h2><div class="side r"></div></div>
- <div class="tabs"><button class="tab" data-rk="pvp" onclick="rkTab='pvp';rkRender()">⚔ PvP</button><button class="tab" data-rk="tower" onclick="rkTab='tower';rkRender()">🗼 Leo Tháp</button><button class="tab" data-rk="board" onclick="rkTab='board';rkRender()">🏆 Bảng Xếp Hạng</button></div>
+ <div class="tabs"><button class="tab" data-rk="pvp" onclick="rkTab='pvp';rkRender()">⚔ PvP</button><button class="tab" data-rk="tower" onclick="rkTab='tower';rkRender()">🗼 Leo Tháp</button><button class="tab" data-rk="live" onclick="rkTab='live';rkRender()">⚡ Trực tiếp</button><button class="tab" data-rk="board" onclick="rkTab='board';rkRender()">🏆 Bảng Xếp Hạng</button></div>
  <div class="rk-top" id="rkTop"></div><div class="rk-body" id="rkBody"></div></div></div>
 
 <!-- ================= TÀI KHOẢN (Firebase) ================= -->
@@ -1040,7 +1040,7 @@ function hitEnemies(box,dmg,o,set){let n=0;hitWorld(box,o);
  return n}
 function dmgEnemy(e,amt,o){if(e.boss&&(e.inv>0||(e.p3&&!e.lowered))){if(!o.dot&&(e._ib||0)<frame){e._ib=frame+12;pop(e.x+e.w/2-24,e.y-6,e.p3?'VÔ HIỆU':'MIỄN NHIỄM','#adb5bd');SFX.metal();spark(e.x+e.w/2,e.y+e.h/2,'#ced4da')}return}
  if(!o.dot&&dtmGuard(e,o))return;
- if(!o.dot){o=Object.assign({},o);amt=heroMod(e,amt,o);amt=dtmPre(e,amt,o)}if(e.boss&&P&&P.ult>0)amt*=.7;amt=Math.round(amt*(.9+rnd()*.2));e.hp-=amt;e.flash=o.dot?e.flash:8;pop(e.x+e.w/2-8,e.y-4,amt,o.dot?'#8ce99a':o.crit?'#ffd43b':'#fff',o.big);if(o.poison)e.poison=Math.max(e.poison||0,o.poison);
+ if(!o.dot){o=Object.assign({},o);amt=heroMod(e,amt,o);amt=dtmPre(e,amt,o)}if(e.boss&&P&&P.ult>0)amt*=.7;amt=Math.round(amt*(.9+rnd()*.2));if(e.net){amt=liveHit(e,amt,o);if(amt<0)return}else e.hp-=amt;e.flash=o.dot?e.flash:8;pop(e.x+e.w/2-8,e.y-4,amt,o.dot?'#8ce99a':o.crit?'#ffd43b':'#fff',o.big);if(o.poison)e.poison=Math.max(e.poison||0,o.poison);
  if(!o.dot){heroAfterHit(e,amt);spark(e.x+e.w/2,e.y+e.h/2,o.col||'#fff');(ARMORED.has(e.t)?SFX.metal:SFX.flesh)();SFX.hit()}
  const heavy=e.boss||e.elite||e.def.k==='heavy';
  if(o.kb&&!heavy&&e.def.k!=='flyer'){e.vx=o.kb*(e.x>P.x?1:-1);e.hitStun=14;if(e.state==='wind')e.state='chase'}
@@ -1048,7 +1048,7 @@ function dmgEnemy(e,amt,o){if(e.boss&&(e.inv>0||(e.p3&&!e.lowered))){if(!o.dot&&
  if(o.stun){e.stun=e.boss?18:o.stun;e.state=e.boss?e.state:'chase';if(!e.boss)e.vy=-3}
  if(!o.dot)dtmPost(e,o);
  if(e.hp<=0)killEnemy(e)}
-function killEnemy(e){if(e.dead)return;e.dead=true;dtmKill(e);e.deadT=e.boss?120:40;e.vy=-4;lvlKills++;if(S.hero==='mordred'&&P&&!P.dead){const hh=Math.round(P.maxhp*.04);P.hp=Math.min(P.maxhp,P.hp+hh);pop(P.x+10,P.y-24,'+'+hh,'#69db7c')}if(e.def.spk)pop(e.x-20,e.y-30,'ĐÃ KHUẤT PHỤC!','#ffe066',1);SFX.die();evo(e,'die');if(ENDLESS)endlessKill(e);else qOnKill(e);
+function killEnemy(e){if(e.dead||e.net)return;e.dead=true;dtmKill(e);e.deadT=e.boss?120:40;e.vy=-4;lvlKills++;if(S.hero==='mordred'&&P&&!P.dead){const hh=Math.round(P.maxhp*.04);P.hp=Math.min(P.maxhp,P.hp+hh);pop(P.x+10,P.y-24,'+'+hh,'#69db7c')}if(e.def.spk)pop(e.x-20,e.y-30,'ĐÃ KHUẤT PHỤC!','#ffe066',1);SFX.die();evo(e,'die');if(ENDLESS)endlessKill(e);else qOnKill(e);
  const [a,b]=e.def.gold;const n=a+Math.floor(rnd()*(b-a+1));for(let i=0;i<n;i++)drops.push({t:'gold',x:e.x+e.w/2,y:e.y+e.h/2,w:14,h:14,vx:(rnd()-.5)*6,vy:-3-rnd()*4,life:1200,v:1});
  if(rnd()<(e.boss?1:.3))drops.push({t:'mana',x:e.x+e.w/2,y:e.y+10,w:16,h:20,vx:(rnd()-.5)*3,vy:-5,life:1200});
  if(rnd()<(e.boss?1:.18))drops.push({t:'heal',x:e.x+e.w/2,y:e.y+10,w:16,h:20,vx:(rnd()-.5)*3,vy:-5,life:1200});
@@ -1179,7 +1179,7 @@ function shoot(e,kind,tx,ty,spd){const cx=e.x+e.w/2+(e.face*e.w*.3),cy=e.y+e.h*(
  if(kind==='rock'||kind==='axe'){p.g=.25;p.vy=-6-rnd()*2;p.vx=(dx/Math.max(60,Math.abs(dx)))*Math.min(7,Math.abs(dx)/40+2);p.w=p.h=22}
  if(kind==='net'){p.w=p.h=22;p.g=.05;p.vy-=1.2}
  eproj.push(p);({arrow:SFX.bow,bolt:SFX.bow,spear:SFX.spear,dagger:SFX.spear,axe:SFX.spear,magic:SFX.magic,fire:SFX.fireball,rock:SFX.spear}[kind]||SFX.shoot)()}
-function updateEnemy(e){
+function updateEnemy(e){if(e.net)return liveEnemyUpdate(e);
  if(!e.active){if(Math.abs(e.x-P.x)<VW*.7)e.active=true;else return}
  e.t2++;if(e.flash>0)e.flash--;if(e.atkCd>0)e.atkCd--;dtmEnemyTick(e);
  if(e.dead){e.deadT--;if(e.p3){if(e.deadT%6===0&&MECH){burst(MECH.mx+(rnd()-.5)*320,MECH.gy-rnd()*250,'#8a7f99',6,4,5);shake=Math.max(shake,6)}}else if(!e.boss||!e.B.dragon){e.vy=Math.min(e.vy+.5,10);e.vx*=.9;moveX(e);moveY(e)}else{e.vy+=.2;e.y+=e.vy;if(e.y+e.h>e.groundY){e.y=e.groundY-e.h;e.vy=0}}if(e.boss&&e.deadT%8===0)burst(e.x+rnd()*e.w,e.y+rnd()*e.h,'#ffa94d',6,3,5);if(e.deadT<=0)e.alive=false;return}
@@ -1551,7 +1551,8 @@ function drawEnemy(e){
  if(e.dead){ctx.globalAlpha=Math.max(0,Math.min(1,e.deadT/25))}
  const lying=e.stun>0&&!e.boss&&e.def.k!=='flyer'||e.dead&&!(e.boss&&e.B.dragon);
  if(lying){ctx.translate(e.x+e.w/2,e.y+e.h);ctx.rotate(-e.face*1.45);ctx.translate(-(e.x+e.w/2),-(e.y+e.h))}
- if(assetsReady&&e.def.pvp){ctx.restore();ctx.save();drawPvpOpp(e)}
+ if(assetsReady&&e.net){ctx.restore();ctx.save();drawNetOpp(e)}
+ else if(assetsReady&&e.def.pvp){ctx.restore();ctx.save();drawPvpOpp(e)}
  else if(assetsReady&&ESPR[e.t]){ctx.restore();ctx.save();drawEnemySprite(e)}
  else if(e.boss&&e.B.dragon)drawDragon(e);
  else if(e.def.draw==='wolf')drawWolf(e);
@@ -2744,7 +2745,7 @@ function updBank(){const t='<i class="coin"></i>'+S.bank.toLocaleString('vi-VN')
 const isTouch=(window.matchMedia&&matchMedia('(pointer:coarse)').matches)||('ontouchstart' in window);
 function showCtrl(v){$('ctrl').style.display=v?'block':'none';$('qpanel').style.display=v?'block':'none';$('joy').style.display=isTouch?'block':'none';document.querySelectorAll('.sb .key').forEach(k=>k.style.display=isTouch?'none':'block')}
 function toMenu(){updDaily();ENDLESS=null;AUTO=false;clearInterval(heroTimer);state='menu';P=null;EV=null;showCtrl(false);show('menu');MUS.play('menu');renderQuestOv()}
-function togglePause(){pressed={};if(state==='play'){state='pause';show('pauseOv');showCtrl(false);MUS.duck=.35}else if(state==='pause'){state='play';hideAll();showCtrl(true);MUS.duck=1}}
+function togglePause(){if(ENDLESS&&ENDLESS.mode==='live'&&state==='play'){if($('pauseOv').classList.contains('show')){hideAll();showCtrl(true)}else{show('pauseOv');toast('Đấu trực tiếp không tạm dừng được — trận vẫn đang diễn ra!','fail')}return}pressed={};if(state==='play'){state='pause';show('pauseOv');showCtrl(false);MUS.duck=.35}else if(state==='pause'){state='play';hideAll();showCtrl(true);MUS.duck=1}}
 const thumbs={};
 function worldThumb(wi){if(thumbs[wi])return thumbs[wi];const th=WORLDS[wi].theme,off=document.createElement('canvas');off.width=VW;off.height=VH;const sv=ctx,sc=cam;ctx=off.getContext('2d');ctx.imageSmoothingEnabled=false;cam=wi*700+300;
  try{drawBGPixel(th);const [ox,oy]=TVAR[th];for(let i=0;i<28;i++){ctx.drawImage(A.tiles,224+16*(i%8)+ox,320+oy,16,16,i*36,470,36,36);ctx.drawImage(A.tiles,224+16*(i%8)+ox,336+oy,16,16,i*36,506,36,36)}}catch(e){}
@@ -2980,7 +2981,7 @@ function rkStart(mode,o){const R=RKS();
   E.ban={t:150,s:'🗼 TẦNG '+st,c:'#ffd43b'}}
  AUTO=false}
 // gọi từ updateEndless mỗi khung hình
-function rkTick(E,alive){if(E.done)return;
+function rkTick(E,alive){if(E.done)return;if(E.mode==='live')return liveTick(E);
  if(E.mode==='pvp'){E.t++;if(E.t===100&&!E.opp)rkSpawnOpp(E);
   if(E.opp&&E.opp.dead)return rkEnd(true,'ko');
   if(E.t>=RK_PVP_TIME){const me=P.hp/P.maxhp,op=E.opp?Math.max(0,E.opp.hp)/E.opp.maxhp:1;rkEnd(me>op,'time')}return}
@@ -3003,7 +3004,7 @@ function drawPvpOpp(e){const p=e.def.pvp;let a='idle';
  ctx.fillStyle='rgba(255,40,40,.28)';ctx.beginPath();ctx.ellipse(e.x+e.w/2,e.y+e.h,26,6,0,0,7);ctx.fill();
  if(e.dead)ctx.globalAlpha=Math.max(0,Math.min(1,e.deadT/25));
  drawKnightSprite('k_'+a,i,e.x+e.w/2,e.y+e.h+1,e.face,p.skin,null,p.hero,p.sid);ctx.globalAlpha=1}
-function drawRankHUD(E){const R=RKS();
+function drawRankHUD(E){if(E.mode==='live')return drawLiveHUD(E);const R=RKS();
  if(E.mode==='pvp'){const left=Math.max(0,RK_PVP_TIME-E.t);txt('⏱ '+fmtT(left/60),VW/2,40,left<600?'#ff6b6b':'#fff','center','bold 26px "Segoe UI",sans-serif');
   txt('⚔ Xếp hạng PvP · đối thủ: '+E.opp0.name+' (CL '+fmtN(E.opp0.power)+')',VW/2,62,'#ffd8a8','center','bold 13px "Segoe UI",sans-serif')}
  else{txt('🗼 TẦNG '+Math.max(E.start,E.wave)+' / '+RK_TOWER_TOP,VW/2,40,'#ffd43b','center','bold 26px "Segoe UI",sans-serif');
@@ -3012,7 +3013,7 @@ function drawRankHUD(E){const R=RKS();
  ctx.textAlign='left'}
 
 /* ---------- kết thúc trận ---------- */
-function rkEnd(win,why){const E=ENDLESS;if(!E||E.done)return;E.done=1;state='result';MUS.stop();showCtrl(false);const R=RKS();
+function rkEnd(win,why){const E=ENDLESS;if(E&&E.mode==='live')return liveFinish(!!win,why);if(!E||E.done)return;E.done=1;state='result';MUS.stop();showCtrl(false);const R=RKS();
  const rb=$('rBtns');rb.innerHTML='';
  if(E.mode==='pvp'){const o=E.opp0,d=rkDelta(E.me.power,o.power),old=R.pts||1000,my=win?d.win:-d.lose,np=Math.max(0,old+my);R.pts=np;
   const b=win?3:1;R.badge+=b;const xr=gainXp((win?60:20)*(AUTO?.5:1));R.cands=[];save();
@@ -3028,7 +3029,7 @@ function rkEnd(win,why){const E=ENDLESS;if(!E||E.done)return;E.done=1;state='res
    '<br>Lượt leo tháp hôm nay: '+R.tw+'/'+RK_TW_MAX;
   if(R.tw<RK_TW_MAX&&R.tf<RK_TOWER_TOP)mkBtn(rb,'🗼 LEO TIẾP (TẦNG '+(R.tf+1)+')','',()=>rkStart('tower'))}
  mkBtn(rb,'🏆 XẾP HẠNG','blue',()=>{ENDLESS=null;rkOpen()});mkBtn(rb,'🏠 MENU','gray',()=>{ENDLESS=null;toMenu()});show('resultOv')}
-function rkQuit(){const E=ENDLESS;if(!E||E.done)return toMenu();if(E.mode==='pvp')rkEnd(false,'quit');else rkEnd(false,'quit')}
+function rkQuit(){const E=ENDLESS;if(E&&E.mode==='live'&&!E.done)return liveFinish(false,'quit');if(!E||E.done)return toMenu();if(E.mode==='pvp')rkEnd(false,'quit');else rkEnd(false,'quit')}
 
 /* ---------- màn hình Xếp hạng ---------- */
 let rkTab='pvp',rkBusy=false,rkBoard='pvp';
@@ -3054,6 +3055,7 @@ function rkRender(){const box=$('rkBody');if(!box)return;const R=RKS();
  else if(rkTab==='tower'){h+='<div class="rk-card" style="text-align:center"><div style="font-size:3em">🗼</div><div class="rk-h">Tháp Thử Thách · '+RK_TOWER_TOP+' tầng</div>Kỷ lục: <b>tầng '+R.tf+'</b> · Lượt hôm nay: <b>'+(RK_TW_MAX-R.tw)+'/'+RK_TW_MAX+'</b><br>'+
   '<small>Mỗi tầng là một đợt quái. Tầng 5, 15, 25… có quái tinh anh, tầng 10, 20, 30… có trùm. Mỗi lượt bắt đầu từ tầng kế tiếp sau kỷ lục và leo đến khi gục ngã.<br>Thưởng: +1 🎖 mỗi tầng, +5 🎖 tầng trùm, kèm EXP. Xếp hạng theo tầng cao nhất; bằng tầng thì ai đạt trước đứng trên.</small>'+
   '<div class="rk-btns" style="justify-content:center"><button class="btn main" id="rkTw"'+(R.tw>=RK_TW_MAX||R.tf>=RK_TOWER_TOP?' disabled':'')+'>'+(R.tf>=RK_TOWER_TOP?'👑 Đã chinh phục':'⚔ Leo tầng '+(R.tf+1))+'</button></div></div>'}
+ else if(rkTab==='live')h+=liveRenderTab();
  else{h+='<div class="rk-btns" style="justify-content:center"><button class="btn sm '+(rkBoard==='pvp'?'main':'gray')+'" data-board="pvp">⚔ PvP</button><button class="btn sm '+(rkBoard==='tower'?'main':'gray')+'" data-board="tower">🗼 Leo Tháp</button></div><div id="rkBoard" class="rk-board">Đang tải…</div>'}
  h+='<div id="rkMsg" class="rk-msg"></div>';box.innerHTML=h;
  // gắn sự kiện
@@ -3065,6 +3067,7 @@ function rkRender(){const box=$('rkBody');if(!box)return;const R=RKS();
  if(q('rkTw'))q('rkTw').onclick=()=>rkStart('tower');
  box.querySelectorAll('[data-board]').forEach(b=>b.onclick=()=>{rkBoard=b.dataset.board;rkRender()});
  if(rkTab==='board')rkLoadBoard();
+ if(rkTab==='live')liveBind();
  box.querySelectorAll('canvas[data-oh]').forEach(c=>{const o=R.cands[+c.dataset.oh];if(!o||!assetsReady)return;const g=c.getContext('2d');g.imageSmoothingEnabled=false;drawToCanvas(g,()=>drawKnightSprite('k_idle',0,45,86,-1,o.skin||'bac',1.35,HEROES[o.hero]?o.hero:'knight',o.sid||''))})}
 function rkFind(silent){const R=RKS();if(!window.RKNET)return;rkBusy=true;R.cands=[];rkRender();
  RKNET.findOpponents(rkSnap()).then(list=>{list=list.slice(0,3);while(list.length<3)list.push(rkBot(rkSnap()));R.cands=list;rkBusy=false;save();rkRender();if(!silent)rkMsg('Đã tìm 3 đối thủ mới.',1)})
@@ -3074,11 +3077,111 @@ function rkLoadBoard(){if(!window.RKNET)return;const el=$('rkBoard');const me=wi
   $('rkBoard').innerHTML='<table><tr><th>#</th><th>Tên</th><th>Chiến binh</th><th>'+(rkBoard==='pvp'?'Điểm':'Tầng')+'</th><th>Chiến lực</th></tr>'+rows.map((r,i)=>'<tr'+(r.id===me?' class="me"':'')+'><td>'+(i<3?['🥇','🥈','🥉'][i]:i+1)+'</td><td>'+String(r.name||'?').replace(/</g,'&lt;')+'</td><td>'+((HEROES[r.hero]||{}).short||'')+' · Cấp '+(r.lv||1)+'</td><td><b>'+(rkBoard==='pvp'?fmtN(r.pts||0):r.tf||0)+'</b></td><td>'+fmtN(r.power||0)+'</td></tr>').join('')+'</table>'})
   .catch(e=>{if($('rkBoard'))$('rkBoard').textContent='⚠ '+(e.message||e)})}
 
+
+/* ======================================================================
+   ĐẤU TRỰC TIẾP (giai đoạn 3): hai người chơi online đánh nhau thời gian thực
+   - Mỗi máy tự điều khiển nhân vật của mình, gửi vị trí/hoạt ảnh ~12 lần/giây.
+   - Đối thủ hiện trên màn hình như một "kẻ địch mạng" (e.net) nên mọi đòn
+     đánh/kỹ năng có sẵn đều trúng được; sát thương được GỬI cho máy đối thủ,
+     máy đối thủ tự trừ máu qua hurtPlayer (tính chặn khiên, giáp, nội tại).
+   Phần mạng nằm trong window.RTNET (script Firebase cuối file).
+   ====================================================================== */
+const LIVE_TIME=90*60,LIVE_DMG=.6,LIVE_SEND=5,LIVE_HIT_GAP=10,LIVE_DC=8000;
+function liveNow(){return window.RTNET?RTNET.now():Date.now()}
+// được RTNET gọi khi phòng đã đủ 2 người và có giờ bắt đầu
+function liveBegin(info){
+ if(ENDLESS&&ENDLESS.mode==='live')return;
+ hideAll();startEndless(info.w);const E=ENDLESS;E.mode='live';E.live=info;E.next=1e9;E.t=0;E.lastSt=liveNow();E.gotSt=0;E.sendT=0;
+ E.ban={t:150,s:'⚡ '+info.opp.name.toUpperCase(),c:'#74c0fc'};
+ const L=info.side?(W-7)*TS:5*TS,Rx=info.side?5*TS:(W-7)*TS;P.x=L;P.face=info.side?-1:1;
+ const o=info.opp,H=HEROES[o.hero]||HEROES.knight;
+ ED.net_opp={n:o.name+' · Cấp '+o.lv,elite:1,k:'melee',hp:100,dmg:0,spd:0,gold:[0,0],w:24,h:48,net:1,pvp:{hero:HEROES[o.hero]?o.hero:'knight',sid:o.sid||'',skin:o.skin||'bac'}};
+ const e=mkEnemy({t:'net_opp',x:0,feet:E.spec.groundY},{l:0,w:0});
+ e.net=1;e.hp=e.maxhp=o.maxhp||100;e.x=e.tx=Rx;e.y=e.ty=E.spec.groundY-e.h;e.face=info.side?1:-1;e.active=true;e.endless=1;e.state='idle';e.nk='k_idle';e.ni=0;e.lastHit=-99;
+ enemies.push(e);E.opp=e;AUTO=false}
+function liveTick(E){const now=liveNow(),L=E.live,e=E.opp;
+ // đếm ngược: đứng yên chờ giờ bắt đầu chung
+ if(now<L.startAt){for(const k in keys)keys[k]=0;pressed={};P.vx=0;const s=Math.ceil((L.startAt-now)/1000);E.ban={t:40,s:s>0?String(s):'ĐẤU!',c:'#ffd43b'};liveSend(E,1);return}
+ if(!E.started){E.started=1;E.ban={t:60,s:'⚔ ĐẤU! ⚔',c:'#ff6b6b'};SFX.cp();E.lastSt=now}
+ E.t=Math.floor((now-L.startAt)/1000*60);
+ liveSend(E,0);
+ // mất kết nối / bỏ trận
+ if(!E.gotSt&&now>L.startAt+6000)return liveFinish(null,'noshow');
+ if(E.gotSt&&now-E.lastSt>LIVE_DC)return liveFinish(true,'dc');
+ if(e&&e.oDead)return liveFinish(true,e.oQuit?'quit':'ko');
+ if(E.t>=LIVE_TIME){const me=P.hp/P.maxhp,op=Math.max(0,e.hp)/e.maxhp;liveFinish(Math.abs(me-op)<.005?null:me>op,'time')}}
+function liveSend(E,force){if(!window.RTNET)return;E.sendT++;if(!force&&E.sendT%LIVE_SEND)return;if(force&&E.sendT%15)return;
+ const [k,i]=knightAnim(P);RTNET.send({x:Math.round(P.x),y:Math.round(P.y),f:P.face,k,i,hp:Math.max(0,Math.round(P.hp)),mh:P.maxhp,u:P.ult>0?1:0,d:P.dead?1:0,t:RTNET.ts()})}
+// trạng thái đối thủ nhận từ mạng
+function liveState(st){const E=ENDLESS;if(!E||E.mode!=='live'||!E.opp||!st)return;const e=E.opp;E.gotSt=1;E.lastSt=liveNow();
+ if(st.q){e.oDead=1;e.oQuit=1;return}
+ e.tx=st.x;e.ty=st.y;if(Math.abs(e.x-st.x)>200){e.x=st.x;e.y=st.y}e.face=st.f||1;e.nk=st.k||'k_idle';e.ni=st.i||0;
+ if(st.hp<e.hp)e.flash=6;e.hp=st.hp;e.maxhp=st.mh||e.maxhp;e.ult=st.u;if(st.d)e.oDead=1}
+// mỗi khung hình: nội suy vị trí đối thủ cho mượt
+function liveEnemyUpdate(e){if(e.flash>0)e.flash--;if(e.tx==null)return;e.x+=(e.tx-e.x)*.35;e.y+=(e.ty-e.y)*.35}
+// đòn của mình trúng đối thủ → gửi sát thương
+function liveHit(e,amt,o){if(frame-e.lastHit<LIVE_HIT_GAP||(ENDLESS&&ENDLESS.live&&liveNow()<ENDLESS.live.startAt))return -1;e.lastHit=frame;
+ const d=Math.max(1,Math.round(amt*LIVE_DMG));if(window.RTNET)RTNET.hit({d,kb:Math.min(8,o.kb||0),dir:e.x>P.x?1:-1,st:o.stun?1:0});return d}
+// đòn của đối thủ trúng mình
+function liveRecvHit(h){const E=ENDLESS;if(!E||E.mode!=='live'||!P||P.dead||state!=='play'||E.done)return;const hp0=P.hp;
+ hurtPlayer(Math.min(300,Math.max(0,h.d||0)),E.opp);
+ if(P.hp<hp0){if(h.kb){P.vx=(h.dir||1)*Math.min(8,h.kb);P.knock=Math.max(P.knock||0,8)}liveSend(E,0)}}
+function drawNetOpp(e){const p=e.def.pvp;ctx.fillStyle='rgba(60,140,255,.3)';ctx.beginPath();ctx.ellipse(e.x+e.w/2,e.y+e.h,26,6,0,0,7);ctx.fill();
+ if(e.ult){ctx.fillStyle='rgba(255,212,59,.18)';ctx.beginPath();ctx.ellipse(e.x+e.w/2,e.y+e.h/2,30,38,0,0,7);ctx.fill()}
+ drawKnightSprite(e.nk||'k_idle',e.ni||0,e.x+e.w/2,e.y+e.h+1,e.face,p.skin,null,p.hero,p.sid);
+ if(e.flash>0){ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha=.4;drawKnightSprite(e.nk||'k_idle',e.ni||0,e.x+e.w/2,e.y+e.h+1,e.face,p.skin,null,p.hero,p.sid);ctx.restore()}}
+function drawLiveHUD(E){const L=E.live,left=Math.max(0,LIVE_TIME-Math.max(0,E.t));
+ txt('⏱ '+fmtT(left/60),VW/2,40,left<600?'#ff6b6b':'#fff','center','bold 26px "Segoe UI",sans-serif');
+ txt('⚡ Đấu trực tiếp'+(L.ranked?' · XẾP HẠNG':' · GIAO HỮU')+' · '+L.opp.name+' (CL '+fmtN(L.opp.power)+')',VW/2,62,'#a5d8ff','center','bold 13px "Segoe UI",sans-serif');
+ if(E.gotSt&&liveNow()-E.lastSt>2500)txt('⚠ Mạng của đối thủ chập chờn…',VW/2,82,'#ffa94d','center','bold 13px "Segoe UI",sans-serif');
+ if(E.ban.t>0){ctx.globalAlpha=Math.min(1,E.ban.t/30);txt(E.ban.s,VW/2,VH/2-70,E.ban.c,'center','bold 46px "Segoe UI",sans-serif');ctx.globalAlpha=1}
+ ctx.textAlign='left'}
+// kết thúc: win=true/false, null = hòa (hoặc đối thủ không vào trận)
+function liveFinish(win,why){const E=ENDLESS;if(!E||E.done)return;E.done=1;liveUI={st:'idle',msg:'',code:''};
+ if(window.RTNET){RTNET.send({x:Math.round(P.x),y:Math.round(P.y),f:P.face,k:'k_idle',i:0,hp:Math.max(0,Math.round(P.hp)),mh:P.maxhp,d:win===false?1:0,q:why==='quit'?1:0,t:RTNET.ts()});setTimeout(()=>RTNET.leave(),1500)}
+ state='result';MUS.stop();showCtrl(false);const L=E.live,R=RKS(),o=L.opp,rb=$('rBtns');rb.innerHTML='';
+ const T={ko:'Hạ gục',time:'Hết giờ — so % máu còn lại',dc:'Đối thủ mất kết nối',quit:'Bỏ trận',dead:'Hạ gục',noshow:'Đối thủ không vào trận'};
+ let html='⚡ '+(L.ranked?'Trận xếp hạng':'Trận giao hữu')+' với <b>'+o.name+'</b> ('+(HEROES[o.hero]||{}).short+' · Cấp '+o.lv+' · CL '+fmtN(o.power)+')<br>'+(T[why]||'');
+ if(why==='noshow'){$('rTitle').textContent='⚠ TRẬN BỊ HỦY';html+='<br>Không tính kết quả.'}
+ else{$('rTitle').textContent=win===null?'🤝 HÒA':win?'🏆 CHIẾN THẮNG!':'☠ THẤT BẠI';
+  if(L.ranked){const d=rkDelta(rkSnap().power,o.power),my=win===null?0:win?d.win:-d.lose,old=R.pts||1000;R.pts=Math.max(0,old+my);const b=win?3:1;R.badge+=b;const xr=gainXp((win?60:20)*(AUTO?.5:1));
+   R.lw=(R.lw||0)+(win?1:0);R.ll=(R.ll||0)+(win===false?1:0);save();
+   html+='<br>Điểm xếp hạng: <b>'+fmtN(old)+' → '+fmtN(R.pts)+'</b>'+(my?' <b style="color:'+(my>0?'#69db7c':'#ff8787')+'">('+(my>0?'+':'')+my+')</b>':'')+'<br>🎖 Huy hiệu: <b>+'+b+'</b>'+xpLine(xr)+'<br><span id="rkNet" style="opacity:.75;font-size:.85em">☁ Đang cập nhật…</span>';
+   if(my&&window.RKNET)RKNET.liveResult(my).then(()=>{save();const x=$('rkNet');if(x)x.textContent='☁ Đã cập nhật bảng xếp hạng.'}).catch(e=>{const x=$('rkNet');if(x)x.textContent='⚠ '+(e.message||e)});else setTimeout(()=>{const x=$('rkNet');if(x)x.textContent=''},10)}
+  else{R.fw=(R.fw||0)+(win?1:0);R.fl=(R.fl||0)+(win===false?1:0);save();html+='<br>Giao hữu không tính điểm. Thành tích giao hữu: <b>'+(R.fw||0)+' thắng · '+(R.fl||0)+' thua</b>'}
+  SFX[win?'win':'die']()}
+ $('rStats').innerHTML=html;
+ mkBtn(rb,'⚡ ĐẤU TIẾP','',()=>{ENDLESS=null;rkOpen('live')});mkBtn(rb,'🏠 MENU','gray',()=>{ENDLESS=null;toMenu()});show('resultOv')}
+
+/* ---------- tab "Trực tiếp" trong màn Xếp hạng ---------- */
+let liveUI={st:'idle',msg:'',code:''};
+function liveSetUI(st,msg,code){liveUI={st,msg:msg||'',code:code||liveUI.code};if($('rankOv').classList.contains('show')&&rkTab==='live')rkRender()}
+function liveRenderTab(){const R=RKS(),u=liveUI,me=rkSnap(),busy=u.st!=='idle';
+ let h='<div class="rk-card" style="text-align:center"><div class="rk-h">⚡ Đấu trực tiếp — cả hai cùng online, đánh nhau thời gian thực</div>'+
+  '<small>1 hiệp 90 giây · được dùng bình máu/mana và Tự động đánh · giữ nguyên chỉ số. Đang chơi không tạm dừng được; rời tab hoặc mất mạng quá 8 giây sẽ bị xử thua.</small><br>'+
+  'Ra trận với: <b>'+rkHeroLine(me)+'</b><br><small>Xếp hạng trực tiếp: '+(R.lw||0)+' thắng · '+(R.ll||0)+' thua · Giao hữu: '+(R.fw||0)+' thắng · '+(R.fl||0)+' thua</small></div>';
+ if(!window.RTNET||!RTNET.ok)h+='<div class="rk-card" style="text-align:center;margin-top:.6em">⚠ Chưa kết nối được máy chủ thời gian thực (Realtime Database).</div>';
+ else if(u.st==='queue')h+='<div class="rk-card" style="text-align:center;margin-top:.6em"><div style="font-size:2em">🔍</div><b>Đang tìm đối thủ…</b><br><small>'+u.msg+'</small><div class="rk-btns" style="justify-content:center"><button class="btn sm gray" id="lvCancel">✖ Hủy tìm</button></div></div>';
+ else if(u.st==='host')h+='<div class="rk-card" style="text-align:center;margin-top:.6em">Mã phòng của bạn<div style="font-size:3em;letter-spacing:.2em;color:#ffe066;font-weight:800">'+u.code+'</div><small>Gửi mã này cho bạn bè. Đang chờ người vào… '+u.msg+'</small><div class="rk-btns" style="justify-content:center"><button class="btn sm gray" id="lvCancel">✖ Hủy phòng</button></div></div>';
+ else if(u.st==='joining'||u.st==='match')h+='<div class="rk-card" style="text-align:center;margin-top:.6em"><b>'+(u.msg||'Đang vào trận…')+'</b></div>';
+ else h+='<div class="rk-row" style="margin-top:.6em"><div class="rk-card" style="text-align:center"><div class="rk-h">🏆 Tìm trận xếp hạng</div><small>Tự ghép với người đang tìm trận có chiến lực gần bằng bạn. Tính điểm PvP (không tốn lượt 10 trận/ngày).</small><div class="rk-btns" style="justify-content:center"><button class="btn main" id="lvQueue"'+(R.inLobby?'':' disabled')+'>🔍 Tìm trận</button></div>'+(R.inLobby?'':'<small style="color:#ffc9c9">Cần đưa nhân vật lên sảnh ở tab PvP trước.</small>')+'</div>'+
+  '<div class="rk-card" style="text-align:center"><div class="rk-h">🤝 Đấu với bạn bè (giao hữu)</div><small>Không tính điểm.</small><div class="rk-btns" style="justify-content:center"><button class="btn sm blue" id="lvHost">➕ Tạo phòng</button></div>'+
+  '<div class="rk-btns" style="justify-content:center"><input id="lvCode" maxlength="6" inputmode="numeric" placeholder="Mã 6 số" style="width:8em;font-size:1.1em;text-align:center;padding:.3em;border-radius:.3em;border:2px solid #a07a2c;background:#14100b;color:#ffe7a0"><button class="btn sm green" id="lvJoin">Vào phòng</button></div></div></div>';
+ if(u.msg&&u.st==='idle')h+='<div class="rk-msg" style="color:#ffc9c9">'+u.msg+'</div>';
+ return h}
+function liveBind(){const q=id=>$(id),me=()=>Object.assign(rkSnap(),{name:(window.RKME||{}).name||'Hiệp sĩ'});
+ if(q('lvQueue'))q('lvQueue').onclick=()=>{liveSetUI('queue','Đang vào hàng chờ…');RTNET.queue(me()).catch(e=>liveSetUI('idle','⚠ '+(e.message||e)))};
+ if(q('lvHost'))q('lvHost').onclick=()=>{liveSetUI('joining','Đang tạo phòng…');RTNET.host(me()).catch(e=>liveSetUI('idle','⚠ '+(e.message||e)))};
+ if(q('lvJoin'))q('lvJoin').onclick=()=>{const c=(q('lvCode').value||'').replace(/\D/g,'');if(c.length!==6)return liveSetUI('idle','Mã phòng gồm 6 chữ số.');liveSetUI('joining','Đang vào phòng '+c+'…');RTNET.join(c,me()).catch(e=>liveSetUI('idle','⚠ '+(e.message||e)))};
+ if(q('lvCode'))q('lvCode').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter')q('lvJoin').click()});
+ if(q('lvCancel'))q('lvCancel').onclick=()=>{RTNET.cancel();liveSetUI('idle','')}}
+
 </script>
 <script type="module">
 /* ================= MÁY CHỦ FIREBASE: đăng nhập + lưu dữ liệu ================= */
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js';
 import {getAuth,onAuthStateChanged,GoogleAuthProvider,signInWithPopup,signInWithCredential,signInAnonymously,createUserWithEmailAndPassword,signInWithEmailAndPassword,sendPasswordResetEmail,sendEmailVerification,linkWithPopup,linkWithCredential,EmailAuthProvider,signOut} from 'https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js';
+import {getDatabase,ref as rref,set,update,get,push,remove,onValue,onChildAdded,onDisconnect,runTransaction as runTx} from 'https://www.gstatic.com/firebasejs/13.3.0/firebase-database.js';
 import {getFirestore,doc,getDoc,setDoc,serverTimestamp,collection,query,where,orderBy,limit,getDocs,runTransaction,getCountFromServer} from 'https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js';
 
 const firebaseConfig={
@@ -3087,7 +3190,8 @@ const firebaseConfig={
  projectId:"knight-phieu-luu",
  storageBucket:"knight-phieu-luu.firebasestorage.app",
  messagingSenderId:"456610817290",
- appId:"1:456610817290:web:4f953958f3cce20fc8c6f3"
+ appId:"1:456610817290:web:4f953958f3cce20fc8c6f3",
+ databaseURL:"https://knight-phieu-luu-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
 auth.languageCode='vi';
@@ -3200,9 +3304,75 @@ window.RKNET={
  async saveTower(tf,tfAt){if(!user)return;const r=aref(user.uid),ex=(await getDoc(r)).exists();const d={tf,tfAt,tScore:tsc(tf,tfAt),upd:serverTimestamp()};
   if(!ex){const s=rkSnap(S.hero);Object.assign(d,{name:pname,lobby:false,pts:1000,hero:s.hero,sid:s.sid,skin:s.skin,lv:s.lv,power:s.power,maxhp:s.maxhp,atk:s.atk,arm:s.arm});await setDoc(r,d)}
   else await setDoc(r,d,{merge:true})},
+ async liveResult(myDelta){await runTransaction(db,async tx=>{const r=aref(user.uid),sn=await tx.get(r);const cur=sn.exists()?sn.data().pts||0:1000,np=Math.max(0,cur+myDelta);tx.set(r,{pts:np,upd:serverTimestamp()},{merge:true});RKS().pts=np});
+  try{const c=await getCountFromServer(query(collection(db,'arena'),where('pts','>',RKS().pts)));RKS().rankPos=c.data().count+1}catch(e){}},
  async top(kind){const col=collection(db,'arena');
   const qs=await getDocs(kind==='pvp'?query(col,orderBy('pts','desc'),limit(80)):query(col,orderBy('tScore','desc'),limit(50)));
   const rows=[];qs.forEach(d=>{const o=d.data();if(kind==='pvp'?o.lobby:(o.tf>0))rows.push(Object.assign({id:d.id},o))});return rows.slice(0,50)}
+};
+
+
+/* ---------- ĐẤU TRỰC TIẾP: Realtime Database ---------- */
+const rtdb=getDatabase(app);let rtOff=0;
+onValue(rref(rtdb,'.info/serverTimeOffset'),s=>{rtOff=s.val()||0});
+const RT={room:null,me:null,opp:null,subs:[],qsubs:[],stRef:null,hitRef:null,timer:null,seen:new Set()};
+function rtUnsub(list){while(list.length){try{list.pop()()}catch(e){}}}
+function rtInfo(m){return{uid:user.uid,name:m.name,hero:m.hero,sid:m.sid||'',skin:m.skin||'bac',lv:m.lv,power:m.power,maxhp:m.maxhp}}
+async function rtEnterRoom(rid,side){ // side 0 = chủ phòng/người ghép (bên trái), 1 = người được ghép/khách (bên phải)
+ RT.room=rid;RT.isA=side===0;const me=user.uid;let begun=false;
+ RT.stRef=rref(rtdb,'rt/rooms/'+rid+'/p/'+me);
+ try{await onDisconnect(RT.stRef).update({q:1})}catch(e){}
+ RT.subs.push(onValue(rref(rtdb,'rt/rooms/'+rid),s=>{const r=s.val();if(!r){if(!begun){liveSetUI('idle','Phòng đã bị hủy.');rtCleanup()}return}
+  const opp=r.a===me?r.b:r.a,oi=r.a===me?r.bi:r.ai;
+  if(r.mode==='friend'&&r.a===me&&r.b&&!r.startAt)rtSet('rt/rooms/'+rid+'/startAt',Date.now()+rtOff+4000);
+  if(!begun&&opp&&oi&&r.startAt){begun=true;RT.opp=opp;liveSetUI('match','Đã ghép trận!');
+   RT.hitRef=rref(rtdb,'rt/rooms/'+rid+'/hits/'+opp);
+   RT.subs.push(onValue(rref(rtdb,'rt/rooms/'+rid+'/p/'+opp),x=>liveState(x.val())));
+   RT.subs.push(onChildAdded(rref(rtdb,'rt/rooms/'+rid+'/hits/'+me),x=>{const h=x.val();remove(x.ref).catch(()=>{});if(!RT.seen.has(x.key)){RT.seen.add(x.key);liveRecvHit(h)}}));
+   liveBegin({room:rid,ranked:r.mode==='rank',w:r.w||0,side:r.a===me?0:1,startAt:r.startAt,opp:oi})}}))}
+function rtSet(p,v){return set(rref(rtdb,p),v)}
+function rtCleanup(){rtUnsub(RT.subs);rtUnsub(RT.qsubs);clearInterval(RT.timer);RT.timer=null;
+ if(user)remove(rref(rtdb,'rt/queue/'+user.uid)).catch(()=>{});RT.room=null;RT.opp=null;RT.stRef=null;RT.hitRef=null;RT.seen.clear()}
+const rtTimeout=(pr,ms=8000)=>Promise.race([pr,new Promise((_,rj)=>setTimeout(()=>rj(new Error('Không kết nối được Realtime Database (kiểm tra đã tạo database và dán luật bảo mật chưa).')),ms))]);
+const rid6=()=>String(Math.floor(100000+Math.random()*900000));
+window.RTNET={ok:true,
+ now:()=>Date.now()+rtOff,ts:()=>Date.now()+rtOff,
+ // ---- tự ghép trận xếp hạng ----
+ async queue(m){if(!user)throw new Error('Chưa đăng nhập');rtCleanup();const me=user.uid,myRef=rref(rtdb,'rt/queue/'+me);
+  await rtTimeout(set(myRef,Object.assign(rtInfo(m),{t:Date.now()+rtOff})));await onDisconnect(myRef).remove();const t0=Date.now();let busy=false,qv={};
+  RT.qsubs.push(onValue(rref(rtdb,'rt/queue'),s=>{qv=s.val()||{};const mine=qv[me];
+   if(mine&&mine.room&&!RT.room){const rid=mine.room;rtUnsub(RT.qsubs);clearInterval(RT.timer);remove(myRef).catch(()=>{});liveSetUI('match','Đã tìm thấy đối thủ!');rtEnterRoom(rid,1)}}));
+  const tryMatch=async()=>{if(busy||RT.room)return;busy=true;try{
+    const w=(Date.now()-t0)/1000,lo=w<10?.8:w<20?.5:0,hi=w<10?1.25:w<20?2:1e9,now=Date.now()+rtOff;
+    const n=Object.keys(qv).length-1;liveSetUI('queue',(n>0?n+' người khác đang tìm trận':'Chưa có ai khác đang tìm trận')+' · đã chờ '+Math.floor(w)+' giây'+(w<10?' (chiến lực ±20%)':w<20?' (nới rộng 50%–200%)':' (mọi chiến lực)'));
+    if(w>90){window.RTNET.cancel();liveSetUI('idle','Không tìm thấy đối thủ sau 90 giây. Hãy thử lại sau hoặc mời bạn bè bằng mã phòng.');return}
+    const cands=Object.entries(qv).filter(([u,o])=>u!==me&&me<u&&o&&!o.room&&!o.lock&&now-(o.t||0)<120000&&o.power>=m.power*lo&&o.power<=m.power*hi)
+     .sort((a,b)=>Math.abs(a[1].power-m.power)-Math.abs(b[1].power-m.power));
+    if(!cands.length)return;const [ou,oi]=cands[0];
+    // khóa mình lại để không ai ghép mình trong lúc mình đang ghép người khác
+    const lk=await runTx(myRef,c=>{if(!c||c.room)return;c.lock=true;return c});if(!lk.committed)return;
+    const rid='r'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),me_i=lk.snapshot.val();
+    await set(rref(rtdb,'rt/rooms/'+rid),{a:me,b:ou,mode:'rank',w:Math.floor(Math.random()*6),ai:rtInfo(m),bi:{uid:ou,name:oi.name,hero:oi.hero,sid:oi.sid||'',skin:oi.skin||'bac',lv:oi.lv,power:oi.power,maxhp:oi.maxhp},startAt:Date.now()+rtOff+5000});
+    const cl=await runTx(rref(rtdb,'rt/queue/'+ou),c=>{if(!c||c.room||c.lock)return;c.room=rid;c.by=me;return c});
+    if(!cl.committed){remove(rref(rtdb,'rt/rooms/'+rid)).catch(()=>{});await runTx(myRef,c=>{if(c)delete c.lock;return c});return}
+    rtUnsub(RT.qsubs);clearInterval(RT.timer);await remove(myRef);liveSetUI('match','Đã tìm thấy đối thủ!');rtEnterRoom(rid,0)}
+   catch(e){console.warn('[live] ghép trận lỗi',e)}finally{busy=false}};
+  RT.timer=setInterval(tryMatch,1500);setTimeout(tryMatch,600)},
+ // ---- phòng bạn bè ----
+ async host(m){if(!user)throw new Error('Chưa đăng nhập');rtCleanup();
+  for(let k=0;k<5;k++){const code=rid6(),rid='f'+code;
+   const r=await rtTimeout(runTx(rref(rtdb,'rt/rooms/'+rid),c=>{if(c)return;return{a:user.uid,mode:'friend',w:Math.floor(Math.random()*6),ai:rtInfo(m),t:Date.now()+rtOff}}));
+   if(r.committed){await onDisconnect(rref(rtdb,'rt/rooms/'+rid)).remove();liveSetUI('host','',code);rtEnterRoom(rid,0);return code}}
+  throw new Error('Không tạo được phòng, thử lại.')},
+ async join(code,m){if(!user)throw new Error('Chưa đăng nhập');rtCleanup();const rid='f'+code;
+  const s=await rtTimeout(get(rref(rtdb,'rt/rooms/'+rid)));const r=s.val();
+  if(!r)throw new Error('Không tìm thấy phòng '+code+'.');if(r.a===user.uid)throw new Error('Đây là phòng của chính bạn.');if(r.b)throw new Error('Phòng '+code+' đã đủ người.');
+  await update(rref(rtdb,'rt/rooms/'+rid),{b:user.uid,bi:rtInfo(m)});rtEnterRoom(rid,1)},
+ cancel(){const rid=RT.room;rtCleanup();if(rid&&rid[0]==='f')remove(rref(rtdb,'rt/rooms/'+rid)).catch(()=>{})},
+ // ---- trong trận ----
+ send(st){if(RT.stRef)set(RT.stRef,st).catch(()=>{})},
+ hit(h){if(RT.hitRef)push(RT.hitRef,Object.assign({from:user.uid,t:Date.now()+rtOff},h)).catch(()=>{})},
+ leave(){const rid=RT.room,isA=RT.isA;rtCleanup();if(rid&&isA)setTimeout(()=>remove(rref(rtdb,'rt/rooms/'+rid)).catch(()=>{}),3000)}
 };
 
 /* ---------- bảng tài khoản ---------- */
