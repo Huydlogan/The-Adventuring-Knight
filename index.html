@@ -2757,7 +2757,7 @@ addEventListener('keydown',e=>{if(editing||kWait)return;const id=CODE[e.code];
  else if(id==='quest'){if(state==='play'){e.preventDefault();if(!e.repeat){qOpen=!qOpen;renderQPanel()}}}
  else if(id==='pause'){if(state==='play'||(state==='pause'&&$('pauseOv').classList.contains('show'))){e.preventDefault();if(!e.repeat)togglePause()}}});
 addEventListener('keyup',e=>{const id=CODE[e.code];if(!id)return;const t=BK[id][2];if(t==='move')keys[id]=0;else if(t==='hold')keys.block=0;if(id==='talk')keys.talk=0});
-addEventListener('blur',()=>{for(const k in keys)keys[k]=0;if(state==='play')togglePause()});
+addEventListener('blur',()=>{for(const k in keys)keys[k]=0;if(state==='play'&&!(AUTO&&ENDLESS))togglePause()});
 /* chuột: phải = chặn, nút cạnh trên = skill 1, nút cạnh dưới = skill 2 */
 addEventListener('mousedown',e=>{if(state!=='play'||editing)return;if(e.button===2){keys.block=1;e.preventDefault()}else if(e.button===4){pressed.q=1;e.preventDefault()}else if(e.button===3){pressed.e=1;e.preventDefault()}});
 addEventListener('mouseup',e=>{if(e.button===2)keys.block=0;if(e.button===3||e.button===4)e.preventDefault()});
@@ -2817,10 +2817,17 @@ if(isTouch&&canFS&&!standalone){const once=e=>{if(e.target.closest&&e.target.clo
 addEventListener('orientationchange',()=>setTimeout(resize,300));
 rebuildKeys();updBank();updDaily();loadAssets();renderQuestOv();
 let last=0,acc=0;
-function loop(t){requestAnimationFrame(loop);const dt=Math.min(100,t-last);last=t;
+let rafAt=0,bgAt=0,bgSteps=0;
+function loop(t){requestAnimationFrame(loop);rafAt=performance.now();const dt=Math.min(100,t-last);last=t;
  if(state==='pause'||state==='result'||state==='talk'){render();return}
  acc+=dt;let n=0;while(acc>=1000/60&&n<4){step();acc-=1000/60;n++}if(n>=4)acc=0;render();updateUI()}
 requestAnimationFrame(loop);
+/* chạy nền khi chế độ tự động: tab ẩn hoặc cửa sổ bị che thì rAF dừng → dùng bộ hẹn giờ để bù bước */
+setInterval(()=>{const now=performance.now();if(!bgAt)bgAt=now;
+ const bg=AUTO&&ENDLESS&&state==='play'&&(document.hidden||now-rafAt>300);
+ if(bg){const n=Math.min(7200,Math.floor((now-bgAt)/(1000/60)));for(let i=0;i<n;i++){if(!(AUTO&&ENDLESS&&state==='play'))break;step();bgSteps++}bgAt+=n*(1000/60);if(now-bgAt>1000)bgAt=now}
+ else{if(bgSteps>600&&!document.hidden&&state==='play')toast('🤖 Tự động đã chiến đấu nền '+(bgSteps>=3600?Math.floor(bgSteps/3600)+' phút ':'')+Math.round(bgSteps/60)%60+' giây','main');if(!document.hidden)bgSteps=0;bgAt=now}},250);
+document.addEventListener('visibilitychange',()=>{for(const k in keys)keys[k]=0;if(document.hidden&&state==='play'&&!(AUTO&&ENDLESS))togglePause()});
 </script>
 </body>
 </html>
