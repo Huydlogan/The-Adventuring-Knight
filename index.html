@@ -849,7 +849,7 @@ function autoToday(){const d=new Date(),k=d.getFullYear()+'-'+(d.getMonth()+1)+'
 function autoBuyLeft(){return AUTO_DAY-autoToday().n}
 function autoBuy(){if(S.bank<AUTO_PRICE||autoBuyLeft()<=0)return false;S.bank-=AUTO_PRICE;autoToday().n++;return true}
 function autoAvail(){return (S.autoT||0)>0||(S.autoTk||0)>0}
-function toggleAuto(){if(!ENDLESS||state!=='play')return;if(ENDLESS.mode){toast('Không dùng Tự động trong trận xếp hạng.','fail');return}if(AUTO){AUTO=false;save();toast('🤖 Đã tắt tự động đánh','');return}
+function toggleAuto(){if(!ENDLESS||state!=='play')return;if(AUTO){AUTO=false;save();toast('🤖 Đã tắt tự động đánh','');return}
  if(!autoAvail()){autoPrompt(false);return}if(!(S.autoT>0)){S.autoTk--;S.autoT=AUTO_T}AUTO=true;save();SFX.cp();toast('🤖 Tự động đánh: còn '+fmtT(S.autoT/60)+(S.autoTk?' + '+S.autoTk+' vé':''),'main')}
 function autoTick(){if(!AUTO||!ENDLESS)return;S.autoT--;if(S.autoT%600===0)save();
  if(S.autoT<=0){if(S.autoTk>0){S.autoTk--;S.autoT=AUTO_T;save();toast('🎟 Dùng vé tự động tiếp theo (còn '+S.autoTk+' vé)','main')}else{AUTO=false;S.autoT=0;save();autoPrompt(true)}}}
@@ -931,7 +931,7 @@ function botSkills(p,t,dx,adx,dy,near,near2){if(p.cast>0||p.flame>0||p.whirl>0||
   else if(h==='bjorn')ok=adx<t.w/2+110&&Math.abs(dy)<60&&p.onGround;
   else if(h==='mordred')ok=adx>110&&adx<420&&!t.boss&&Math.abs(dy)<120;
   if(ok){face();pressed.e=1}}}
-function updAutoBtn(){const b=$('bAuto');if(!b)return;const show=!!ENDLESS&&!ENDLESS.mode&&state==='play';b.style.display=show?'flex':'none';if(!show)return;
+function updAutoBtn(){const b=$('bAuto');if(!b)return;const show=!!ENDLESS&&state==='play';b.style.display=show?'flex':'none';if(!show)return;
  b.classList.toggle('on',AUTO);const t=AUTO||S.autoT>0?fmtT((S.autoT||0)/60):'';const lbl=(AUTO?'TỰ ĐỘNG ':'TỰ ĐỘNG ')+(t?t:'')+(S.autoTk?' +'+S.autoTk+'🎟':'');if(b._l!==lbl){b._l=lbl;$('autoLbl').textContent=lbl}}
 /* ================= CHIẾN ĐẤU VÔ TẬN ================= */
 let ENDLESS=null;
@@ -3015,14 +3015,14 @@ function drawRankHUD(E){const R=RKS();
 function rkEnd(win,why){const E=ENDLESS;if(!E||E.done)return;E.done=1;state='result';MUS.stop();showCtrl(false);const R=RKS();
  const rb=$('rBtns');rb.innerHTML='';
  if(E.mode==='pvp'){const o=E.opp0,d=rkDelta(E.me.power,o.power),old=R.pts||1000,my=win?d.win:-d.lose,np=Math.max(0,old+my);R.pts=np;
-  const b=win?3:1;R.badge+=b;const xr=gainXp(win?60:20);R.cands=[];save();
+  const b=win?3:1;R.badge+=b;const xr=gainXp((win?60:20)*(AUTO?.5:1));R.cands=[];save();
   $('rTitle').textContent=win?'🏆 CHIẾN THẮNG!':'☠ THẤT BẠI';
   $('rStats').innerHTML='⚔ Đối thủ: <b>'+o.name+'</b> ('+(HEROES[o.hero]||{}).short+' · Cấp '+o.lv+' · CL '+fmtN(o.power)+')'+(why==='time'?'<br>⏱ Hết giờ — so phần trăm máu còn lại':'')+
    '<br>Điểm xếp hạng: <b>'+fmtN(old)+' → '+fmtN(np)+'</b> <b style="color:'+(win?'#69db7c':'#ff8787')+'">('+(win?'+'+d.win:'-'+d.lose)+')</b>'+
    '<br>🎖 Huy hiệu Đấu trường: <b>+'+b+'</b> (có '+R.badge+')'+xpLine(xr)+'<br><span id="rkNet" style="opacity:.75;font-size:.85em">☁ Đang cập nhật bảng xếp hạng…</span>';
   if(window.RKNET)RKNET.pvpResult(o,my,o.bot?0:(win?-d.defLose:d.defGain)).then(m=>{save();const x=$('rkNet');if(x)x.textContent='☁ '+(m||'Đã cập nhật bảng xếp hạng.')}).catch(e=>{const x=$('rkNet');if(x)x.textContent='⚠ Chưa cập nhật được máy chủ: '+(e&&e.message||e)});
   mkBtn(rb,'⚔ TRẬN TIẾP','',()=>{rkOpen('pvp')});SFX[win?'win':'die']()}
- else{const f=E.cleared||0,nf=f>=E.start?f-E.start+1:0,xr=gainXp(nf*15+(nf?f:0));
+ else{const f=E.cleared||0,nf=f>=E.start?f-E.start+1:0,xr=gainXp((nf*15+(nf?f:0))*(AUTO?.5:1));
   $('rTitle').textContent=why==='top'?'👑 CHINH PHỤC ĐỈNH THÁP!':(f>=E.start?'🗼 LEO THÁP KẾT THÚC':'☠ CHƯA QUA ĐƯỢC TẦNG '+E.start);
   $('rStats').innerHTML='Vượt qua: <b>'+(nf?nf+' tầng (tới tầng '+f+')':'0 tầng')+'</b><br>🏆 Kỷ lục của bạn: <b>tầng '+R.tf+'</b><br>🎖 Huy hiệu nhận: <b>+'+E.badges+'</b> (có '+R.badge+')'+xpLine(xr)+
    '<br>Lượt leo tháp hôm nay: '+R.tw+'/'+RK_TW_MAX;
