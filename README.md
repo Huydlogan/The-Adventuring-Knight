@@ -13,7 +13,15 @@ Game không cần cài đặt hay máy chủ: toàn bộ nằm trong **một fil
   1. Tải file `index.html` (và `README.md`) lên repository.
   2. Vào **Settings › Pages**, chọn nhánh `main`, thư mục `/ (root)`.
   3. Sau khoảng 1 phút, game có mặt tại `https://<tên-tài-khoản>.github.io/<tên-repo>/`.
-- **Tiến trình được lưu tự động** trong trình duyệt (localStorage): vàng, màn đã mở, nâng cấp, nhiệm vụ, nhân vật.
+- **Tài khoản & lưu trữ:** đăng nhập bằng Google, Email/Mật khẩu hoặc chơi khách (có thể liên kết sau). Tiến trình được lưu lên máy chủ Firebase và đồng bộ giữa các thiết bị.
+- **Lưu ý:** mở trực tiếp file bằng `file:///` sẽ không đăng nhập được — hãy chơi qua GitHub Pages hoặc `localhost`.
+
+## 🏆 Cấp độ & Xếp hạng
+
+- Mỗi chiến binh có **cấp 1–30** (EXP từ qua màn, Vô Tận, trận xếp hạng). Cấp, nâng cấp và kỹ năng cộng vào **Chiến lực**.
+- **Đấu Trường PvP:** đưa 1 chiến binh lên sảnh chờ; thách đấu 1 trong 3 người có chiến lực gần bằng mình (đối thủ do máy điều khiển, kể cả khi họ offline). 10 trận/ngày, điểm khởi đầu 1000.
+- **Leo Tháp PvE:** 100 tầng, tầng 5 có tinh anh, tầng 10 có trùm. 5 lượt/ngày.
+- **Huy hiệu Đấu trường 🎖** dùng để đổi danh sách đối thủ.
 
 ---
 

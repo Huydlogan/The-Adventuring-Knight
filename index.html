@@ -295,6 +295,7 @@ input[type=range].kfoc{scale:1.08;accent-color:#ffe066}
   <button class="mtile t-green" id="bShop"><i>⚒</i><span><b>Lò Rèn</b><small>Nâng cấp · Chiêu · Chiến binh</small></span></button>
   <button class="mtile t-purple" id="bQuest"><i>📜</i><span><b>Nhiệm Vụ</b><small id="mQ">Phần thưởng chờ nhận</small></span><span class="qbadge" id="mqBadge"></span></button>
   <button class="mtile t-blue" id="bHelp"><i>📖</i><span><b>Hướng Dẫn</b><small>Phím · chiêu thức · mẹo</small></span></button>
+  <button class="mtile t-gold" id="bRank" style="grid-column:1/-1" onclick="rkOpen()"><i>🏆</i><span><b>Xếp Hạng</b><small>PvP thách đấu · Leo Tháp 100 tầng</small></span></button>
  </div></div>
  <div class="mmeds"><button class="mmed" id="bAcc" onclick="window.openAccount&&openAccount()"><i>👤</i><small>Tài khoản</small></button><button class="mmed" id="bGift"><i>🎁</i><small>Quà tặng</small></button><button class="mmed" id="bKeys"><i>⌨</i><small>Phím</small></button><button class="mmed" id="fsBtn" onclick="toggleFull()"><i>⛶</i><small>Toàn màn</small></button></div>
  <div id="dailyBox"></div>
@@ -346,6 +347,30 @@ input[type=range].kfoc{scale:1.08;accent-color:#ffe066}
  <div id="heroList" class="hgrid"></div></div></div>
 <div class="ov" id="resultOv"><div class="panel" style="padding:calc(var(--u)*2.4) calc(var(--u)*4)"><i class="rv l"></i><i class="rv r"></i><h2 id="rTitle"></h2><div class="orn"></div><div class="stats" id="rStats"></div><div id="rBtns" class="rbtns"></div></div></div>
 </div></div>
+
+<style>
+#rankOv .panel{width:min(96vw,calc(var(--u)*96))}
+.rk-top{text-align:center;margin:0 0 calc(var(--u)*.8);font-size:calc(var(--u)*1.35)}
+.rk-body{max-height:calc(var(--u)*40);overflow:auto;padding:0 calc(var(--u)*.4)}
+.rk-row{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u)*.8)}
+.rk-card{background:linear-gradient(180deg,#30251a,#1b140e);border:calc(var(--u)*.15) solid #5a4424;border-radius:calc(var(--u)*.6);padding:calc(var(--u)*.9);font-size:calc(var(--u)*1.2);line-height:1.5}
+.rk-card small{opacity:.8;font-size:.85em}
+.rk-h{color:#ffe7a0;font-weight:700;margin-bottom:calc(var(--u)*.3)}
+.rk-btns{display:flex;gap:calc(var(--u)*.6);flex-wrap:wrap;margin-top:calc(var(--u)*.6)}
+.rk-opps{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--u)*.8)}
+.rk-opp{display:flex;flex-direction:column;align-items:center;text-align:center;gap:calc(var(--u)*.2)}
+.rk-opp canvas{width:calc(var(--u)*7);height:calc(var(--u)*7);image-rendering:pixelated;background:radial-gradient(circle at 50% 65%,#5a2a20,#14100b 72%);border-radius:50%;border:calc(var(--u)*.15) solid #a8322a}
+.rk-msg{text-align:center;min-height:1.3em;margin-top:calc(var(--u)*.5);font-size:calc(var(--u)*1.15)}
+.rk-board table{width:100%;border-collapse:collapse;font-size:calc(var(--u)*1.15)}
+.rk-board th{color:#ffe7a0;text-align:left;border-bottom:calc(var(--u)*.12) solid #a07a2c;padding:calc(var(--u)*.3)}
+.rk-board td{padding:calc(var(--u)*.3);border-bottom:1px solid rgba(160,122,44,.25)}
+.rk-board tr.me td{background:rgba(255,212,59,.15);color:#ffe066}
+.mtile.t-gold{--c1:#7a5a1a;--c2:#3a2a0a;--ac:#ffd43b}
+</style>
+<div class="ov" id="rankOv"><div class="panel"><i class="rv l"></i><i class="rv r"></i>
+ <div class="hdr"><div class="side"><button class="btn gray sm" data-back>◀ Quay lại</button></div><h2>Đấu Trường Xếp Hạng</h2><div class="side r"></div></div>
+ <div class="tabs"><button class="tab" data-rk="pvp" onclick="rkTab='pvp';rkRender()">⚔ PvP</button><button class="tab" data-rk="tower" onclick="rkTab='tower';rkRender()">🗼 Leo Tháp</button><button class="tab" data-rk="board" onclick="rkTab='board';rkRender()">🏆 Bảng Xếp Hạng</button></div>
+ <div class="rk-top" id="rkTop"></div><div class="rk-body" id="rkBody"></div></div></div>
 
 <!-- ================= TÀI KHOẢN (Firebase) ================= -->
 <style>
@@ -824,7 +849,7 @@ function autoToday(){const d=new Date(),k=d.getFullYear()+'-'+(d.getMonth()+1)+'
 function autoBuyLeft(){return AUTO_DAY-autoToday().n}
 function autoBuy(){if(S.bank<AUTO_PRICE||autoBuyLeft()<=0)return false;S.bank-=AUTO_PRICE;autoToday().n++;return true}
 function autoAvail(){return (S.autoT||0)>0||(S.autoTk||0)>0}
-function toggleAuto(){if(!ENDLESS||state!=='play')return;if(AUTO){AUTO=false;save();toast('🤖 Đã tắt tự động đánh','');return}
+function toggleAuto(){if(!ENDLESS||state!=='play')return;if(ENDLESS.mode){toast('Không dùng Tự động trong trận xếp hạng.','fail');return}if(AUTO){AUTO=false;save();toast('🤖 Đã tắt tự động đánh','');return}
  if(!autoAvail()){autoPrompt(false);return}if(!(S.autoT>0)){S.autoTk--;S.autoT=AUTO_T}AUTO=true;save();SFX.cp();toast('🤖 Tự động đánh: còn '+fmtT(S.autoT/60)+(S.autoTk?' + '+S.autoTk+' vé':''),'main')}
 function autoTick(){if(!AUTO||!ENDLESS)return;S.autoT--;if(S.autoT%600===0)save();
  if(S.autoT<=0){if(S.autoTk>0){S.autoTk--;S.autoT=AUTO_T;save();toast('🎟 Dùng vé tự động tiếp theo (còn '+S.autoTk+' vé)','main')}else{AUTO=false;S.autoT=0;save();autoPrompt(true)}}}
@@ -906,7 +931,7 @@ function botSkills(p,t,dx,adx,dy,near,near2){if(p.cast>0||p.flame>0||p.whirl>0||
   else if(h==='bjorn')ok=adx<t.w/2+110&&Math.abs(dy)<60&&p.onGround;
   else if(h==='mordred')ok=adx>110&&adx<420&&!t.boss&&Math.abs(dy)<120;
   if(ok){face();pressed.e=1}}}
-function updAutoBtn(){const b=$('bAuto');if(!b)return;const show=!!ENDLESS&&state==='play';b.style.display=show?'flex':'none';if(!show)return;
+function updAutoBtn(){const b=$('bAuto');if(!b)return;const show=!!ENDLESS&&!ENDLESS.mode&&state==='play';b.style.display=show?'flex':'none';if(!show)return;
  b.classList.toggle('on',AUTO);const t=AUTO||S.autoT>0?fmtT((S.autoT||0)/60):'';const lbl=(AUTO?'TỰ ĐỘNG ':'TỰ ĐỘNG ')+(t?t:'')+(S.autoTk?' +'+S.autoTk+'🎟':'');if(b._l!==lbl){b._l=lbl;$('autoLbl').textContent=lbl}}
 /* ================= CHIẾN ĐẤU VÔ TẬN ================= */
 let ENDLESS=null;
@@ -947,10 +972,11 @@ function nextWave(){const E=ENDLESS;E.wave++;dailyProg('wave',E.wave);const n=E.
 function updateEndless(){const E=ENDLESS;if(!E||!P||P.dead)return;if(E.ban.t>0)E.ban.t--;
  const alive=enemies.filter(e=>!e.dead).length;
  if(E.q.length){E.qt--;if(E.qt<=0&&alive<22){const s=E.q.shift();if(s==='BOSS'){eBoss();E.qt=60}else{eSpawn(s.t,s.side);E.qt=s.gap||Math.max(12,28-E.wave)}}}
+ if(E.mode)return rkTick(E,alive); // trận xếp hạng
  E.next--;if(!E.q.length&&!alive&&E.next>150)E.next=150;
  if(E.next<=0)nextWave();
  if(E.bm&&bossRef&&bossRef.dead){E.bm=0;MUS.cur=null;MUS.play(TH)}}
-function endlessKill(e){const n=e.boss?2:e.elite?1:(rnd()<.045?1:0);
+function endlessKill(e){if(ENDLESS&&ENDLESS.mode==='pvp')return;const n=e.boss?2:e.elite?1:(rnd()<.045?1:0);
  for(let i=0;i<n;i++)drops.push({t:'ug',k:['atk','arm','hp'][Math.floor(rnd()*3)],x:e.x+e.w/2,y:e.y+10,w:18,h:20,vx:(rnd()-.5)*5,vy:-6,life:1800})}
 function endlessGem(k){const E=ENDLESS;if(!E)return;E.buf[k]++;if(k==='hp'){P.maxhp=stats().maxhp;P.hp=Math.min(P.maxhp,P.hp+25)}
  SFX.gem();burst(P.x+12,P.y+20,{atk:'#ff6b6b',arm:'#74c0fc',hp:'#69db7c'}[k],14,3,4,-.05);
@@ -959,7 +985,7 @@ function drawUG(r){const x=r.x+9,y=r.y+10+Math.sin(frame*.12+r.x)*2,col={atk:'#f
  ctx.fillStyle=col+'55';ctx.beginPath();ctx.arc(x,y,15+Math.sin(frame*.2)*2,0,7);ctx.fill();ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x,y-11);ctx.lineTo(x+9,y-2);ctx.lineTo(x,y+11);ctx.lineTo(x-9,y-2);ctx.closePath();ctx.fill();
  ctx.fillStyle='rgba(255,255,255,.75)';ctx.beginPath();ctx.moveTo(x,y-11);ctx.lineTo(x+4,y-2);ctx.lineTo(x,y);ctx.lineTo(x-4,y-2);ctx.fill();
  txt({atk:'⚔',arm:'🛡',hp:'❤'}[r.k],x,y+26,'#fff','center','bold 11px "Segoe UI",sans-serif');ctx.textAlign='left'}
-function drawEndlessHUD(){const E=ENDLESS;if(!E)return;const rec=(S.endless||{})[E.w];
+function drawEndlessHUD(){const E=ENDLESS;if(!E)return;if(E.mode)return drawRankHUD(E);const rec=(S.endless||{})[E.w];
  txt('⏱ '+fmtT(lvlTime/60),78,96,'#fff','left','bold 22px "Segoe UI",sans-serif');
  txt('🏆 Kỷ lục '+(rec?fmtT(rec.t)+' · đợt '+rec.wave:'--:--'),80,116,'#ffd8a8','left','bold 12px "Segoe UI",sans-serif');
  ctx.fillStyle='rgba(0,0,0,.45)';ctx.beginPath();ctx.roundRect?ctx.roundRect(VW-300,48,214,52,10):ctx.rect(VW-300,48,214,52);ctx.fill();
@@ -968,8 +994,8 @@ function drawEndlessHUD(){const E=ENDLESS;if(!E)return;const rec=(S.endless||{})
  if(E.next<600&&E.next>0&&!E.q.length)txt('Đợt tiếp theo: '+Math.ceil(E.next/60)+'s',VW/2+60,bossRef&&!bossRef.dead?112:58,'#adb5bd','center','bold 12px "Segoe UI",sans-serif');
  if(E.ban.t>0){ctx.globalAlpha=Math.min(1,E.ban.t/30,(150-E.ban.t+1)/15);txt(E.ban.s,VW/2,VH/2-70,E.ban.c,'center','bold 40px "Segoe UI",sans-serif');ctx.globalAlpha=1}
  ctx.textAlign='left'}
-function recordEndless(){const E=ENDLESS;if(!E||E.saved||!E.wave)return false;E.saved=1;E.xr=gainXp((10*E.wave+E.wave*(E.wave+1))*(AUTO?.5:1));const t=Math.floor(lvlTime/60);if(!S.endless)S.endless={};const old=S.endless[E.w];const nw=!old||t>old.t;if(nw)S.endless[E.w]={t,wave:E.wave,kills:lvlKills};save();return nw}
-function endlessOver(){const E=ENDLESS;state='result';MUS.stop();showCtrl(false);const nw=recordEndless(),rec=(S.endless||{})[E.w];
+function recordEndless(){const E=ENDLESS;if(!E||E.mode||E.saved||!E.wave)return false;E.saved=1;E.xr=gainXp((10*E.wave+E.wave*(E.wave+1))*(AUTO?.5:1));const t=Math.floor(lvlTime/60);if(!S.endless)S.endless={};const old=S.endless[E.w];const nw=!old||t>old.t;if(nw)S.endless[E.w]={t,wave:E.wave,kills:lvlKills};save();return nw}
+function endlessOver(){const E=ENDLESS;if(E&&E.mode)return rkEnd(false,'dead');state='result';MUS.stop();showCtrl(false);const nw=recordEndless(),rec=(S.endless||{})[E.w];
  $('rTitle').textContent=nw?'🏆 KỶ LỤC MỚI!':'☠ TRẬN ĐẤU KẾT THÚC';
  $('rStats').innerHTML='♾ Chiến Đấu Vô Tận · '+WORLDS[E.w].name+'<br>⏱ Trụ được: <b>'+fmtT(lvlTime/60)+'</b> &nbsp; 🌊 Đợt: <b>'+E.wave+'</b><br>⚔ Hạ gục: <b>'+lvlKills+'</b> &nbsp; 🪙 Vàng nhặt: <b>'+lvlGold+'</b>'+(rec?'<br>🏆 Kỷ lục: <b>'+fmtT(rec.t)+'</b> (đợt '+rec.wave+')':'')+xpLine(E.xr);
  const rb=$('rBtns');rb.innerHTML='';const w=E.w;mkBtn(rb,'↻ ĐẤU LẠI','',()=>startEndless(w));mkBtn(rb,'🗺 ĐỔI CHIẾN TRƯỜNG','blue',()=>{ENDLESS=null;renderEndless();show('endOv')});
@@ -1525,7 +1551,8 @@ function drawEnemy(e){
  if(e.dead){ctx.globalAlpha=Math.max(0,Math.min(1,e.deadT/25))}
  const lying=e.stun>0&&!e.boss&&e.def.k!=='flyer'||e.dead&&!(e.boss&&e.B.dragon);
  if(lying){ctx.translate(e.x+e.w/2,e.y+e.h);ctx.rotate(-e.face*1.45);ctx.translate(-(e.x+e.w/2),-(e.y+e.h))}
- if(assetsReady&&ESPR[e.t]){ctx.restore();ctx.save();drawEnemySprite(e)}
+ if(assetsReady&&e.def.pvp){ctx.restore();ctx.save();drawPvpOpp(e)}
+ else if(assetsReady&&ESPR[e.t]){ctx.restore();ctx.save();drawEnemySprite(e)}
  else if(e.boss&&e.B.dragon)drawDragon(e);
  else if(e.def.draw==='wolf')drawWolf(e);
  else if(e.def.k==='flyer')drawFlyerE(e);
@@ -2415,7 +2442,7 @@ function drawHUD(){const L=LEVELS[curId];if(!P)return;
  const MD=S.hero==='mordred',full=MD?P.hp>P.maxhp*.1+1&&!(P.cdR>0):P.mp>=P.maxmp;if(MD){const nf=P.nnFull;bar(78,44,170,11,P.nn||0,360,nf?(frame%30<15?'#b0102f':'#8a0a24'):'#f1f3f5',nf?'#5c0616':'#adb5bd',nf?'NỘI NĂNG ĐẦY':'NỘI NĂNG '+Math.floor((P.nn||0)/3.6)+'%')}else bar(78,44,170,11,P.mp,P.maxmp,full?'#ffe066':'#74c0fc',full?'#f59f00':'#1971c2',Math.floor(P.mp)+' MP');
  if(P.cdR>0&&!P.ult)txt('R: '+Math.ceil(P.cdR/60)+'s',256,54,'#adb5bd','left','bold 12px "Segoe UI",sans-serif');else if(full&&frame%40<25)txt(KNAME(keyOf('r').find(Boolean)||'KeyO')+': SẴN SÀNG!',256,54,'#ffe066','left','bold 12px "Segoe UI",sans-serif');
  ctx.font='bold 20px "Segoe UI",sans-serif';if(ENDLESS)txt('🪙 '+S.bank,200,96,'#ffe066','left','bold 18px "Segoe UI",sans-serif');else txt('🪙 '+S.bank,330,36,'#ffe066');
- txt(ENDLESS?'♾ '+WORLDS[ENDLESS.w].name+' · Đợt '+ENDLESS.wave:WORLDS[L.w].name+'  '+L.name,ENDLESS?VW/2+75:VW/2+60,32,'#e7f5ff','center','bold 18px "Segoe UI",sans-serif');
+ if(!(ENDLESS&&ENDLESS.mode))txt(ENDLESS?'♾ '+WORLDS[ENDLESS.w].name+' · Đợt '+ENDLESS.wave:WORLDS[L.w].name+'  '+L.name,ENDLESS?VW/2+75:VW/2+60,32,'#e7f5ff','center','bold 18px "Segoe UI",sans-serif');
  const own=S.gems[curId]||[];if(!ENDLESS)for(let i=0;i<3;i++){const got=own[i]||(gems[i]&&gems[i].taken);const gx=VW-120+i*24;ctx.fillStyle=got?'#4de1ff':'rgba(255,255,255,.3)';ctx.beginPath();ctx.moveTo(gx,16);ctx.lineTo(gx+10,25);ctx.lineTo(gx,36);ctx.lineTo(gx-10,25);ctx.fill()}
  if(P.ult>0){bar(78,62,170,6,P.ult,P.ultMax||480,'#ffe066','#f59f00')}
  if(bossRef&&bossRef.active&&!bossRef.dead){const bw=420;bar(VW/2-bw/2,76,bw,16,bossRef.hp,bossRef.maxhp,'#ff8787','#a61e1e');txt(bossRef.B.n+(bossRef.phase>=2?' · GIAI ĐOẠN '+bossRef.phase:''),VW/2,70,bossRef.phase>=2?'#ff8787':'#ffd8a8','center','bold 16px "Segoe UI",sans-serif')}
@@ -2705,7 +2732,7 @@ function questIntro(){const qs=qIntro;qIntro=[];const lines=[];for(const q of qs
  if(lines.length&&state==='play')dialog(lines,[],null)}
 
 /* ================= GIAO DIỆN ================= */
-const OVS=['autoOv','endOv','menu','levels','shopOv','helpOv','pauseOv','resultOv','questOv','codeOv','keysOv','heroOv'];
+const OVS=['rankOv','autoOv','endOv','menu','levels','shopOv','helpOv','pauseOv','resultOv','questOv','codeOv','keysOv','heroOv'];
 function hideAll(){OVS.forEach(o=>$(o).classList.remove('show'))}
 function updMenu(){const H=HH(),nx=Math.min(S.unlocked-1,LAST),L=LEVELS[nx];if(!$('mHeroN'))return;$('mHeroN').textContent=H.name;$('mHeroS').textContent='Cấp '+HL().lv+' · ⚔ Chiến lực '+fmtN(power())+' · '+H.cls;
  $('mNext').textContent='Màn '+(L.w+1)+'-'+(L.l+1)+' · '+WORLDS[L.w].name+' — mở bản đồ';let bw=0;for(const k in (S.endless||{}))bw=Math.max(bw,S.endless[k].wave||0);$('mEnd').textContent=bw?'Kỷ lục: đợt '+bw:'Sống sót qua từng đợt';
@@ -2788,7 +2815,7 @@ document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{shopTab=b.data
 document.addEventListener('pointerdown',e=>{if(e.target.closest('.btn,.lv,.tab'))SFX.click()});
 document.addEventListener('pointerover',e=>{const b=e.target.closest('.btn:not(:disabled),.lv:not(.lock)');if(b&&b!==window._hv){window._hv=b;SFX.hover()}else if(!b)window._hv=null});
 MUS.play('menu');
-$('bResume').onclick=togglePause;$('bLayout').onclick=()=>startEdit();$('bPcBtn').onclick=()=>{S.pcBtn={ro:'mo',mo:'an',an:'ro'}[S.pcBtn];save();applyLayout()};if(isTouch)$('bPcBtn').style.display='none';$('bRestart').onclick=()=>ENDLESS?startEndless(ENDLESS.w):startLevel(curId,true);$('bQuit').onclick=()=>{if(ENDLESS)recordEndless();toMenu()};
+$('bResume').onclick=togglePause;$('bLayout').onclick=()=>startEdit();$('bPcBtn').onclick=()=>{S.pcBtn={ro:'mo',mo:'an',an:'ro'}[S.pcBtn];save();applyLayout()};if(isTouch)$('bPcBtn').style.display='none';$('bRestart').onclick=()=>ENDLESS&&ENDLESS.mode?toast('Không thể chơi lại trận xếp hạng — hãy Thoát để kết thúc trận.','fail'):ENDLESS?startEndless(ENDLESS.w):startLevel(curId,true);$('bQuit').onclick=()=>{if(ENDLESS&&ENDLESS.mode)return rkQuit();if(ENDLESS)recordEndless();toMenu()};
 $('bEndless').onclick=()=>{renderEndless();show('endOv')};
 
 /* ================= ĐIỀU KHIỂN ================= */
@@ -2919,12 +2946,140 @@ setInterval(()=>{const now=performance.now();if(!bgAt)bgAt=now;
  if(bg){const n=Math.min(7200,Math.floor((now-bgAt)/(1000/60)));for(let i=0;i<n;i++){if(!(AUTO&&ENDLESS&&state==='play'))break;step();bgSteps++}bgAt+=n*(1000/60);if(now-bgAt>1000)bgAt=now}
  else{if(bgSteps>600&&!document.hidden&&state==='play')toast('🤖 Tự động đã chiến đấu nền '+(bgSteps>=3600?Math.floor(bgSteps/3600)+' phút ':'')+Math.round(bgSteps/60)%60+' giây','main');if(!document.hidden)bgSteps=0;bgAt=now}},250);
 document.addEventListener('visibilitychange',()=>{for(const k in keys)keys[k]=0;if(document.hidden&&state==='play'&&!(AUTO&&ENDLESS))togglePause()});
+
+/* ======================================================================
+   XẾP HẠNG: PvP (thách đấu nhân vật người chơi khác, do AI điều khiển)
+             PvE (Leo Tháp 100 tầng)
+   Phần mạng (Firestore) nằm trong window.RKNET ở script Firebase cuối file.
+   ====================================================================== */
+const RK_PVP_MAX=10,RK_TW_MAX=5,RK_REF_COST=5,RK_TOWER_TOP=100,RK_PVP_TIME=90*60;
+const RK_BOTN=['Lãng Khách','Hắc Vệ Binh','Kiếm Sĩ Vô Danh','Thợ Săn Bóng Đêm','Hiệp Sĩ Lang Thang','Chiến Binh Phương Bắc','Kẻ Thách Đấu','Kỵ Sĩ Sương Mù'];
+function rkToday(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+function RKS(){if(!S.rank)S.rank={};const R=S.rank;const t=rkToday();
+ if(R.day!==t){R.day=t;R.pvp=0;R.tw=0;R.freeRef=1}
+ if(R.badge==null)R.badge=0;if(R.tf==null)R.tf=0;if(!R.def)R.def=S.hero;if(!R.cands)R.cands=[];return R}
+function rkSnap(h){h=h||S.hero;const b=heroBase(h),U=HU(h);
+ return{hero:h,sid:(S.oskin||{})[h]||'',skin:S.skin||'bac',lv:HL(h).lv,power:power(h),maxhp:b.maxhp,atk:Math.round(b.atk*10)/10,arm:Math.min(UP_MAX,U.arm||0)}}
+// Điểm thắng/thua: đánh người mạnh hơn thắng được nhiều, thua mất ít; ngược lại
+function rkDelta(myP,opP){const r=Math.max(.25,Math.min(4,opP/Math.max(1,myP)));
+ const win=Math.max(8,Math.min(40,Math.round(20*Math.pow(r,1.5)))),lose=Math.max(5,Math.min(30,Math.round(16*Math.pow(1/r,1.5))));
+ return{win,lose,defLose:Math.round(win*.6),defGain:Math.round(lose*.5)}}
+function rkBot(me){const f=.85+Math.random()*.3,h=HORDER[Math.floor(Math.random()*HORDER.length)],H=HEROES[h]||{};
+ const s=rkSnap(me.hero),p=Math.round(s.power*f);
+ return{bot:1,uid:'bot'+Math.random().toString(36).slice(2,8),name:RK_BOTN[Math.floor(Math.random()*RK_BOTN.length)],hero:h,sid:'',skin:'bac',lv:Math.max(1,Math.min(30,s.lv+Math.round((f-1)*20))),
+  power:p,maxhp:Math.round(s.maxhp*f/(H.hp||1)*(H.hp||1)),atk:Math.round(s.atk*f*10)/10,arm:s.arm,pts:Math.max(0,(RKS().pts||1000)+Math.round((f-1)*300))}}
+
+/* ---------- vào trận ---------- */
+function rkStart(mode,o){const R=RKS();
+ if(mode==='pvp'){if(R.pvp>=RK_PVP_MAX)return toast('Hết lượt PvP hôm nay ('+RK_PVP_MAX+'/'+RK_PVP_MAX+'). Quay lại vào ngày mai!','fail');
+  R.pvp++;save();const w=Math.abs([...String(o.uid)].reduce((a,c)=>a*31+c.charCodeAt(0)|0,7))%6;
+  startEndless(w);const E=ENDLESS;E.mode='pvp';E.opp0=o;E.me=rkSnap();E.t=0;E.next=1e9;E.ban={t:150,s:'⚔ '+o.name.toUpperCase()+' ⚔',c:'#ff8787'}}
+ else{if(R.tw>=RK_TW_MAX)return toast('Hết lượt Leo Tháp hôm nay ('+RK_TW_MAX+'/'+RK_TW_MAX+').','fail');
+  if(R.tf>=RK_TOWER_TOP)return toast('Bạn đã chinh phục cả '+RK_TOWER_TOP+' tầng tháp!','main');
+  R.tw++;save();const st=R.tf+1;startEndless(Math.floor((st-1)/10)%6);const E=ENDLESS;E.mode='tower';E.start=st;E.wave=st-1;E.next=1e9;E.gap=150;E.cleared=0;E.badges=0;
+  E.ban={t:150,s:'🗼 TẦNG '+st,c:'#ffd43b'}}
+ AUTO=false}
+// gọi từ updateEndless mỗi khung hình
+function rkTick(E,alive){if(E.done)return;
+ if(E.mode==='pvp'){E.t++;if(E.t===100&&!E.opp)rkSpawnOpp(E);
+  if(E.opp&&E.opp.dead)return rkEnd(true,'ko');
+  if(E.t>=RK_PVP_TIME){const me=P.hp/P.maxhp,op=E.opp?Math.max(0,E.opp.hp)/E.opp.maxhp:1;rkEnd(me>op,'time')}return}
+ // tháp
+ if(E.gap>0){E.gap--;if(E.gap===0){E.bossN=Math.floor(E.wave/10);nextWave();E.next=1e9;E.ban={t:150,s:'🗼 TẦNG '+E.wave+(E.wave%10===0?' · TRÙM!':E.wave%5===0?' · TINH ANH!':''),c:E.wave%10===0?'#ff6b6b':'#ffd43b'}}return}
+ if(!E.q.length&&!alive&&E.wave>=E.start){const f=E.wave,R=RKS();E.cleared=f;const b=1+(f%10===0?5:0);E.badges+=b;R.badge+=b;
+  if(f>R.tf){R.tf=f;R.tfAt=Date.now()}save();if(window.RKNET)RKNET.saveTower(R.tf,R.tfAt).catch(()=>{});
+  pop(P.x-40,P.y-30,'TẦNG '+f+' ✔  +'+b+' 🎖','#ffd43b',1);SFX.cp();
+  if(f>=RK_TOWER_TOP)return rkEnd(true,'top');E.gap=170}}
+function rkSpawnOpp(E){const o=E.opp0,H=HEROES[o.hero]||HEROES.knight,rng=!!H.ranged;
+ ED.pvp_opp={n:o.name+' · Cấp '+o.lv,elite:1,k:rng?'ranged':'melee',hp:100,dmg:10,spd:2.5*(H.spd||1),gold:[0,0],reach:46,wind:16,w:28,h:56,
+  proj:rng?(o.hero==='ignis'?'fire':'spear'):undefined,cool:rng?75:undefined,pvp:{hero:HEROES[o.hero]?o.hero:'knight',sid:o.sid||'',skin:o.skin||'bac'}};
+ const e=mkEnemy({t:'pvp_opp',x:0,feet:E.spec.groundY},{l:0,w:0});
+ e.hp=e.maxhp=Math.round(o.maxhp*5/(1-.018*Math.min(30,o.arm||0)));e.dmg=o.atk*1.2;
+ const side=P.x<W*TS/2?1:-1;e.x=side<0?TS*2:(W-2)*TS-e.w;e.y=E.spec.groundY-e.h;e.homeX=e.x;e.active=true;e.endless=1;e.state='chase';e.face=e.dir=-side;
+ enemies.push(e);E.opp=e;burst(e.x+e.w/2,e.y+e.h/2,'#ff8787',16,4,4)}
+function drawPvpOpp(e){const p=e.def.pvp;let a='idle';
+ if(e.dead)a='death';else if(e.flash>4)a='hurt';else if(e.state==='atk'||e.state==='wind')a='atk1';else if(Math.abs(e.vx)>.3)a='run';
+ if(e._a!==a){e._a=a;e._af=0}e._af++;const n=KN[a]||8,i=a==='death'?Math.min(n-1,Math.floor(e._af/4)):e.state==='wind'?0:Math.floor(e._af/5)%n;
+ ctx.fillStyle='rgba(255,40,40,.28)';ctx.beginPath();ctx.ellipse(e.x+e.w/2,e.y+e.h,26,6,0,0,7);ctx.fill();
+ if(e.dead)ctx.globalAlpha=Math.max(0,Math.min(1,e.deadT/25));
+ drawKnightSprite('k_'+a,i,e.x+e.w/2,e.y+e.h+1,e.face,p.skin,null,p.hero,p.sid);ctx.globalAlpha=1}
+function drawRankHUD(E){const R=RKS();
+ if(E.mode==='pvp'){const left=Math.max(0,RK_PVP_TIME-E.t);txt('⏱ '+fmtT(left/60),VW/2,40,left<600?'#ff6b6b':'#fff','center','bold 26px "Segoe UI",sans-serif');
+  txt('⚔ Xếp hạng PvP · đối thủ: '+E.opp0.name+' (CL '+fmtN(E.opp0.power)+')',VW/2,62,'#ffd8a8','center','bold 13px "Segoe UI",sans-serif')}
+ else{txt('🗼 TẦNG '+Math.max(E.start,E.wave)+' / '+RK_TOWER_TOP,VW/2,40,'#ffd43b','center','bold 26px "Segoe UI",sans-serif');
+  txt('Kỷ lục: tầng '+R.tf+' · ☠ '+enemies.filter(e=>!e.dead).length+' địch · +'+E.badges+' 🎖',VW/2,62,'#ced4da','center','bold 13px "Segoe UI",sans-serif')}
+ if(E.ban.t>0){ctx.globalAlpha=Math.min(1,E.ban.t/30,(150-E.ban.t+1)/15);txt(E.ban.s,VW/2,VH/2-70,E.ban.c,'center','bold 40px "Segoe UI",sans-serif');ctx.globalAlpha=1}
+ ctx.textAlign='left'}
+
+/* ---------- kết thúc trận ---------- */
+function rkEnd(win,why){const E=ENDLESS;if(!E||E.done)return;E.done=1;state='result';MUS.stop();showCtrl(false);const R=RKS();
+ const rb=$('rBtns');rb.innerHTML='';
+ if(E.mode==='pvp'){const o=E.opp0,d=rkDelta(E.me.power,o.power),old=R.pts||1000,my=win?d.win:-d.lose,np=Math.max(0,old+my);R.pts=np;
+  const b=win?3:1;R.badge+=b;const xr=gainXp(win?60:20);R.cands=[];save();
+  $('rTitle').textContent=win?'🏆 CHIẾN THẮNG!':'☠ THẤT BẠI';
+  $('rStats').innerHTML='⚔ Đối thủ: <b>'+o.name+'</b> ('+(HEROES[o.hero]||{}).short+' · Cấp '+o.lv+' · CL '+fmtN(o.power)+')'+(why==='time'?'<br>⏱ Hết giờ — so phần trăm máu còn lại':'')+
+   '<br>Điểm xếp hạng: <b>'+fmtN(old)+' → '+fmtN(np)+'</b> <b style="color:'+(win?'#69db7c':'#ff8787')+'">('+(win?'+'+d.win:'-'+d.lose)+')</b>'+
+   '<br>🎖 Huy hiệu Đấu trường: <b>+'+b+'</b> (có '+R.badge+')'+xpLine(xr)+'<br><span id="rkNet" style="opacity:.75;font-size:.85em">☁ Đang cập nhật bảng xếp hạng…</span>';
+  if(window.RKNET)RKNET.pvpResult(o,my,o.bot?0:(win?-d.defLose:d.defGain)).then(m=>{save();const x=$('rkNet');if(x)x.textContent='☁ '+(m||'Đã cập nhật bảng xếp hạng.')}).catch(e=>{const x=$('rkNet');if(x)x.textContent='⚠ Chưa cập nhật được máy chủ: '+(e&&e.message||e)});
+  mkBtn(rb,'⚔ TRẬN TIẾP','',()=>{rkOpen('pvp')});SFX[win?'win':'die']()}
+ else{const f=E.cleared||0,nf=f>=E.start?f-E.start+1:0,xr=gainXp(nf*15+(nf?f:0));
+  $('rTitle').textContent=why==='top'?'👑 CHINH PHỤC ĐỈNH THÁP!':(f>=E.start?'🗼 LEO THÁP KẾT THÚC':'☠ CHƯA QUA ĐƯỢC TẦNG '+E.start);
+  $('rStats').innerHTML='Vượt qua: <b>'+(nf?nf+' tầng (tới tầng '+f+')':'0 tầng')+'</b><br>🏆 Kỷ lục của bạn: <b>tầng '+R.tf+'</b><br>🎖 Huy hiệu nhận: <b>+'+E.badges+'</b> (có '+R.badge+')'+xpLine(xr)+
+   '<br>Lượt leo tháp hôm nay: '+R.tw+'/'+RK_TW_MAX;
+  if(R.tw<RK_TW_MAX&&R.tf<RK_TOWER_TOP)mkBtn(rb,'🗼 LEO TIẾP (TẦNG '+(R.tf+1)+')','',()=>rkStart('tower'))}
+ mkBtn(rb,'🏆 XẾP HẠNG','blue',()=>{ENDLESS=null;rkOpen()});mkBtn(rb,'🏠 MENU','gray',()=>{ENDLESS=null;toMenu()});show('resultOv')}
+function rkQuit(){const E=ENDLESS;if(!E||E.done)return toMenu();if(E.mode==='pvp')rkEnd(false,'quit');else rkEnd(false,'quit')}
+
+/* ---------- màn hình Xếp hạng ---------- */
+let rkTab='pvp',rkBusy=false,rkBoard='pvp';
+function rkOpen(tab){if(tab)rkTab=tab;ENDLESS=null;menuReturn='menu';show('rankOv');rkRender();
+ if(window.RKNET&&!rkBusy){rkBusy=true;RKNET.loadMe().then(()=>{rkBusy=false;rkRender();if(rkTab==='pvp'&&RKS().inLobby&&!RKS().cands.length)rkFind(true)}).catch(e=>{rkBusy=false;rkMsg('⚠ '+(e.message||e))})}}
+function rkMsg(t,ok){const m=$('rkMsg');if(m){m.textContent=t||'';m.style.color=ok?'#b2f2bb':'#ffc9c9'}}
+function rkHeroLine(s){const H=HEROES[s.hero]||{};return (H.short||s.hero)+' · Cấp '+s.lv+' · ⚔ CL '+fmtN(s.power)}
+function rkRender(){const box=$('rkBody');if(!box)return;const R=RKS();
+ document.querySelectorAll('[data-rk]').forEach(t=>t.classList.toggle('on',t.dataset.rk===rkTab));
+ $('rkTop').innerHTML='🏅 Điểm PvP: <b>'+fmtN(R.pts||1000)+'</b>'+(R.rankPos?' (hạng #'+R.rankPos+')':'')+' &nbsp; 🗼 Tháp: <b>tầng '+R.tf+'</b> &nbsp; 🎖 Huy hiệu: <b>'+R.badge+'</b>';
+ let h='';
+ if(rkTab==='pvp'){const me=rkSnap(),def=R.def&&heroHas(R.def)?R.def:S.hero;
+  h+='<div class="rk-row"><div class="rk-card"><div class="rk-h">🛡 Nhân vật trên sảnh chờ (phòng thủ)</div>'+(R.inLobby?'<b>'+rkHeroLine(rkSnap(def))+'</b><br><small>Người khác thách đấu bạn kể cả khi bạn offline. Thua bạn mất điểm, thắng bạn được điểm.</small>':'<small>Bạn chưa đưa nhân vật lên sảnh. Phải có nhân vật trên sảnh mới tham gia PvP được.</small>')+
+   '<div class="rk-btns"><button class="btn sm '+(R.inLobby?'gray':'main')+'" id="rkLobby">'+(R.inLobby?'↻ Cập nhật / đổi sang '+(HEROES[S.hero]||{}).short:'⬆ Đưa '+(HEROES[S.hero]||{}).short+' lên sảnh')+'</button></div></div>'+
+   '<div class="rk-card"><div class="rk-h">⚔ Bạn ra trận với</div><b>'+rkHeroLine(me)+'</b><br><small>Đổi chiến binh ở Lò Rèn → Chiến binh.</small><br>Lượt hôm nay: <b>'+(RK_PVP_MAX-R.pvp)+'/'+RK_PVP_MAX+'</b>'+
+   (R.lastHit?'<br><small>🗡 Gần nhất: <b>'+R.lastHit.n+'</b> thách đấu bạn → <b style="color:'+(R.lastHit.d<0?'#ff8787':'#69db7c')+'">'+(R.lastHit.d>0?'+':'')+R.lastHit.d+'</b> điểm</small>':'')+'</div></div>';
+  if(R.inLobby){h+='<div class="rk-h" style="margin-top:.6em">Chọn 1 trong 3 đối thủ có chiến lực gần bằng bạn</div><div class="rk-opps">';
+   if(!R.cands.length)h+='<div class="rk-card" style="grid-column:1/-1;text-align:center">'+(rkBusy?'Đang tìm đối thủ…':'Bấm “Tìm đối thủ”.')+'</div>';
+   R.cands.forEach((o,i)=>{const d=rkDelta(me.power,o.power),H=HEROES[o.hero]||{};
+    h+='<div class="rk-card rk-opp"><canvas width="90" height="90" data-oh="'+i+'"></canvas><b>'+o.name+'</b><small>'+(H.short||o.hero)+' · Cấp '+o.lv+(o.bot?' · 🤖 Máy':'')+'</small><div>⚔ CL <b>'+fmtN(o.power)+'</b> · 🏅 '+fmtN(o.pts||1000)+'</div>'+
+     '<small>Thắng <b style="color:#69db7c">+'+d.win+'</b> · Thua <b style="color:#ff8787">-'+d.lose+'</b></small><button class="btn sm main" data-fight="'+i+'"'+(R.pvp>=RK_PVP_MAX?' disabled':'')+'>Thách đấu</button></div>'});
+   h+='</div><div class="rk-btns" style="justify-content:center"><button class="btn sm blue" id="rkRef">🔄 Tìm 3 đối thủ khác '+(R.freeRef>0?'(miễn phí hôm nay)':'('+RK_REF_COST+' 🎖)')+'</button></div>'}}
+ else if(rkTab==='tower'){h+='<div class="rk-card" style="text-align:center"><div style="font-size:3em">🗼</div><div class="rk-h">Tháp Thử Thách · '+RK_TOWER_TOP+' tầng</div>Kỷ lục: <b>tầng '+R.tf+'</b> · Lượt hôm nay: <b>'+(RK_TW_MAX-R.tw)+'/'+RK_TW_MAX+'</b><br>'+
+  '<small>Mỗi tầng là một đợt quái. Tầng 5, 15, 25… có quái tinh anh, tầng 10, 20, 30… có trùm. Mỗi lượt bắt đầu từ tầng kế tiếp sau kỷ lục và leo đến khi gục ngã.<br>Thưởng: +1 🎖 mỗi tầng, +5 🎖 tầng trùm, kèm EXP. Xếp hạng theo tầng cao nhất; bằng tầng thì ai đạt trước đứng trên.</small>'+
+  '<div class="rk-btns" style="justify-content:center"><button class="btn main" id="rkTw"'+(R.tw>=RK_TW_MAX||R.tf>=RK_TOWER_TOP?' disabled':'')+'>'+(R.tf>=RK_TOWER_TOP?'👑 Đã chinh phục':'⚔ Leo tầng '+(R.tf+1))+'</button></div></div>'}
+ else{h+='<div class="rk-btns" style="justify-content:center"><button class="btn sm '+(rkBoard==='pvp'?'main':'gray')+'" data-board="pvp">⚔ PvP</button><button class="btn sm '+(rkBoard==='tower'?'main':'gray')+'" data-board="tower">🗼 Leo Tháp</button></div><div id="rkBoard" class="rk-board">Đang tải…</div>'}
+ h+='<div id="rkMsg" class="rk-msg"></div>';box.innerHTML=h;
+ // gắn sự kiện
+ const q=id=>$(id);
+ if(q('rkLobby'))q('rkLobby').onclick=()=>{if(!window.RKNET)return rkMsg('Chưa kết nối máy chủ.');R.def=S.hero;save();rkMsg('Đang đưa lên sảnh…',1);
+  RKNET.upsertLobby(rkSnap(S.hero)).then(()=>{R.inLobby=1;save();rkRender();rkMsg('Đã đưa '+(HEROES[S.hero]||{}).short+' lên sảnh chờ!',1);if(!R.cands.length)rkFind(true)}).catch(e=>rkMsg('⚠ '+(e.message||e)))};
+ if(q('rkRef'))q('rkRef').onclick=()=>{if(R.freeRef>0)R.freeRef--;else{if(R.badge<RK_REF_COST)return rkMsg('Cần '+RK_REF_COST+' 🎖 Huy hiệu Đấu trường để đổi đối thủ.');R.badge-=RK_REF_COST}save();rkFind(false)};
+ box.querySelectorAll('[data-fight]').forEach(b=>b.onclick=()=>{const o=R.cands[+b.dataset.fight];if(o)rkStart('pvp',o)});
+ if(q('rkTw'))q('rkTw').onclick=()=>rkStart('tower');
+ box.querySelectorAll('[data-board]').forEach(b=>b.onclick=()=>{rkBoard=b.dataset.board;rkRender()});
+ if(rkTab==='board')rkLoadBoard();
+ box.querySelectorAll('canvas[data-oh]').forEach(c=>{const o=R.cands[+c.dataset.oh];if(!o||!assetsReady)return;const g=c.getContext('2d');g.imageSmoothingEnabled=false;drawToCanvas(g,()=>drawKnightSprite('k_idle',0,45,86,-1,o.skin||'bac',1.35,HEROES[o.hero]?o.hero:'knight',o.sid||''))})}
+function rkFind(silent){const R=RKS();if(!window.RKNET)return;rkBusy=true;R.cands=[];rkRender();
+ RKNET.findOpponents(rkSnap()).then(list=>{list=list.slice(0,3);while(list.length<3)list.push(rkBot(rkSnap()));R.cands=list;rkBusy=false;save();rkRender();if(!silent)rkMsg('Đã tìm 3 đối thủ mới.',1)})
+  .catch(e=>{rkBusy=false;R.cands=[rkBot(rkSnap()),rkBot(rkSnap()),rkBot(rkSnap())];save();rkRender();rkMsg('⚠ Không tải được người chơi ('+(e.message||e)+') — tạm dùng đối thủ máy.')})}
+function rkLoadBoard(){if(!window.RKNET)return;const el=$('rkBoard');const me=window.RKME&&RKME.uid;
+ RKNET.top(rkBoard).then(rows=>{if(!$('rkBoard'))return;if(!rows.length){$('rkBoard').innerHTML='<div style="text-align:center;opacity:.7">Chưa có ai trên bảng xếp hạng.</div>';return}
+  $('rkBoard').innerHTML='<table><tr><th>#</th><th>Tên</th><th>Chiến binh</th><th>'+(rkBoard==='pvp'?'Điểm':'Tầng')+'</th><th>Chiến lực</th></tr>'+rows.map((r,i)=>'<tr'+(r.id===me?' class="me"':'')+'><td>'+(i<3?['🥇','🥈','🥉'][i]:i+1)+'</td><td>'+String(r.name||'?').replace(/</g,'&lt;')+'</td><td>'+((HEROES[r.hero]||{}).short||'')+' · Cấp '+(r.lv||1)+'</td><td><b>'+(rkBoard==='pvp'?fmtN(r.pts||0):r.tf||0)+'</b></td><td>'+fmtN(r.power||0)+'</td></tr>').join('')+'</table>'})
+  .catch(e=>{if($('rkBoard'))$('rkBoard').textContent='⚠ '+(e.message||e)})}
+
 </script>
 <script type="module">
 /* ================= MÁY CHỦ FIREBASE: đăng nhập + lưu dữ liệu ================= */
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js';
 import {getAuth,onAuthStateChanged,GoogleAuthProvider,signInWithPopup,signInWithCredential,signInAnonymously,createUserWithEmailAndPassword,signInWithEmailAndPassword,sendPasswordResetEmail,sendEmailVerification,linkWithPopup,linkWithCredential,EmailAuthProvider,signOut} from 'https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js';
-import {getFirestore,doc,getDoc,setDoc,serverTimestamp} from 'https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js';
+import {getFirestore,doc,getDoc,setDoc,serverTimestamp,collection,query,where,orderBy,limit,getDocs,runTransaction,getCountFromServer} from 'https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js';
 
 const firebaseConfig={
  apiKey:"AIzaSyD02MI3PcdN10NTeGmKn_VersP9UQ_mOT8",
@@ -2999,7 +3154,7 @@ $a('aNameOk').onclick=async()=>{const n=$a('aName').value.trim().replace(/\s+/g,
   await setDoc(pref(user.uid),{name:n},{merge:true});busy(false);ready=true;enterGame()}
  catch(e){busy(false);msg('aNameMsg',em(e))}};
 
-function enterGame(){hideAuth();ready=true;try{updMenu()}catch(e){}}
+function enterGame(){hideAuth();ready=true;window.RKME={uid:user.uid,name:pname};try{updMenu()}catch(e){}}
 
 onAuthStateChanged(auth,u=>{if(u)afterLogin(u);else{user=null;ready=false;view('avLogin')}});
 
@@ -3012,6 +3167,43 @@ $a('aSignIn').onclick=()=>run(()=>signInWithEmailAndPassword(auth,$a('aEmail').v
 $a('aSignUp').onclick=()=>run(async()=>{const c=await createUserWithEmailAndPassword(auth,$a('aEmail').value.trim(),$a('aPass').value);try{await sendEmailVerification(c.user)}catch(e){}},'aMsg');
 $a('aForgot').onclick=()=>{const e=$a('aEmail').value.trim();if(!e)return msg('aMsg','Nhập email vào ô Email rồi bấm lại “Quên mật khẩu?”.');
  run(async()=>{await sendPasswordResetEmail(auth,e);msg('aMsg','Đã gửi email đặt lại mật khẩu tới '+e+' (xem cả thư rác).',true)},'aMsg')};
+
+
+/* ---------- XẾP HẠNG: dữ liệu công khai trong collection "arena" ---------- */
+const aref=uid=>doc(db,'arena',uid);
+const tsc=(tf,at)=>tf>0?tf*1e13+(1e13-(at||Date.now())):0; // tầng cao hơn đứng trên; bằng tầng thì ai đạt trước đứng trên
+const pick=o=>({uid:o.uid,name:o.name,hero:o.hero,sid:o.sid||'',skin:o.skin||'bac',lv:o.lv||1,power:o.power||0,maxhp:o.maxhp||100,atk:o.atk||12,arm:o.arm||0,pts:o.pts||0});
+window.RKNET={
+ async loadMe(){if(!user)throw new Error('Chưa đăng nhập');const R=RKS(),sn=await getDoc(aref(user.uid));
+  if(sn.exists()){const d=sn.data();R.inLobby=d.lobby?1:0;R.pts=d.pts;R.lastHit=d.hitN?{n:d.hitN,d:d.hitD||0}:null;
+   if((d.tf||0)>R.tf){R.tf=d.tf;R.tfAt=d.tfAt}
+   try{const c=await getCountFromServer(query(collection(db,'arena'),where('pts','>',d.pts)));R.rankPos=c.data().count+1}catch(e){R.rankPos=0}}
+  else{R.inLobby=0;R.pts=1000;R.rankPos=0}save()},
+ async upsertLobby(s){const R=RKS(),ex=(await getDoc(aref(user.uid))).exists();
+  const d={name:pname,lobby:true,hero:s.hero,sid:s.sid,skin:s.skin,lv:s.lv,power:s.power,maxhp:s.maxhp,atk:s.atk,arm:s.arm,upd:serverTimestamp()};
+  if(!ex)await setDoc(aref(user.uid),Object.assign(d,{pts:1000,tf:R.tf||0,tfAt:R.tfAt||0,tScore:tsc(R.tf,R.tfAt)}));
+  else await setDoc(aref(user.uid),d,{merge:true})},
+ async findOpponents(me){const col=collection(db,'arena'),seen=new Set([user.uid]),out=[];
+  for(const [a,b] of [[.8,1.25],[.5,2],[0,1e9]]){
+   const qs=await getDocs(query(col,where('power','>=',Math.floor(me.power*a)),where('power','<=',Math.ceil(me.power*b)),orderBy('power'),limit(40)));
+   qs.forEach(d=>{const o=d.data();if(!seen.has(d.id)&&o.lobby){seen.add(d.id);out.push(pick(Object.assign({uid:d.id},o)))}});if(out.length>=3)break}
+  // ưu tiên người gần chiến lực nhất, rồi trộn ngẫu nhiên trong nhóm gần
+  out.sort((x,y)=>Math.abs(x.power-me.power)-Math.abs(y.power-me.power));const near=out.slice(0,8).sort(()=>Math.random()-.5);return near.slice(0,3)},
+ async pvpResult(o,myDelta,defDelta){let msg='';
+  // điểm của mình (giao dịch để không ghi đè điểm người khác vừa cộng/trừ)
+  await runTransaction(db,async tx=>{const r=aref(user.uid),sn=await tx.get(r);const cur=sn.exists()?sn.data().pts||0:1000,np=Math.max(0,cur+myDelta);tx.set(r,{pts:np,upd:serverTimestamp()},{merge:true});RKS().pts=np});
+  if(o.bot||!defDelta)return 'Đã cập nhật điểm xếp hạng.';
+  try{await runTransaction(db,async tx=>{const r=aref(o.uid),sn=await tx.get(r);if(!sn.exists())return;const cur=sn.data().pts||0,np=Math.max(0,cur+defDelta);
+    tx.update(r,{pts:np,hitAt:serverTimestamp(),hitBy:user.uid,hitN:pname,hitD:np-cur})});msg='Đã cập nhật điểm của bạn và '+o.name+' ('+(defDelta>0?'+':'')+defDelta+').'}
+  catch(e){msg='Đã cập nhật điểm của bạn. ('+o.name+' vừa bị người khác thách đấu nên điểm của họ không đổi lần này.)'}
+  try{const c=await getCountFromServer(query(collection(db,'arena'),where('pts','>',RKS().pts)));RKS().rankPos=c.data().count+1}catch(e){}return msg},
+ async saveTower(tf,tfAt){if(!user)return;const r=aref(user.uid),ex=(await getDoc(r)).exists();const d={tf,tfAt,tScore:tsc(tf,tfAt),upd:serverTimestamp()};
+  if(!ex){const s=rkSnap(S.hero);Object.assign(d,{name:pname,lobby:false,pts:1000,hero:s.hero,sid:s.sid,skin:s.skin,lv:s.lv,power:s.power,maxhp:s.maxhp,atk:s.atk,arm:s.arm});await setDoc(r,d)}
+  else await setDoc(r,d,{merge:true})},
+ async top(kind){const col=collection(db,'arena');
+  const qs=await getDocs(kind==='pvp'?query(col,orderBy('pts','desc'),limit(80)):query(col,orderBy('tScore','desc'),limit(50)));
+  const rows=[];qs.forEach(d=>{const o=d.data();if(kind==='pvp'?o.lobby:(o.tf>0))rows.push(Object.assign({id:d.id},o))});return rows.slice(0,50)}
+};
 
 /* ---------- bảng tài khoản ---------- */
 function kind(){if(!user)return'';if(user.isAnonymous)return'Khách (chưa liên kết)';return user.providerData.map(p=>p.providerId==='google.com'?'Google':p.providerId==='password'?'Email':p.providerId).join(' + ')}
