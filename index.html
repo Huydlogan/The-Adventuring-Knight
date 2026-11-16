@@ -2440,7 +2440,7 @@ function drawHUD(){const L=LEVELS[curId];if(!P)return;
  ctx.save();ctx.beginPath();ctx.arc(40,40,28,0,7);ctx.clip();if(assetsReady)drawKnightSprite('k_idle',0,41,104,1,S.skin,2.2);else drawKnight({},SKINS[S.skin]||SKINS.bac,36,92,1,{t:frame,ang:null});ctx.restore();
  bar(78,20,230,18,P.hp,P.maxhp,'#ff6b6b','#c92a2a','HP '+Math.ceil(P.hp)+' / '+P.maxhp);
  const MD=S.hero==='mordred',full=MD?P.hp>P.maxhp*.1+1&&!(P.cdR>0):P.mp>=P.maxmp;if(MD){const nf=P.nnFull;bar(78,44,170,11,P.nn||0,360,nf?(frame%30<15?'#b0102f':'#8a0a24'):'#f1f3f5',nf?'#5c0616':'#adb5bd',nf?'NỘI NĂNG ĐẦY':'NỘI NĂNG '+Math.floor((P.nn||0)/3.6)+'%')}else bar(78,44,170,11,P.mp,P.maxmp,full?'#ffe066':'#74c0fc',full?'#f59f00':'#1971c2',Math.floor(P.mp)+' MP');
- if(P.cdR>0&&!P.ult)txt('R: '+Math.ceil(P.cdR/60)+'s',256,54,'#adb5bd','left','bold 12px "Segoe UI",sans-serif');else if(full&&frame%40<25)txt(KNAME(keyOf('r').find(Boolean)||'KeyO')+': SẴN SÀNG!',256,54,'#ffe066','left','bold 12px "Segoe UI",sans-serif');
+ if(P.cdR>0&&!P.ult)txt('R: '+Math.ceil(P.cdR/60)+'s',256,54,'#adb5bd','left','bold 12px "Segoe UI",sans-serif');else if(full&&frame%40<25)txt(KNAME(keyOf('r').find(Boolean)||'KeyR')+': SẴN SÀNG!',256,54,'#ffe066','left','bold 12px "Segoe UI",sans-serif');
  ctx.font='bold 20px "Segoe UI",sans-serif';if(ENDLESS)txt('🪙 '+S.bank,200,96,'#ffe066','left','bold 18px "Segoe UI",sans-serif');else txt('🪙 '+S.bank,330,36,'#ffe066');
  if(!(ENDLESS&&ENDLESS.mode))txt(ENDLESS?'♾ '+WORLDS[ENDLESS.w].name+' · Đợt '+ENDLESS.wave:WORLDS[L.w].name+'  '+L.name,ENDLESS?VW/2+75:VW/2+60,32,'#e7f5ff','center','bold 18px "Segoe UI",sans-serif');
  const own=S.gems[curId]||[];if(!ENDLESS)for(let i=0;i<3;i++){const got=own[i]||(gems[i]&&gems[i].taken);const gx=VW-120+i*24;ctx.fillStyle=got?'#4de1ff':'rgba(255,255,255,.3)';ctx.beginPath();ctx.moveTo(gx,16);ctx.lineTo(gx+10,25);ctx.lineTo(gx,36);ctx.lineTo(gx-10,25);ctx.fill()}
@@ -2823,8 +2823,8 @@ const BINDS=[
  ['left','Đi trái','move',['KeyA','ArrowLeft']],['right','Đi phải','move',['KeyD','ArrowRight']],
  ['up','Nhảy / leo lên','move',['KeyW','ArrowUp']],['down','Leo xuống / rơi xuyên sàn','move',['KeyS','ArrowDown']],
  ['jh','Nhảy','move',['Space']],['auto','Tự động đánh (vô tận)','act',['KeyV']],['atk','Đánh thường','act',['KeyJ','Digit0']],
- ['q','Skill 1 – Lốc Xoáy','act',['KeyU','Digit1']],['e','Skill 2 – Kiếm Khí','act',['KeyI','Digit2']],
- ['r','Skill 3 – Cường Hóa','act',['KeyO','KeyQ','Digit3']],['dash','Lướt','act',['ShiftLeft','ShiftRight','KeyL']],['sp','Chiêu đặc biệt (Hất Tung · Đá Trượt · Đập Đất)','act',['KeyG','Digit8']],
+ ['q','Skill 1 – Lốc Xoáy','act',['KeyQ','KeyU','Digit1']],['e','Skill 2 – Kiếm Khí','act',['KeyE','KeyI','Digit2']],
+ ['r','Skill 3 – Cường Hóa','act',['KeyR','KeyO','Digit3']],['dash','Lướt','act',['ShiftLeft','ShiftRight','KeyL']],['sp','Chiêu đặc biệt (Hất Tung · Đá Trượt · Đập Đất)','act',['KeyG','Digit8']],
  ['block','Chặn (giữ)','hold',['KeyK','Digit6']],['hp','Bình máu','act',['KeyN','KeyX','Digit4']],
  ['mp','Bình mana','act',['KeyM','KeyC','Digit5']],['bomb','Ném thuốc nổ','act',['KeyB','Digit7']],
  ['talk','Nói chuyện với NPC','sys',['KeyF']],['quest','Mở bảng nhiệm vụ','sys',['KeyT','Tab']],['pause','Tạm dừng','sys',['Escape','KeyP']]];
