@@ -315,7 +315,7 @@ input[type=range].kfoc{scale:1.08;accent-color:#ffe066}
 <div class="ov" id="helpOv"><div class="panel"><i class="rv l"></i><i class="rv r"></i><h2>Hướng Dẫn</h2><div class="orn"></div><div class="help">
  <span id="helpKeys"></span>
  <b>Hòm đồ &amp; giải cứu:</b> đứng cạnh hòm hoặc người bị trói, <b>giữ F</b> (hoặc giữ nút 💬) 0,5 giây — thả tay hoặc bị đánh trúng là phải làm lại. Từ vùng IV có <b>hòm bẫy</b> (thỉnh thoảng rung lắc): quái vật chui ra, hạ nó để nhận thưởng gấp đôi. Hòm có thể ra bình máu, bình mana, túi vàng hoặc 3 quả thuốc nổ. Thuốc nổ gây sát thương diện rộng, cẩn thận đứng gần sẽ bị vạ lây!<br>
- <b>Combo &amp; chiêu thức:</b> đánh trúng liên tục để nối <b>combo</b> (bộ đếm bên phải); cứ đủ 10 hit, nhát chém cuối của chuỗi thành đòn <b>Kết Liễu</b>. Nút <b>🥋 Chiêu</b> (phím <kbd>G</kbd>): đứng yên → <b>Hất Tung</b> (cận chiến: chém hất địch lên trời, mình bật theo để chém tiếp; Sylva/Ignis: bắn tên/cầu lửa lên trời, sóng xung kích đẩy văng địch hai bên); đang chạy → <b>Đá Trượt</b>; đang trên không → <b>Đập Đất</b> (cận chiến lao chéo xuống; Sylva/Ignis bắn chéo xuống). Hai chiêu sau cùng <b>Khiên Hộ Thể</b> học ở <b>Lò Rèn › Chiêu thức</b>. Đòn mạnh hất văng kẻ địch va vào nhau hoặc đập vào tường.<br>
+ <b>Combo &amp; chiêu thức:</b> đánh trúng liên tục để nối <b>combo</b> (bộ đếm bên phải); cứ đủ 10 hit, nhát chém cuối của chuỗi thành đòn <b>Kết Liễu</b>. Nút <b>🥋 Chiêu</b> (phím <kbd>G</kbd>): đứng yên → <b>Hất Tung</b> (cận chiến: chém hất địch lên trời, mình bật theo để chém tiếp; Sylva/Ignis: bắn tên/cầu lửa lên trời, sóng xung kích đẩy văng địch hai bên); đang chạy → <b>Đá Trượt</b>; đang trên không → <b>Đập Đất</b> (cận chiến lao chéo xuống; Sylva/Ignis bắn chéo xuống). Hai chiêu sau cùng <b>Quyền Năng Ma Thuật</b> học ở <b>Lò Rèn › Chiêu thức</b>. Đòn mạnh hất văng kẻ địch va vào nhau hoặc đập vào tường.<br>
  <b>Phục kích &amp; bí mật:</b> giữa màn có đoạn bị rào lửa chặn hai đầu — hạ hết các đợt quái để thông đường. Đập <b>bình gốm, thùng gỗ</b> lấy vàng; <b>thùng TNT</b> đỏ nổ sau 0,5 giây (tránh xa!). Tường/sàn có <b>vết nứt lấp lánh</b> che phòng bí mật — tường thì chém thường, sàn thì cần đòn mạnh (nhát cuối, Hất Tung, Đập Đất) hoặc thuốc nổ. Quái và thùng gỗ đôi khi rơi <b>vũ khí</b> — nhặt lên thì nút Đánh dùng vũ khí đó thay kiếm: <b>🪓 Rìu</b> bổ cực mạnh, phá khiên; <b>🔱 Giáo</b> đâm xa, xuyên hàng; <b>🏹 Nỏ</b> bắn tên xuyên. Thanh độ bền hiện ở góc trái, hết thì vũ khí gãy.<br>
  <b>Kẻ địch đặc biệt:</b> <b>Lính Khiên</b> chặn đòn trước mặt — vòng ra sau hoặc dùng đòn mạnh phá thế; <b>Quỷ Túm</b> ôm chặt — bấm liên tục để thoát; <b>Yêu Tinh Cảm Tử</b> lao tới tự nổ — hạ sớm hoặc né; <b>Lính Quăng Lưới</b> làm bạn chậm lại.<br>
  <b>Sao &amp; thử thách:</b> mỗi màn có 3 sao: <b>Thời gian</b> (về đích kịp giờ) · <b>Khám phá</b> (đủ ma thạch + tìm phòng bí mật) · <b>Bền bỉ</b> (về đích còn ≥ 80% máu), đủ mốc sao nhận thưởng. Mỗi ngày có 1 thử thách ở menu chính.<br>
@@ -910,7 +910,7 @@ function hurtPlayer(dmg,src){if(!P||P.dead||P.inv>0||P.dash>0||state!=='play')re
     if(!boss){pop(P.x,P.y-6,{kaito:'PHẢN ĐÒN!',ignis:'KHIÊN PHÉP!',mordred:'KHIÊN MÁU!'}[h]||'CHẶN!','#ffe066');return}dmg*=.3}}}
  if(EV&&EV.type==='dodge')EV.hits++;
  if(h==='knight'&&P.hp<P.maxhp*.3)dmg*=.75;
- const d=Math.max(1,Math.round(dmg*(1-.018*Math.min(UP_MAX,HU().arm))*(P.ult>0?.5:1)*(ENDLESS?1/(1+.09*ENDLESS.buf.arm):1)));if(S.sk.ward&&P.ward){wardBreak();return}P.wardT=frame;P.hp-=d;gainMp(8);P.inv=50;if(runMem)runMem.hits++;comboEnd();P.plunge=0;
+ const d=Math.max(1,Math.round(dmg*(1-.018*Math.min(UP_MAX,HU().arm))*(P.ult>0?.5:1)*(P.mag>0?.6:1)*(ENDLESS?1/(1+.09*ENDLESS.buf.arm):1)));P.hp-=d;gainMp(8);P.inv=50;if(runMem)runMem.hits++;comboEnd();P.plunge=0;
  const dir=src?(P.x+P.w/2<src.x+src.w/2?-1:1):-P.face;const armor=P.whirl||P.ult||P.flame>0||(h==='bjorn'&&(P.atk||P.cast>0||P.block));if(!armor){P.vx=dir*4;P.vy=-4.5;P.knock=12;P.atk=null}
  P.climb=false;P.hold=null;pop(P.x,P.y-6,'-'+d,'#ff6b6b');SFX.hurt();shake=Math.max(shake,6);burst(P.x+12,P.y+20,'#ff4d4d',6,3,3);
  if(P.hp<=0){P.hp=0;killPlayer()}}
@@ -1607,7 +1607,7 @@ function ownSkin(h,id){return !id||((S.oskinOwn||{})[h]||[]).includes(id)}
 /* ---- giai đoạn trùm & cỗ mecha lâu đài ---- */
 /* ================= COMBO · PHỤC KÍCH · VẬT PHÁ · QUÁI MỚI · VŨ KHÍ · BÍ MẬT · SAO · CHIÊU THỨC · THỬ THÁCH ================= */
 let hitStop=0,hitStopL=0,LOCKS=[],breaks=[],secRooms=[],lvlSecret=false,lvlPar=0;const COMBO={n:0,t:0,fin:0,pulse:0};
-if(!S.sk)S.sk={};if(S.sk.parry){S.sk.ward=1;delete S.sk.parry}if(!S.stars)S.stars={};if(!S.starR)S.starR=0;
+if(!S.sk)S.sk={};if(S.sk.parry||S.sk.ward){S.sk.mag=1;delete S.sk.parry;delete S.sk.ward}if(!S.stars)S.stars={};if(!S.starR)S.starR=0;
 function rmNew(id){return{lv:id,coins:new Set(),chests:new Set(),qi:new Set(),locks:new Set(),brk:new Set(),hits:0,t:0,secret:0,pot:0}}
 const comboWin=()=>S.sk.combo?210:150;
 function comboHit(e,o){COMBO.n++;COMBO.t=comboWin();COMBO.pulse=10;
@@ -1720,14 +1720,19 @@ function plungeTick(p){if(p.knock>0||p.climb||p.dash>0){p.plunge=0;return}p.plT=
 
 function slideTick(p){p.vx=p.face*12.5;hitEnemies({x:p.x-14,y:p.y+p.h-34,w:p.w+28,h:38},stats().atk*1.5*dmgMult(),{kb:5,launch:1,stun:35,finOK:1,col:'#ffe8cc'},p.slideK);
  parts.push({x:p.x+p.w/2-p.face*10,y:p.y+p.h-2,vx:-p.face*(1+rnd()*2),vy:-1-rnd()*2,life:18,col:rnd()<.5?'#d9c8a8':'#a89a86',size:4,g:.1});if(p.dash===1){p.slideK=null;p.dash=0;p.vx=p.face*3}}
-function wardTick(p){if(p.spCd>0)p.spCd--;if(!S.sk.ward)return;if(p.wardT===undefined)p.wardT=-9999;
- if(!p.ward&&frame-p.wardT>360){p.ward=1;FXS.push({k:'parry',x:p.x+p.w/2,y:p.y+p.h/2,life:30});seq([880,1175],70,.08,'triangle',.05);pop(p.x-30,p.y-26,'🔰 KHIÊN HỘ THỂ','#ffe066')}}
-function wardBreak(){const p=P;p.ward=0;p.wardT=frame;p.inv=50;hitStop=Math.max(hitStop,8);scrFlash=5;shake=Math.max(shake,6);SFX.parry();SFX.metal();noise(.2,4000,.1);
- const cx=p.x+p.w/2,cy=p.y+p.h/2;FXS.push({k:'parry',x:cx,y:cy,life:30});hRings.push({x:cx,y:cy,r:120,t:18,col:'#ffe066'});burst(cx,cy,'#ffe066',22,6,4);skillName(p,'KHIÊN CHẶN ĐÒN!','#ffe066');
- hitEnemies({x:cx-120,y:cy-70,w:240,h:140},stats().atk*.6,{kb:7,stun:40,col:'#ffe066'},new Set())}
-function drawWard(p){if(!p.ward||p.dead)return;const cx=p.x+p.w/2,cy=p.y+p.h/2+2,r=p.h*.78+Math.sin(frame*.1)*2;ctx.save();ctx.translate(cx,cy);
- const g=ctx.createRadialGradient(0,0,r*.6,0,0,r);g.addColorStop(0,'rgba(255,224,102,0)');g.addColorStop(1,'rgba(255,224,102,.28)');ctx.fillStyle=g;ctx.beginPath();for(let i=0;i<6;i++){const a=i*1.047+frame*.01;ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r)}ctx.closePath();ctx.fill();
- ctx.strokeStyle='rgba(255,236,150,'+(.55+.25*Math.sin(frame*.15))+')';ctx.lineWidth=2;ctx.stroke();ctx.rotate(-frame*.02);ctx.fillStyle='rgba(255,250,220,.85)';for(let i=0;i<3;i++){ctx.rotate(2.09);ctx.fillRect(r-3,-2,4,4)}ctx.restore()}
+let magReady=0;
+function wardTick(p){if(p.spCd>0)p.spCd--;if(!S.sk.mag||p.dead)return;
+ if(p.mag>0){p.mag--;p.hp=Math.min(p.maxhp,p.hp+p.maxhp*.24/240);if(frame%4===0)parts.push({x:p.x+rnd()*p.w,y:p.y+p.h-rnd()*10,vx:(rnd()-.5)*.6,vy:-1.6-rnd(),life:26,col:rnd()<.5?'#8ce99a':'#d0bfff',size:3,g:-.02});if(frame%20===0)pop(p.x+6,p.y-4,'+'+Math.round(p.maxhp*.24/12),'#8ce99a');if(!p.mag)pop(p.x-20,p.y-26,'Quyền năng tan biến','#b197fc')}
+ else if(p.hp>0&&p.hp<p.maxhp*.3&&frame>=magReady){p.mag=240;magReady=frame+90*60;hitStop=Math.max(hitStop,6);scrFlash=5;shake=Math.max(shake,5);seq([523,784,1047,1568],70,.12,'triangle',.06);snd(220,.4,'sine',600,.06);
+  const cx=p.x+p.w/2,cy=p.y+p.h/2;hRings.push({x:cx,y:cy,r:110,t:20,col:'#b197fc'},{x:cx,y:cy,r:70,t:16,col:'#8ce99a'});burst(cx,cy,'#d0bfff',24,6,4);skillName(p,'QUYỀN NĂNG MA THUẬT!','#d0bfff')}}
+function drawWard(p){if(!(p.mag>0)||p.dead)return;const cx=p.x+p.w/2,cy=p.y+p.h+2,k=Math.min(1,p.mag/30),t=frame;ctx.save();ctx.globalAlpha=k;
+ ctx.translate(cx,cy);ctx.scale(1,.32);ctx.strokeStyle='rgba(177,151,252,.85)';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,44,0,7);ctx.stroke();ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(0,0,34,0,7);ctx.stroke();
+ ctx.rotate(t*.03);ctx.beginPath();for(let i=0;i<6;i++){const a=i*2.094*2;ctx.lineTo(Math.cos(a)*34,Math.sin(a)*34)}ctx.closePath();ctx.stroke();ctx.fillStyle='#e5dbff';for(let i=0;i<8;i++){const a=i*.785;ctx.fillRect(Math.cos(a)*39-2,Math.sin(a)*39-2,4,4)}ctx.restore();
+ ctx.save();ctx.globalAlpha=k;const g=ctx.createLinearGradient(0,p.y-20,0,p.y+p.h);g.addColorStop(0,'rgba(177,151,252,0)');g.addColorStop(1,'rgba(177,151,252,.32)');ctx.fillStyle=g;ctx.fillRect(cx-30,p.y-20,60,p.h+22);
+ ctx.strokeStyle='rgba(208,191,255,'+(.5+.3*Math.sin(t*.25))+')';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(cx,p.y+p.h/2,30,40,0,0,7);ctx.stroke();ctx.restore()}
+function magHUD(){if(!S.sk.mag||!P)return;const x=254,y=51,rd=frame>=magReady,act=P.mag>0;ctx.save();ctx.fillStyle='rgba(15,10,25,.75)';ctx.beginPath();ctx.arc(x+10,y,11,0,7);ctx.fill();
+ ctx.strokeStyle=act?'#d0bfff':rd?'#b197fc':'#555';ctx.lineWidth=2;ctx.stroke();if(!rd&&!act){ctx.fillStyle='rgba(177,151,252,.45)';ctx.beginPath();ctx.moveTo(x+10,y);ctx.arc(x+10,y,10,-1.57,-1.57+6.283*(1-(magReady-frame)/5400));ctx.fill()}
+ txt('✨',x+10,y+5,'#fff','center','13px serif');txt(act?'Đang hồi '+Math.ceil(P.mag/60)+'s':rd?'Sẵn sàng':Math.ceil((magReady-frame)/60)+'s',x+24,y+4,act?'#d0bfff':rd?'#b197fc':'#868e96','left','bold 11px "Segoe UI",sans-serif');ctx.restore();ctx.textAlign='left'}
 function perfectParry(src){const att=src.hp!==undefined&&src.maxhp?src:null;P.blockFx=16;P.inv=Math.max(P.inv,40);gainMp(15);SFX.parry();SFX.metal();seq([1320,1760],60,.1,'triangle',.07);hitStop=Math.max(hitStop,14);scrFlash=7;shake=Math.max(shake,7);
  burst(P.x+P.w/2+P.face*16,P.y+20,'#fff3bf',22,6,3);FXS.push({k:'parry',x:P.x+P.w/2+P.face*14,y:P.y+22,life:30});skillName(P,'PHẢN ĐÒN HOÀN HẢO!','#fff3bf');
  if(src.vx!==undefined&&!att&&src.dead!==undefined){src.dead=true}
@@ -1845,7 +1850,7 @@ function dailyProg(k,v){const D=daily(),C=DAILY[D.i];if(D.done||C.k!==k)return;D
 function updDaily(){const el=$('dailyBox');if(!el)return;const D=daily(),C=DAILY[D.i];el.innerHTML='📅 <b>Thử thách hôm nay:</b> '+C.t+' — '+(D.done?'<b style="color:#8ce99a">✔ Đã hoàn thành</b>':'<b>'+D.p+' / '+C.n+'</b> · thưởng '+DAILY_GOLD+' vàng + 1 vé tự động')}
 const SKILLS=[{k:'slide',ic:'🦵',n:'Đá Trượt',d:'Đang chạy bấm 🥋 Chiêu (G), hoặc giữ ▼ + Lướt: nằm trượt sát đất, xuyên qua đòn đánh, đá tung mọi kẻ địch trên đường (150% sát thương).',how:'Đang <b>chạy</b> bấm <kbd>G</kbd> / nút 🥋 — hoặc giữ <kbd>▼</kbd> + <kbd>Lướt</kbd>',p:400},
  {k:'slam',ic:'💥',n:'Đập Đất',d:'Đang ở trên không bấm 🥋 Chiêu (G), hoặc giữ ▼ + Đánh. Cận chiến: lộn người rồi lao chéo xuống theo hướng mặt, chém xuyên kẻ địch trên đường, chạm đất tạo sóng chấn động hất tung xung quanh (220% sát thương), phá được sàn nứt. Sylva / Ignis: bắn 3 mũi tên / quả cầu lửa nổ chéo xuống phía trước.',how:'<b>Nhảy lên</b> rồi bấm <kbd>G</kbd> / nút 🥋 — hoặc giữ <kbd>▼</kbd> + <kbd>Đánh</kbd> trên không',p:600},
- {k:'ward',ic:'🔰',n:'Khiên Hộ Thể',d:'Sau 6 giây không bị trúng đòn, một lớp khiên vàng hình lục giác bao quanh nhân vật. Đòn kế tiếp bị chặn hoàn toàn — khiên vỡ tung, đẩy văng và làm choáng mọi kẻ địch xung quanh. Không cần bấm gì.',p:800,how:'Tự động: tránh bị đánh trúng 6 giây là khiên hồi lại (vòng lục giác vàng quanh người)'},
+ {k:'mag',ic:'✨',n:'Quyền Năng Ma Thuật',d:'Khi máu tụt xuống dưới 30%: trong 4 giây nhân vật được giảm 40% sát thương phải chịu và tự hồi tổng cộng 24% máu tối đa (vòng phép tím dưới chân, hạt sáng xanh bay lên). Hồi chiêu 90 giây.',p:800,how:'Tự động kích hoạt khi máu dưới 30% — biểu tượng ✨ cạnh thanh máu cho biết đã sẵn sàng hay còn hồi chiêu'},
  {k:'combo',ic:'🔥',n:'Bậc Thầy Combo',d:'Combo giữ được lâu hơn 40%. Mỗi 10 hit tăng 5% sát thương (tối đa +30%).',how:'Tự động có hiệu lực — đánh liên tục để giữ bộ đếm combo',p:500}];
 /* --- vẽ --- */
 function dtmWorldDraw(){for(const e of enemies){if(e.dead||e.x+e.w<cam-60||e.x>cam+VW+60)continue;
@@ -1860,7 +1865,7 @@ function dtmWorldDraw(){for(const e of enemies){if(e.dead||e.x+e.w<cam-60||e.x>c
  if(p.grab){const g=p.grab;ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(p.x-18,p.y-22,60,8);ctx.fillStyle='#ffd43b';ctx.fillRect(p.x-17,p.y-21,58*Math.min(1,g.n/8),6);if(frame%14<9)txt('BẤM LIÊN TỤC!',p.x+12,p.y-28,'#ffe066','center','bold 15px "Segoe UI",sans-serif');ctx.textAlign='left'}
  if(p.plunge){ctx.fillStyle='rgba(255,232,204,.35)';ctx.beginPath();ctx.moveTo(p.x-6,p.y);ctx.lineTo(p.x+p.w+6,p.y);ctx.lineTo(p.x+p.w/2,p.y+p.h+26);ctx.fill()}}
 function hudBelowQ(){const q=$('qpanel'),c=$('c');if(!q||q.style.display==='none'||!c)return ENDLESS?128:96;const a=q.getBoundingClientRect(),b=c.getBoundingClientRect();if(!a.height)return ENDLESS?128:96;return Math.round((a.bottom-b.top)*960/b.width)+8}
-function dtmHUD(){if(COMBO.pulse>0)COMBO.pulse--;const F='"Segoe UI",sans-serif';
+function dtmHUD(){magHUD();if(COMBO.pulse>0)COMBO.pulse--;const F='"Segoe UI",sans-serif';
  if(COMBO.n>=2&&(state==='play'||state==='pause')){const s=1+COMBO.pulse*.035,col=COMBO.n>=30?'#ff6b6b':COMBO.n>=10?'#ffa94d':'#ffe066';ctx.save();ctx.globalAlpha=Math.min(1,COMBO.t/30);ctx.translate(VW-96,196);ctx.scale(s,s);
   txt(''+COMBO.n,0,0,col,'center','bold 46px '+F);txt('HIT'+(COMBO.n>=10?'!':''),0,20,'#fff','center','bold 16px '+F);ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(-40,28,80,5);ctx.fillStyle=col;ctx.fillRect(-40,28,80*COMBO.t/comboWin(),5);
   if(COMBO.fin&&frame%30<21)txt('⚡ KẾT LIỄU!',0,52,'#ffd43b','center','bold 15px '+F);ctx.restore()}
