@@ -200,6 +200,12 @@ input[type=range].kfoc{scale:1.08;accent-color:#ffe066}
 #qpanel{position:absolute;left:calc(var(--u)*1 + var(--sl));top:calc(var(--u)*14);width:calc(var(--u)*27);z-index:4;display:none;font-family:"Noto Serif","Times New Roman",serif;color:#f1e2bc;pointer-events:auto}
 #qpanel .qh{display:flex;align-items:center;gap:calc(var(--u)*.6);background:linear-gradient(180deg,rgba(58,44,30,.92),rgba(28,20,14,.92));border:calc(var(--u)*.15) solid #a07a2c;border-radius:calc(var(--u)*.5) calc(var(--u)*.5) 0 0;padding:calc(var(--u)*.35) calc(var(--u)*.8);font-size:calc(var(--u)*1.25);font-weight:700;color:#ffe08a;cursor:pointer;user-select:none}
 #qpanel .qh .tg{margin-left:auto;transition:transform .15s}#qpanel.open .qh .tg{transform:rotate(180deg)}
+/* bảng nhiệm vụ thu nhỏ: chỉ còn ô 📜, bấm vào mới mở bảng đầy đủ */
+#qpanel:not(.open){width:auto}
+#qpanel:not(.open) .qh{position:relative;width:calc(var(--u)*3.8);height:calc(var(--u)*3.8);padding:0;justify-content:center;border-radius:calc(var(--u)*.7);font-size:calc(var(--u)*2.1);box-shadow:0 calc(var(--u)*.2) calc(var(--u)*.6) rgba(0,0,0,.5)}
+#qpanel:not(.open) .qt,#qpanel:not(.open) .tg,#qpanel:not(.open) #qbody{display:none}
+#qpanel:not(.open) .qbadge{position:absolute;top:calc(var(--u)*-.6);right:calc(var(--u)*-.6);background:#e03131;border:calc(var(--u)*.12) solid #fff;font-size:calc(var(--u)*1);line-height:1.5}
+
 .qbadge{display:none;min-width:calc(var(--u)*1.5);padding:0 calc(var(--u)*.35);border-radius:calc(var(--u)*1);background:#2f9e44;color:#fff;font-size:calc(var(--u)*1);text-align:center;font-family:sans-serif}
 #qbody{background:rgba(16,12,8,.72);border:calc(var(--u)*.15) solid #6a5228;border-top:none;border-radius:0 0 calc(var(--u)*.5) calc(var(--u)*.5);padding:calc(var(--u)*.4);max-height:calc(var(--u)*17);overflow:auto}
 .qr{border-left:calc(var(--u)*.3) solid #6c757d;padding:calc(var(--u)*.35) calc(var(--u)*.6);margin:calc(var(--u)*.25) 0;background:rgba(255,255,255,.04);border-radius:calc(var(--u)*.3)}
@@ -285,8 +291,8 @@ input[type=range].kfoc{scale:1.08;accent-color:#ffe066}
 <canvas id="c" width="960" height="540"></canvas>
 
 <div id="ctrl">
- <div class="mpad ctl" id="mvPad" style="left:calc(var(--u)*1.4 + var(--sl));bottom:calc(var(--u)*1.6 + var(--sb))"><div class="mk l" id="mvL">◀</div><div class="mk r" id="mvR">▶</div></div>
- <div class="ctl" id="mvUD" style="left:calc(var(--u)*9.6 + var(--sl));bottom:calc(var(--u)*14.4 + var(--sb))"><div class="mk2" id="mvU">▲</div><div class="mk2" id="mvD">▼</div></div>
+ <div class="mpad ctl" id="mvPad" style="left:calc(var(--u)*1.4 + var(--sl));bottom:calc(var(--u)*7 + var(--sb))"><div class="mk l" id="mvL">◀</div><div class="mk r" id="mvR">▶</div></div>
+ <div class="ctl" id="mvUD" style="left:calc(var(--u)*9.4 + var(--sl));bottom:calc(var(--u)*.8 + var(--sb));gap:calc(var(--u)*12.8)"><div class="mk2" id="mvU">▲</div><div class="mk2" id="mvD">▼</div></div>
  <div class="sb ctl" id="bAtk" data-a="atk" style="width:calc(var(--u)*11.5);height:calc(var(--u)*11.5);right:calc(var(--u)*14.4 + var(--sr));bottom:calc(var(--u)*1.6 + var(--sb));font-size:calc(var(--u)*4.4)">⚔<i class="sw up">▲</i><i class="sw dn">▼</i><span class="emb">⚡ CƯỜNG KÍCH</span><span class="key">J</span></div>
  <div class="sb ctl" id="bJump" data-a="jump" style="width:calc(var(--u)*10.5);height:calc(var(--u)*10.5);right:calc(var(--u)*2 + var(--sr));bottom:calc(var(--u)*2.1 + var(--sb));font-size:calc(var(--u)*4)">⤒<span class="key">SPACE</span></div>
  <div class="sb ctl" id="bBlock" data-a="block" style="width:calc(var(--u)*8.4);height:calc(var(--u)*8.4);right:calc(var(--u)*16 + var(--sr));bottom:calc(var(--u)*15 + var(--sb));font-size:calc(var(--u)*3.2)">🛡<span class="key">K</span></div>
@@ -301,7 +307,7 @@ input[type=range].kfoc{scale:1.08;accent-color:#ffe066}
 </div>
 <div id="safeProbe" style="position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)"></div>
 <div class="ov" id="iosOv"><div class="panel" style="padding:calc(var(--u)*2.2) calc(var(--u)*3.4)"><i class="rv l"></i><i class="rv r"></i><h2>Toàn Màn Hình</h2><div class="orn"></div><div class="stats">Safari trên iPhone không cho trang web tự bật toàn màn hình. Để chơi tràn màn hình, không còn thanh địa chỉ:<br>1. Bấm nút <b>Chia sẻ</b> <b>⬆</b> của Safari.<br>2. Chọn <b>Thêm vào MH chính</b> (Add to Home Screen).<br>3. Mở game bằng biểu tượng <b>Hiệp Sĩ</b> vừa tạo — game sẽ chạy toàn màn hình như ứng dụng.</div><button class="btn main" id="iosOk">Đã hiểu</button></div></div>
-<div id="qpanel"><div class="qh" id="qhead">📜 Nhiệm vụ <span id="qcnt"></span><span class="qbadge" id="qbadge"></span><span class="tg">▾</span></div><div id="qbody"></div></div>
+<div id="qpanel"><div class="qh" id="qhead" title="Nhiệm vụ (T)"><span class="qi">📜</span><span class="qt">Nhiệm vụ <span id="qcnt"></span></span><span class="qbadge" id="qbadge"></span><span class="tg">▾</span></div><div id="qbody"></div></div>
 <div id="toast"></div>
 <div id="dlg"><div class="dbox" id="dbox"><canvas id="dPor" width="120" height="120"></canvas><div class="dtx"><div id="dName"></div><div id="dText"></div><div id="dBtns"></div></div><div id="dNext">▼</div><button class="btn gray sm" id="dSkip">Bỏ qua ▸▸</button></div></div>
 <div id="editBar"><span>Kéo các nút đến vị trí bạn muốn</span><label>Cỡ nút <input type="range" id="ctlSize" min="70" max="140"></label><label>Độ mờ <input type="range" id="ctlAlpha" min="30" max="100"></label><button class="btn sm gray" id="edReset">↺ Mặc định</button><button class="btn sm main" id="edDone">✔ Xong</button></div>
