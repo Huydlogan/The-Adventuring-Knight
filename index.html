@@ -3478,7 +3478,7 @@ const _rr=rkRender;rkRender=function(){const r=_rr.apply(this,arguments);
 /* mời bạn: tạo phòng đấu bạn bè, hoặc bấm nút 📤 Mời bạn để chia sẻ mã phòng */
 document.addEventListener('click',e=>{const t=e.target&&e.target.closest&&e.target.closest('#lvHost,#lvShare');if(!t)return;
  if(t.id==='lvHost'){T('invite_friend',{method:'create_room'});return}
- const code=liveUI.code||'',url=location.origin+location.pathname.replace(/[^/]*\.html$/,''),txt=L_('Vào đấu với mình trong Hiệp Sĩ Phiêu Lưu! Mã phòng: {c} — mở Xếp hạng › Trực tiếp › nhập mã.').replace('{c}',code);
+ const code=liveUI.code||'',url='https://huydlogan.github.io/The-Adventuring-Knight/',txt=L_('Vào đấu với mình trong Hiệp Sĩ Phiêu Lưu! Mã phòng: {c} — mở Xếp hạng › Trực tiếp › nhập mã.').replace('{c}',code);
  const copy=()=>{const done=()=>{toast(L_('📋 Đã sao chép lời mời — dán gửi cho bạn bè!'));T('invite_friend',{method:'copy'})};
   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt+' '+url).then(done,()=>{prompt('',txt+' '+url)});else{prompt('',txt+' '+url)}};
  if(navigator.share)navigator.share({title:document.title,text:txt,url}).then(()=>T('invite_friend',{method:'share'}),err=>{if(!err||err.name!=='AbortError')copy()});else copy()},true);
