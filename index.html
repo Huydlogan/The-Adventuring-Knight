@@ -6265,6 +6265,8 @@ function bfCasters(){for(const e of enemies){if(e.dead||!e.active||!(e.boss||e.e
    ctx.beginPath();ctx.moveTo(-tw/2+10,-15);ctx.lineTo(tw/2-10,-15);ctx.lineTo(tw/2,0);ctx.lineTo(tw/2-10,15);ctx.lineTo(-tw/2+10,15);ctx.lineTo(-tw/2,0);ctx.closePath();ctx.fill();ctx.stroke();ctx.shadowBlur=0;
    ctx.fillStyle=N.c;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('⚠',-tw/2+20,1);ctx.fillStyle='#fff';ctx.fillText(N.t,12,1);
    if(age<10){ctx.globalAlpha=(1-age/10)*.8;ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.strokeRect(-tw/2-age*2,-15-age,tw+age*4,30+age*2)}ctx.restore()}}}
+/* ---- sửa cỡ & hướng sprite quái thường ---- */
+try{ESPR.golem.sc=1.86;if(ESPR.frostsk)delete ESPR.frostsk.left}catch(e){}
 </script>
 <script type="module">
 /* ================= MÁY CHỦ FIREBASE: đăng nhập + lưu dữ liệu ================= */
