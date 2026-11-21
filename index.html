@@ -410,6 +410,9 @@ input[type=range].kfoc{scale:1.08;accent-color:#ffe066}
 
 
 
+
+
+
 .gfr{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:calc(var(--u)*.4) calc(var(--u)*1.4);align-items:center;font-size:calc(var(--u)*1.15);color:#e8d5a8;background:rgba(0,0,0,.3);border:calc(var(--u)*.12) solid #5a4424;border-radius:calc(var(--u)*.5);padding:calc(var(--u)*.5) calc(var(--u)*.9)}
 .gfr b{color:#fff}.gfL{color:#ffa94d}.gfM{color:#ff6b8a}
 .gpv i{display:inline-block;min-width:1.8em;text-align:center;border:calc(var(--u)*.1) solid #6b5a3a;border-radius:calc(var(--u)*.3);margin-left:calc(var(--u)*.25);font-style:normal;color:#a89870}
@@ -3020,7 +3023,7 @@ function drawPerson(spec,x,feet,face,fr){if(!assetsReady)return;if(spec.knight){
 function npcMark(n){for(const id of NPCS[n.k].q){const q=QM[id],st=qst(id);if(st===2||(st===1&&q.t==='craft'&&qprog(q)>=qtotal(q)))return['?','#69db7c'];
   if(st===0&&(!q.req||qst(q.req)>=2))return['!','#ffd43b'];if(st===1)return['…','#ced4da']}return null}
 function drawQuestWorld(){
- for(const it of qitems)if(!it.taken){const b=Math.sin(frame*.08+it.x)*3;ctx.fillStyle='rgba(255,236,150,.25)';ctx.beginPath();ctx.arc(it.x+11,it.y+12+b,15,0,7);ctx.fill();if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';ctx.font='20px serif';ctx.textAlign='center';ctx.fillText(QI[it.it][1],it.x+11,it.y+20+b);ctx.textAlign='left'}}}}}}}}}
+ for(const it of qitems)if(!it.taken){const b=Math.sin(frame*.08+it.x)*3;ctx.fillStyle='rgba(255,236,150,.25)';ctx.beginPath();ctx.arc(it.x+11,it.y+12+b,15,0,7);ctx.fill();if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';if(!(window.qiDraw&&qiDraw(it.it,it.x+11,it.y+12+b,34))){ctx.fillStyle='#fff';ctx.font='20px serif';ctx.textAlign='center';ctx.fillText(QI[it.it][1],it.x+11,it.y+20+b);ctx.textAlign='left'}}}}}}}}}}
  for(const c of captives){if(c.freed&&c.t<=0)continue;ctx.globalAlpha=c.freed?c.t/60:1;drawPerson(SPK[c.k],c.x,c.feet-(c.freed?(60-c.t)*.6:0),-1,c.freed?frame:0);
   if(!c.freed){ctx.strokeStyle='#a8743a';ctx.lineWidth=3;for(const yy of[-34,-24])  {ctx.beginPath();ctx.moveTo(c.x-12,c.feet+yy);ctx.lineTo(c.x+12,c.feet+yy+3);ctx.stroke()}
    ctx.fillStyle='rgba(0,0,0,.6)';ctx.beginPath();ctx.roundRect?ctx.roundRect(c.x-26,c.feet-92,52,20,6):ctx.rect(c.x-26,c.feet-92,52,20);ctx.fill();txt(L_('Cứu với!'),c.x,c.feet-77,'#ffd8a8','center','bold 12px "Segoe UI",sans-serif')}ctx.globalAlpha=1}
@@ -6417,6 +6420,9 @@ window.dlgIdle=function(k,N){const pool=[N.idle].concat(IDLE2[k]||[]);IDI[k]=IDI
  const L=[[k,pool[IDI[k]%pool.length]]];if(Math.random()<.7){const c=HCHAT[S.hero]||HCHAT.knight;L.push(['hero',c[Math.floor(Math.random()*c.length)]])}return L};
 for(const k in SC2)if(SCENES[k])SCENES[k]=SC2[k];
 if(SPK.king)SPK.king.n=L_('Vua Aldric');
+/* sửa hướng nhìn: các sprite gốc quay ngược chiều */
+['villager','villager2','villager3','durin','dwarfm','olaf','morwen','elara','gromn','taron'].forEach(k=>{if(SPK[k])SPK[k].left=SPK[k].left?0:1});
+try{if(ESPR.boss9)ESPR.boss9=Object.assign({},ESPR.boss9,{left:1})}catch(e){}
 })();
 </script>
 <script>
