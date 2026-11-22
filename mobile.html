@@ -7286,10 +7286,10 @@ const _st=step;step=function(){hookNet();return _st.apply(this,arguments)};
 <script>
 /* ================= PvP: KHUNG ĐỐI THỦ GÓC PHẢI · R 60% · KHỰNG ĐÁ TRƯỢT ================= */
 (function(){
-/* ---- R chỉ gây 60% sát thương trong PvP / đấu tập với chiến binh ---- */
+/* ---- R: phần sát thương cộng thêm chỉ còn 60% trong PvP / đấu tập với chiến binh (×1,8 → ×1,48) ---- */
 function pvpLike(){const E=ENDLESS;if(!E)return false;if(E.mode==='pvp'||E.mode==='live')return true;
  try{if(E.mode==='spar'&&window.SP&&SP.cfg&&String(SP.cfg.opp||'').slice(0,2)==='h:')return true}catch(err){}return false}
-const _dm=dmgMult;dmgMult=function(){const r=_dm.apply(this,arguments);try{if(P&&P.ult>0&&pvpLike())return r*.6}catch(err){}return r};
+const _dm=dmgMult;dmgMult=function(){const r=_dm.apply(this,arguments);try{if(P&&P.ult>0&&pvpLike())return 1+(r-1)*.6}catch(err){}return r};
 /* ---- Đá Trượt: khựng 0,3 giây sau khi trượt xong, chờ 1 giây mới trượt lại ---- */
 const SL_REC=18,SL_CD=60;
 const _ss=startSlide;startSlide=function(p){if(p&&p.slCd>0)return false;const r=_ss.apply(this,arguments);if(r&&p){p.slEnd=(p.dash||20);p.slCd=p.slEnd+SL_CD}return r};
