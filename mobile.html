@@ -6602,7 +6602,7 @@ const _up0=updatePlayer0;updatePlayer0=function(){if(!nocd()||!P)return _up0.app
  if(!u0&&p.ult>0&&S.hero==='mordred'&&p.hp<h0)p.hp=h0;p.cdQ=p.cdE=p.dashCd=0;if(!(p.ult>0))p.cdR=0;p.mp=p.maxmp;return r};
 /* ---- HUD ---- */
 const _hud=drawRankHUD;drawRankHUD=function(E){if(E.mode!=='spar')return _hud.apply(this,arguments);const c=SP.cfg,D=DIFF[c.diff],T=SP.st,o=E.o;
- const e=E.sp;if(e&&!e.boss&&!e.dead){const w=300,x=VW/2-w/2,y=50,hv=c.oInv?e.maxhp:Math.max(0,e.hp);txt(o.name,VW/2,44,'#ffc9c9','center','bold 14px "Segoe UI",sans-serif');bar(x,y,w,14,hv,e.maxhp,'#ff8787','#c92a2a',Math.ceil(hv)+' / '+e.maxhp)}
+ const e=E.sp;if(e&&!e.boss&&!e.dead&&!(e.def&&e.def.pvp)){const w=300,x=VW/2-w/2,y=50,hv=c.oInv?e.maxhp:Math.max(0,e.hp);txt(o.name,VW/2,44,'#ffc9c9','center','bold 14px "Segoe UI",sans-serif');bar(x,y,w,14,hv,e.maxhp,'#ff8787','#c92a2a',Math.ceil(hv)+' / '+e.maxhp)}
  const secs=T.t0<0?0:Math.max(1,(E.t-T.t0)/60),pw=210,px=VW-pw-10,y0=124;ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(px,y0-18,pw,128);ctx.strokeStyle='rgba(116,192,252,.6)';ctx.lineWidth=1;ctx.strokeRect(px+.5,y0-17.5,pw-1,127);
  const L=[['🥊 '+L_('ĐẤU TẬP'),'#a5d8ff'],[D.n+(c.dummy?' · 🎯':'')+(c.pInv?' · 🛡':'')+(c.oInv?' · ♾':'')+(c.nocd?' · ⚡':''),D.c],[L_('⚔ Gây ra: ')+fmtN(T.dealt),'#ffe066'],['📈 DPS: '+fmtN(T.dealt/Math.max(1,secs)),'#ffc078'],[L_('💥 Nhận vào: ')+fmtN(T.taken),'#ff8787'],[L_('☠ Hạ gục: ')+T.ko+L_('  ·  💀 Gục: ')+T.down,'#ced4da']];
  L.forEach((l,i)=>txt(l[0],px+10,y0+i*19,l[1],'left','bold 13px "Segoe UI",sans-serif'));
@@ -7166,7 +7166,7 @@ function mkS(hero,skin,sid){const s=JSON.parse(JSON.stringify(S));s.hero=hero;s.
  if(s.gear)s.gear.eq={};if(s.pet)s.pet.cur='';if(s.arms)s.arms.eq={};s.pot={hp:0,mp:0};s.sk={};s.ivb={};s.autoT=1e9;return s}
 function mkGhost(e){const p=e.def.pvp,hero=HEROES[p.hero]?p.hero:'knight';
  const g={e,hero,net:!!e.net,c:{},a:[],o:[],pv:null,u0:0,q:[],pq:[],seq:0,mirror:false,frm:0};
- const proxy={x:0,y:0,w:24,h:48,vx:0,vy:0,hp:1e9,maxhp:1e9,dead:false,alive:true,active:true,def:{n:'',k:'melee',reach:46,spd:3},state:'chase',face:1,dmg:0,elite:0,proxy:1,t2:0,flash:0};
+ const proxy={x:0,y:0,w:24,h:48,vx:0,vy:0,hp:1e9,maxhp:1e9,dead:false,alive:true,active:true,def:{n:'',k:'melee',reach:46,spd:3},state:'chase',face:1,dmg:0,elite:1,proxy:1,t2:0,flash:0};
  g.proxy=proxy;
  for(const n of LETS)g.c[n]=GET[n]();
  g.c.S=mkS(hero,p.skin,p.sid);g.c.enemies=[proxy];g.c.pressed={};g.c.waves=[];g.c.hRings=[];g.c.eproj=[];g.c.drops=[];g.c.magReady=0;g.c.hfUlt0=0;g.c.AUTO=true;
@@ -7244,8 +7244,8 @@ const _de=dmgEnemy;dmgEnemy=function(e,amt,o){o=o||{};
  if(e&&e.proxy){const g=GH.in;if(g&&!g.net&&amt>0&&!o.dot)g.q.push({d:amt,o});return}
  if(e&&e.gh&&!e.net&&!o.dot&&amt>0&&!e.dead){const p=e.gh.c.P;if(p){
    if(p.dash>0||p.inv>0){if((e._ghi||0)<frame){e._ghi=frame+12;pop(e.x+e.w/2-16,e.y-8,L_('NÉ!'),'#adb5bd')}return}
-   if(p.block&&((P.x+P.w/2-(p.x+p.w/2))*p.face>=-6||e.gh.hero==='ignis'||e.gh.hero==='bjorn')){p.blockFx=16;try{SFX.parry()}catch(err){}burst(p.x+p.w/2+p.face*16,p.y+20,'#ffe9a0',8,3,3);if((e._ghb||0)<frame){e._ghb=frame+10;pop(e.x-6,e.y-10,L_('CHẶN!'),'#ffe066')}amt*=.3;p.inv=18}
-   else{const armor=p.whirl||p.ult||p.flame>0;p.inv=Math.max(p.inv||0,8);if((o.big||o.stun)&&!armor){p.knock=12;p.atk=null;p.vx=(P.x<p.x?1:-1)*4;p.vy=-3}}}}
+   if(p.block&&((P.x+P.w/2-(p.x+p.w/2))*p.face>=-6||e.gh.hero==='ignis'||e.gh.hero==='bjorn')){p.blockFx=16;try{SFX.parry()}catch(err){}burst(p.x+p.w/2+p.face*16,p.y+20,'#ffe9a0',8,3,3);if((e._ghb||0)<frame){e._ghb=frame+10;pop(e.x-6,e.y-10,L_('CHẶN!'),'#ffe066')}amt*=.3;p.inv=18;if(e.gh.hero!=='mordred')p.mp=Math.min(p.maxmp,(p.mp||0)+4)}
+   else{const armor=p.whirl||p.ult||p.flame>0;p.inv=Math.max(p.inv||0,8);if(e.gh.hero!=='mordred')p.mp=Math.min(p.maxmp,(p.mp||0)+8);if((o.big||o.stun)&&!armor){p.knock=12;p.atk=null;p.vx=(P.x<p.x?1:-1)*4;p.vy=-3}}}}
  return _de.apply(this,arguments)};
 /* bóng không bị "người chơi" khác gây hại trong ngữ cảnh của nó (gai, rơi vực…) */
 const _hp=hurtPlayer;hurtPlayer=function(){if(GH.in)return;return _hp.apply(this,arguments)};
@@ -7277,10 +7277,54 @@ if(typeof drawNetOpp==='function'){const _dn=drawNetOpp;drawNetOpp=function(e){i
 /* ---- đấu trực tiếp: gửi phím của mình, nhận phím của đối thủ để bóng diễn lại chiêu ---- */
 GH.netOK=true;let myEv=[],evSeq=0;const EVK=['atk','q','e','r','jump','dash','sp'];
 const _upl=updatePlayer;updatePlayer=function(){if(!GH.in&&ENDLESS&&ENDLESS.mode==='live'&&P){for(const k of EVK)if(pressed[k]){myEv.push([++evSeq,k]);if(myEv.length>8)myEv.shift()}}return _upl.apply(this,arguments)};
-function hookNet(){const R=window.RTNET;if(!R||R._gh)return;const o=R.send;R.send=function(st){try{if(st&&ENDLESS&&ENDLESS.mode==='live'&&P){let b=0;['left','right','up','down','block','jh'].forEach((k,i)=>{if(keys[k])b|=1<<i});st.kb=b;st.ev=myEv.slice(-6)}}catch(err){}return o.apply(this,arguments)};R._gh=1}
-const _ls=liveState;liveState=function(st){const r=_ls.apply(this,arguments);try{const E=ENDLESS;if(E&&E.mode==='live'&&E.opp&&st){const e=E.opp;const g=e.gh;if(g){const b=st.kb|0,ks={};['left','right','up','down','block','jh'].forEach((k,i)=>{if(b&1<<i)ks[k]=1});g.nin=ks;
+function hookNet(){const R=window.RTNET;if(!R||R._gh)return;const o=R.send;R.send=function(st){try{if(st&&ENDLESS&&ENDLESS.mode==='live'&&P){let b=0;['left','right','up','down','block','jh'].forEach((k,i)=>{if(keys[k])b|=1<<i});st.kb=b;st.ev=myEv.slice(-6);st.mp=Math.round(P.mp||0);st.mm=P.maxmp||100;st.nn=Math.round(P.nn||0)}}catch(err){}return o.apply(this,arguments)};R._gh=1}
+const _ls=liveState;liveState=function(st){const r=_ls.apply(this,arguments);try{const E=ENDLESS;if(E&&E.mode==='live'&&E.opp&&st){const e=E.opp;const g=e.gh;if(g){const b=st.kb|0,ks={};['left','right','up','down','block','jh'].forEach((k,i)=>{if(b&1<<i)ks[k]=1});g.nin=ks;if(st.mm){e.nmp=st.mp;e.nmm=st.mm;e.nnn=st.nn}
   for(const ev of st.ev||[])if(ev[0]>g.seq){g.seq=ev[0];g.pq.push(ev[1])}if(g.pq.length>6)g.pq.splice(0,g.pq.length-6)}}}catch(err){}return r};
 const _st=step;step=function(){hookNet();return _st.apply(this,arguments)};
+})();
+</script>
+<script>
+/* ================= PvP: KHUNG ĐỐI THỦ GÓC PHẢI · R 60% · KHỰNG ĐÁ TRƯỢT ================= */
+(function(){
+/* ---- R chỉ gây 60% sát thương trong PvP / đấu tập với chiến binh ---- */
+function pvpLike(){const E=ENDLESS;if(!E)return false;if(E.mode==='pvp'||E.mode==='live')return true;
+ try{if(E.mode==='spar'&&window.SP&&SP.cfg&&String(SP.cfg.opp||'').slice(0,2)==='h:')return true}catch(err){}return false}
+const _dm=dmgMult;dmgMult=function(){const r=_dm.apply(this,arguments);try{if(P&&P.ult>0&&pvpLike())return r*.6}catch(err){}return r};
+/* ---- Đá Trượt: khựng 0,3 giây sau khi trượt xong, chờ 1 giây mới trượt lại ---- */
+const SL_REC=18,SL_CD=60;
+const _ss=startSlide;startSlide=function(p){if(p&&p.slCd>0)return false;const r=_ss.apply(this,arguments);if(r&&p){p.slEnd=(p.dash||20);p.slCd=p.slEnd+SL_CD}return r};
+const _up=updatePlayer;updatePlayer=function(){const p=P;if(!p)return _up.apply(this,arguments);
+ if(p.slCd>0)p.slCd--;
+ if(p.slEnd>0){if(!(p.dash>0)||!p.slideK){p.slEnd=0;p.slRec=SL_REC}else p.slEnd--}
+ if(p.slRec>0&&!p.dead){p.slRec--;const k0=Object.assign({},keys),p0=pressed;for(const k in keys)keys[k]=0;pressed={};p.vx*=.6;
+  if(p.slRec%6===0)parts.push({x:p.x+p.w/2+(Math.random()-.5)*14,y:p.y+p.h-2,vx:(Math.random()-.5)*1.2,vy:-.6,life:14,col:'#d9c8a8',size:3,g:.05});
+  try{return _up.apply(this,arguments)}finally{Object.assign(keys,k0);pressed=p0}}
+ return _up.apply(this,arguments)};
+/* ---- khung thông tin đối thủ ở góc phải (giống khung người chơi) ---- */
+let edgeX=0,edgeT=-999;
+function rightEdge(){if(frame-edgeT<30&&edgeX)return edgeX;edgeT=frame;let R=VW;
+ try{const cv=$('c'),r=cv.getBoundingClientRect(),sx=VW/r.width,sy=VH/r.height;
+  for(const el of document.querySelectorAll('button,.btn,[id^="b"]')){if(!el.offsetParent)continue;const b=el.getBoundingClientRect();if(b.width<=0||b.width>170)continue;
+   const top=(b.top-r.top)*sy,left=(b.left-r.left)*sx;if(top<74&&left>VW*.62&&left<VW)R=Math.min(R,left-8)}}catch(err){}
+ edgeX=R;return R}
+function oppInfo(){const E=ENDLESS;if(!E)return null;let e=null,name='';
+ if(E.mode==='pvp'||E.mode==='live'){e=E.opp&&E.opp.def&&E.opp.def.pvp?E.opp:enemies.find(x=>x.def&&x.def.pvp);name=E.mode==='live'?(E.live&&E.live.opp&&E.live.opp.name)||'':(E.opp0&&E.opp0.name)||''}
+ else if(E.mode==='spar'){e=E.sp&&E.sp.def&&E.sp.def.pvp?E.sp:null;name=E.o?E.o.name:''}
+ if(!e)return null;if(!name)name=String((e.def&&e.def.n)||'').replace(/\s*·.*$/,'');return{e,name}}
+function drawOppHUD(){const I=oppInfo();if(!I||!P)return;const e=I.e,p=e.def.pvp,g=e.gh,gp=g&&g.c&&g.c.P;const R=rightEdge(),cx=R-40;
+ let oInv=false;try{oInv=ENDLESS.mode==='spar'&&SP.cfg.oInv}catch(err){}
+ ctx.save();ctx.fillStyle='rgba(0,0,0,.45)';ctx.beginPath();ctx.arc(cx,40,30,0,7);ctx.fill();ctx.strokeStyle='#e8590c';ctx.lineWidth=3;ctx.stroke();
+ ctx.beginPath();ctx.arc(cx,40,28,0,7);ctx.clip();try{if(assetsReady)drawKnightSprite('k_idle',0,cx-1,104,-1,p.skin||'bac',2.2,p.hero,p.sid)}catch(err){}ctx.restore();
+ const hp=e.dead?0:oInv?e.maxhp:Math.max(0,e.hp),bx=R-78-230;bar(bx,20,230,18,hp,e.maxhp,'#ff8787','#c92a2a','HP '+Math.ceil(hp)+' / '+Math.round(e.maxhp));
+ const md=p.hero==='mordred';let mp=0,mm=100,nn=0,ult=0,um=480;
+ if(e.net){mp=e.nmp||0;mm=e.nmm||100;nn=e.nnn||0;ult=e.ult?1:0}else if(gp){mp=gp.mp||0;mm=gp.maxmp||100;nn=gp.nn||0;ult=gp.ult||0;um=gp.ultMax||480}
+ const mx=R-78-170;
+ if(md){const nf=nn>=360;bar(mx,44,170,11,nn,360,nf?(frame%30<15?'#b0102f':'#8a0a24'):'#f1f3f5',nf?'#5c0616':'#adb5bd',nf?L_('NỘI NĂNG ĐẦY'):L_('NỘI NĂNG ')+Math.floor(nn/3.6)+'%')}
+ else{const full=mp>=mm;bar(mx,44,170,11,mp,mm,full?'#ffe066':'#74c0fc',full?'#f59f00':'#1971c2',Math.floor(mp)+' MP')}
+ let ny=72;if(ult>0&&!e.net){bar(mx,62,170,6,ult,um,'#ffe066','#f59f00');ny=82}
+ txt(I.name,R-78,ny,'#ffc9c9','right','bold 14px "Segoe UI",sans-serif');ctx.textAlign='left'}
+const _dh=drawHUD;drawHUD=function(){const r=_dh.apply(this,arguments);try{drawOppHUD()}catch(err){}return r};
+addEventListener('resize',()=>{edgeT=-999});
 })();
 </script>
 <script type="module">
