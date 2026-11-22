@@ -3967,7 +3967,7 @@ function slamFx(x,y){shake=Math.max(shake,14);
 const _uf=updateFx;
 updateFx=function(){_uf.apply(this,arguments);spawnFromPlayer();tickFW()};
 const _tm=toMenu;toMenu=function(){FW.length=0;return _tm.apply(this,arguments)};
-window.fxCount=()=>FW.length;
+window.fxCount=()=>FW.length;window.FWX={FW,spawn:spawnFromPlayer,tick:tickFW,draw:drawFW,getPv:()=>pv,setPv:v=>{pv=v}};
 })();
 
 </script>
@@ -6718,6 +6718,7 @@ const _up=updatePlay;updatePlay=function(){const r=_up.apply(this,arguments);try
 const _fx=heroFx;heroFx=function(){const r=_fx.apply(this,arguments);try{serDraw();const p=P;if(p&&p.namiEmp>0&&S.hero==='nami'&&!p.dead){ctx.save();const k=.5+.5*Math.sin(frame*.2);ctx.globalAlpha=.35+.25*k;ctx.fillStyle='#4dabf7';ctx.beginPath();ctx.arc(pcx(),p.y-14,7+2*k,0,7);ctx.fill();ctx.globalAlpha=.9;ctx.fillStyle='#e7f5ff';ctx.beginPath();ctx.arc(pcx()-2,p.y-16,2.5,0,7);ctx.fill();ctx.restore()}}catch(err){}return r};
 /* dọn khi dựng màn */
 const _bl=buildLevel;buildLevel=function(){SRB.length=0;SRK.length=0;SFC.length=0;if(P)P.namiEmp=0;return _bl.apply(this,arguments)};
+window.H2X={serTick,namiTick,gromTick,serDraw,getU0:()=>namiU0,setU0:v=>{namiU0=v}};
 })();
 </script>
 <script>
@@ -7004,12 +7005,13 @@ const ASG=n=>{try{return new Function('v',n+'=v')}catch(e){return()=>{}}};
 let REC=null;const RP={on:false};
 function oppOf(E){if(!E)return null;if(E.mode==='live')return E.opp||null;return enemies.find(e=>e.def&&e.def.pvp&&!e.net)||null}
 /* ---- sao chép gọn (chỉ dữ liệu, tham chiếu P/đối thủ thành ký hiệu) ---- */
+let CLG=null,CLX=null;const GN=['GFXL','HFX','AWB','NHP','NHV','NHT','SRB','SRK','SFC','FW'];
 function cl(o,d,op,root){if(o==null)return o;const t=typeof o;
  if(t==='number')return Number.isFinite(o)?(Math.abs(o)<2?Math.round(o*100)/100:Math.round(o*10)/10):0;if(t==='string'||t==='boolean')return o;if(t!=='object')return undefined;
- if(!root){if(o===P)return{$:'P'};if(op&&o===op)return{$:'E'}}if(d<=0)return undefined;
+ if(!root){if(o===P)return{$:'P'};if(op&&o===op)return{$:'E'};if(CLG&&o===CLG)return{$:'G'};if(CLX&&o===CLX)return{$:'X'}}if(d<=0)return undefined;
  if(Array.isArray(o)){if(o.length>48)return undefined;const r=[];for(const x of o){const v=cl(x,d-1,op);r.push(v===undefined?null:v)}return r}
  const pr=Object.getPrototypeOf(o);if(pr!==Object.prototype&&pr!==null)return undefined;
- const r={};for(const k in o){if(k==='def'||k==='B'||k==='pv2'||k==='pvS')continue;const v=cl(o[k],d-1,op);if(v!==undefined)r[k]=v}return r}
+ const r={};for(const k in o){if(k==='def'||k==='B'||k==='pv2'||k==='pvS'||k==='gh')continue;const v=cl(o[k],d-1,op);if(v!==undefined)r[k]=v}return r}
 function part(p,C){let ci=C.indexOf(p.col);if(ci<0){ci=C.length;C.push(p.col)}const r=[Math.round(p.x),Math.round(p.y),Math.round(p.life),Math.round(p.size||2),ci];if(p.boom||p.big||p.ghost)r.push(p.boom||0,p.big?1:0,p.ghost?1:0,p.face||1);return r}
 function unpart(a,C){const r={x:a[0],y:a[1],life:a[2],size:a[3],col:C[a[4]]};if(a.length>5){if(a[5])r.boom=a[5];if(a[6])r.big=1;if(a[7]){r.ghost=1;r.face=a[8]}}return r}
 function diff(a,b){const d={};let n=0;for(const k in b){const x=JSON.stringify(b[k]);if(!a||JSON.stringify(a[k])!==x){d[k]=b[k];n++}}const del=[];if(a)for(const k in a)if(!(k in b))del.push(k);if(del.length){d.$del=del;n++}return n?d:null}
@@ -7027,6 +7029,8 @@ function recTick(){if(RP.on)return;const E=ENDLESS;if(!E||(E.mode!=='pvp'&&E.mod
  const p=cl(P,3,op,1),e=op?cl(op,3,op,1):null;
  const f={f:frame,t:E.t|0,b:E.ban&&E.ban.t>0?cl(E.ban,2):null,c:Math.round(cam),s:shake|0,P:key?p:diff(REC.lastP,p),e:key?e:diff(REC.lastE,e),k:key?1:0,A:{}};
  REC.lastP=p;REC.lastE=e;
+ const g=op&&op.gh;if(g&&g.c&&g.c.P){CLG=g.c.P;CLX=g.proxy;try{const gp=cl(g.c.P,3,op,1);f.gp=key?gp:diff(REC.lastG,gp);REC.lastG=gp;REC.meta.gh=g.hero;
+  const L={waves:g.c.waves,hRings:g.c.hRings};GN.forEach((n,i)=>L[n]=g.a[i]);f.gA={};for(const n in L){const a=L[n];if(a&&a.length)f.gA[n]=a.slice(-40).map(x=>cl(x,3,op))}}finally{CLG=null;CLX=null}}
  for(const n of ARR){const a=GET[n]();if(!a||!a.length)continue;f.A[n]=n==='parts'?a.slice(-50).map(x=>part(x,REC.meta.C)):a.slice(-40).map(x=>cl(x,3,op))}
  REC.fr.push(f)}
 const _step=step;step=function(){const r=_step.apply(this,arguments);try{recTick()}catch(err){}return r};
@@ -7052,16 +7056,18 @@ const _rkEnd=rkEnd;rkEnd=function(win,why){const E=ENDLESS,pts0=RKS().pts||1000,
 const _lf=liveFinish;liveFinish=function(win,why){const E=ENDLESS,pts0=RKS().pts||1000,rel=E&&!E.done;const r=_lf.apply(this,arguments);if(rel)try{finish(E,win,why,pts0)}catch(err){}return r};
 /* ---- phát lại ---- */
 const XS=['coins','gems','drops','chests','bombs','breaks','qitems','captives','npcs','secRooms','goal'];const GET2=n=>{try{return new Function('return '+n)()}catch(e){return null}};
-function revive(o,op){if(o==null||typeof o!=='object')return o;if(o.$==='P')return P;if(o.$==='E')return op;if(Array.isArray(o))return o.map(x=>revive(x,op));const r={};for(const k in o)r[k]=revive(o[k],op);return r}
+function revive(o,op){if(o==null||typeof o!=='object')return o;if(o.$==='P')return P;if(o.$==='E')return op;if(o.$==='G')return RP.gh?RP.gh.c.P:null;if(o.$==='X')return RP.gh?RP.gh.proxy:P;if(Array.isArray(o))return o.map(x=>revive(x,op));const r={};for(const k in o)r[k]=revive(o[k],op);return r}
 function stateAt(i){/* dựng lại P và đối thủ tại khung i từ khung khóa gần nhất */
- const F=RP.d.fr;let k=i;while(k>0&&!F[k].k)k--;const p={},e={};
- for(let j=k;j<=i;j++){const f=F[j];if(f.k){for(const x in p)delete p[x];for(const x in e)delete e[x];Object.assign(p,f.P||{});Object.assign(e,f.e||{})}else{if(f.P){for(const x in f.P)if(x==='$del')f.P.$del.forEach(y=>delete p[y]);else p[x]=f.P[x]}if(f.e){for(const x in f.e)if(x==='$del')f.e.$del.forEach(y=>delete e[y]);else e[x]=f.e[x]}}}
- return{p,e}}
+ const F=RP.d.fr;let k=i;while(k>0&&!F[k].k)k--;const p={},e={},gp={};const up=(t,d)=>{if(!d)return;for(const x in d)if(x==='$del')d.$del.forEach(y=>delete t[y]);else t[x]=d[x]};
+ for(let j=k;j<=i;j++){const f=F[j];if(f.k){for(const x in p)delete p[x];for(const x in e)delete e[x];for(const x in gp)delete gp[x];Object.assign(p,f.P||{});Object.assign(e,f.e||{});Object.assign(gp,f.gp||{})}else{up(p,f.P);up(e,f.e);up(gp,f.gp)}}
+ return{p,e,gp}}
 function apply(i){const F=RP.d.fr,f=F[i];if(!f)return;let st;
- if(RP.ci===i-1&&!f.k){st=RP.cs;const up=(t,d)=>{if(!d)return;for(const x in d)if(x==='$del')d.$del.forEach(y=>delete t[y]);else t[x]=d[x]};up(st.p,f.P);up(st.e,f.e)}else st=stateAt(i);
+ if(RP.ci===i-1&&!f.k){st=RP.cs;const up=(t,d)=>{if(!d)return;for(const x in d)if(x==='$del')d.$del.forEach(y=>delete t[y]);else t[x]=d[x]};up(st.p,f.P);up(st.e,f.e);up(st.gp,f.gp)}else st=stateAt(i);
  RP.ci=i;RP.cs=st;
  const op=RP.opp;for(const x in op)if(x!=='def')delete op[x];Object.assign(op,revive(st.e,op));op.def=RP.def;op.alive=true;op.active=true;
  for(const x in P)delete P[x];Object.assign(P,revive(st.p,op));
+ const g=RP.gh;if(g){op.gh=g;const gp=g.c.P;Object.assign(g.proxy,{x:P.x,y:P.y,w:P.w,h:P.h});for(const x in gp)delete gp[x];Object.assign(gp,revive(st.gp||{},op));g.mirror=g.hero===S.hero;
+  const A=f.gA||{};g.c.waves=(A.waves||[]).map(x=>revive(x,op));g.c.hRings=(A.hRings||[]).map(x=>revive(x,op));GN.forEach((n,i)=>{g.a[i]=(A[n]||[]).map(x=>revive(x,op))})}
  enemies=RP.hasE&&st.e&&Object.keys(st.e).length?[op]:[];
  frame=f.f;cam=f.c;shake=f.s||0;if(ENDLESS){ENDLESS.t=f.t||0;ENDLESS.ban=f.b||{t:0,s:'',c:'#fff'}}
  for(const n of ARR){const a=GET[n]();if(!a)continue;a.length=0;const src=f.A[n];if(src)for(const x of src)a.push(n==='parts'?unpart(x,RP.d.meta.C||[]):revive(x,op))}}
@@ -7075,6 +7081,7 @@ async function play(id){let d;try{d=await get(id)}catch(e){d=null}if(!d||!d.fr||
  for(const n of XS)set(n,n==='goal'?null:[]);
  ENDLESS=Object.assign(revive(m.E||{}),{mode:m.mode,done:0,opp0:revive(m.opp0),rp:1});if(m.mode==='live')ENDLESS.live={opp:revive(m.lopp)||{},startAt:0,ranked:h.ranked};
  RP.def=revive(m.def)||{pvp:{hero:'knight'},n:'?'};RP.opp={};RP.hasE=!!m.def;P={};if(m.mode==='live')ENDLESS.opp=RP.opp;
+ RP.gh=null;if(m.gh&&window.GH&&GH.mkGhost){try{apply(0);RP.opp.def=RP.def;RP.gh=GH.mkGhost(RP.opp);if(RP.gh){RP.gh.c.P=Object.assign(RP.gh.c.P,{});RP.ci=-1}}catch(err){RP.gh=null}}
  apply(0);hideAll();showCtrl(false);MUS.duck=.25;state='replay';bar(true)}
 function stop(){if(!RP.on)return;const v=RP.sv;RP.on=false;
  for(const n of ARR){const a=GET[n]();if(a)a.length=0}
@@ -7133,6 +7140,147 @@ const st=document.createElement('style');st.textContent=
  '.rph-vs{flex:1;min-width:0}.rph-x{color:#ffd43b;font-weight:800;margin:0 .3em}.rph-sub{font-size:.82em;opacity:.8;margin-top:.2em}.rph-it .btn{white-space:nowrap}';
 document.head.appendChild(st);
 window.PVREC={play,stop,get:()=>REC,RP,io:{get,put}};
+})();
+</script>
+<script>
+/* ================= ĐỐI THỦ "BÓNG" — DÙNG ĐÚNG BỘ KỸ NĂNG GỐC CỦA CHIẾN BINH ================= */
+(function(){
+if(typeof updatePlayer!=='function'||typeof autoBot!=='function')return;
+const GH={in:null,list:[]};window.GH=GH;
+const fn=(b)=>{try{return new Function('v',b)}catch(e){return null}};
+const LETS=['P','S','enemies','pressed','waves','hRings','eproj','drops','magReady','hfUlt0','AUTO'].filter(n=>{try{if(new Function('return typeof '+n)()==='undefined')return false;const v=new Function('return '+n)();new Function('v',n+'=v')(v);return true}catch(e){return false}});
+const GET={},SET={};for(const n of LETS){GET[n]=fn('return '+n);SET[n]=fn(n+'=v')}
+const ARR=()=>[typeof GFXL!=='undefined'?GFXL:null,typeof HFX!=='undefined'?HFX:null,typeof AWB!=='undefined'?AWB:null,typeof NHP!=='undefined'?NHP:null,typeof NHV!=='undefined'?NHV:null,typeof NHT!=='undefined'?NHT:null,window.SRB||null,window.SRK||null,window.SFC||null,window.FWX?FWX.FW:null];
+const OBJ=()=>[BOT,COMBO,keys];const setKeys=o=>{for(const k in keys)delete keys[k];Object.assign(keys,o||{})};
+/* ---- đổi ngữ cảnh: biến toàn cục của người chơi ↔ của "bóng" ---- */
+function swap(g){/* hoán đổi hai chiều: gọi 2 lần là trả lại như cũ */
+ for(const n of LETS){const cur=GET[n]();SET[n](g.c[n]);g.c[n]=cur}
+ const A=ARR();for(let i=0;i<A.length;i++){const a=A[i];if(!a)continue;const mine=g.a[i]||[];g.a[i]=a.splice(0,a.length);for(const x of mine)a.push(x)}
+ const O=OBJ();for(let i=0;i<O.length;i++){const o=O[i],mine=g.o[i]||{},cur=Object.assign({},o);for(const k in o)delete o[k];Object.assign(o,mine);g.o[i]=cur}
+ if(window.FWX){const v=FWX.getPv();FWX.setPv(g.pv||{slash:0,slam:0,ult:0,whirl:0,dx0:null});g.pv=v}
+ if(window.H2X){const v=H2X.getU0();H2X.setU0(g.u0||0);g.u0=v}}
+function enter(g){if(GH.in)return false;swap(g);GH.in=g;return true}
+function leave(g){if(GH.in!==g)return;swap(g);GH.in=null}
+/* ---- dựng "bóng" cho một đối thủ ---- */
+function mkS(hero,skin,sid){const s=JSON.parse(JSON.stringify(S));s.hero=hero;s.skin=skin||'bac';s.oskin=Object.assign({},s.oskin||{});s.oskin[hero]=sid||'';
+ if(s.gear)s.gear.eq={};if(s.pet)s.pet.cur='';if(s.arms)s.arms.eq={};s.pot={hp:0,mp:0};s.sk={};s.ivb={};s.autoT=1e9;return s}
+function mkGhost(e){const p=e.def.pvp,hero=HEROES[p.hero]?p.hero:'knight';
+ const g={e,hero,net:!!e.net,c:{},a:[],o:[],pv:null,u0:0,q:[],pq:[],seq:0,mirror:false,frm:0};
+ const proxy={x:0,y:0,w:24,h:48,vx:0,vy:0,hp:1e9,maxhp:1e9,dead:false,alive:true,active:true,def:{n:'',k:'melee',reach:46,spd:3},state:'chase',face:1,dmg:0,elite:0,proxy:1,t2:0,flash:0};
+ g.proxy=proxy;
+ for(const n of LETS)g.c[n]=GET[n]();
+ g.c.S=mkS(hero,p.skin,p.sid);g.c.enemies=[proxy];g.c.pressed={};g.c.waves=[];g.c.hRings=[];g.c.eproj=[];g.c.drops=[];g.c.magReady=0;g.c.hfUlt0=0;g.c.AUTO=true;
+ g.o=[{blk:0,bx:0,jt:0},{n:0,t:0,fin:0,pulse:0},{}];
+ g.c.P=null;
+ if(!enter(g))return null;
+ try{const pp=makePlayer(e.x+e.w/2-12,e.y+e.h);pp.inv=0;pp.face=e.face||-1;P=pp;g.atk0=Math.max(1,stats().atk)}finally{leave(g)}
+ return g.c.P?g:null}
+/* ---- mỗi khung: điều khiển bóng ---- */
+const DIFF_R=[.3,.5,.75,.95,1],DIFF_CD=[1.8,1.35,1,.8,.6];
+function sparCfg(){try{if(ENDLESS&&ENDLESS.mode==='spar'&&window.SP&&SP.cfg)return SP.cfg}catch(err){}return null}
+function threats(){/* đạn của người chơi thật → mối nguy để bóng né (giống eproj) */const r=[];for(const w of GET.waves())if(w&&w.life>0&&(w.vx||w.vy))r.push({x:w.x,y:w.y,w:w.w||14,h:w.h||14,vx:w.vx||0,vy:w.vy||0,t:'pw',src:null});return r}
+function tick(e){let g=e.gh;if(!g){try{g=e.gh=mkGhost(e)}catch(err){e.noGh=1;return false}if(!g){e.noGh=1;return false}}
+ const p=g.c.P;if(!p)return false;
+ /* nhận đòn từ người chơi thật (đã trừ máu ở e) → khựng/đẩy lùi cho bóng */
+ if(e.stun>0){p.knock=Math.max(p.knock||0,Math.min(30,e.stun));e.stun=0}
+ if(e.hitStun>0)e.hitStun=0;if(e.vx){p.vx=e.vx;e.vx=0}if(e.flash>0)e.flash--;
+ const cfg=sparCfg(),di=cfg?cfg.diff|0:4,dummy=cfg&&cfg.dummy&&e===ENDLESS.sp;
+ const PX=P,thr=g.net?[]:threats(),Preal=P;
+ /* proxy = người chơi thật nhìn từ phía bóng */
+ const px=g.proxy;Object.assign(px,{x:Preal.x,y:Preal.y,w:Preal.w,h:Preal.h,dead:Preal.dead,face:Preal.face,vx:0});px.def.reach=46;
+ px.state=Preal.atk&&Preal.atk.t<8||Preal.whirl>0||(Preal.cast>0)?'wind':'chase';px.st=0;px.stun=0;px.nmPush=0;px.poison=0;
+ const nocd=cfg&&cfg.nocd;if(cfg)cfg.nocd=false;
+ const st0=state,n0=parts.length;let hp0=0;
+ if(!enter(g))return false;
+ try{
+  P=p;const mh=P.maxhp;P.hp=Math.max(1,e.hp/e.maxhp*mh);hp0=P.hp;
+  eproj=thr;drops=[];pressed={};
+  for(const k of['cdQ','cdE','cdR'])P['_'+k]=P[k]||0;
+  let hk=null;
+  if(g.net){setKeys(g.nin);if(g.pq.length){const ev=g.pq.shift();pressed[ev]=1;if(ev==='q'||ev==='e'||ev==='r'){P.mp=P.maxmp;P.cdQ=P.cdE=P.cdR=0}}}
+  else if(dummy||P.dead){setKeys({})}
+  else if(Math.random()<DIFF_R[Math.min(4,di)]){hk=autoBot()}
+  updatePlayer();if(hk)Object.assign(keys,hk);
+  /* đạn/sóng của bóng (giống vòng lặp trong updatePlay) */
+  for(const w of waves){if(w.kind){updPW(w);continue}w.x+=w.vx;w.life--;hitEnemies(w,stats().atk*2.2*(w.m||1)*dmgMult(),{kb:5,stun:70,col:'#9fd8ff',big:1,parry:1},w.hit);if(solidAt(Math.floor((w.x+w.w/2)/TS),Math.floor((w.y+w.h/2)/TS)))w.life=Math.min(w.life,3)}
+  waves=waves.filter(w=>w.life>0);
+  try{nhTick()}catch(err){}
+  if(window.H2X){try{H2X.serTick()}catch(err){}try{if(S.hero==='nami'||H2X.getU0())H2X.namiTick()}catch(err){}try{H2X.gromTick()}catch(err){}}
+  try{hfUltTick();hfUpd()}catch(err){}
+  if(window.FWX){try{FWX.spawn();FWX.tick()}catch(err){}}
+  /* độ khó phòng tập: hồi chiêu dài hơn/ngắn hơn */
+  const cm=DIFF_CD[Math.min(4,di)];if(cfg&&cm!==1)for(const k of['cdQ','cdE','cdR'])if(P[k]>P['_'+k]+1){P[k]=Math.round(P[k]*cm);P[k+'m']=Math.round((P[k+'m']||P[k])*cm)}
+  /* máu bóng đổi (hồi máu, tự mất máu) → chuyển sang e */
+  const dh=P.hp-hp0;if(Math.abs(dh)>.01&&!g.net){e.hp=Math.max(1,Math.min(e.maxhp,e.hp+dh/mh*e.maxhp));if(dh>0)e.flash=0}
+  pressed={};
+ }catch(err){if(!g.err){g.err=1;console.warn('ghost',err)}}
+ finally{leave(g)}
+ if(state!==st0)state=st0;
+ /* tô đỏ hạt hiệu ứng mới của bóng khi trùng chiến binh */
+ g.mirror=g.hero===S.hero;if(g.mirror)for(let i=n0;i<parts.length;i++){const q=parts[i];if(q&&!q.ghost&&!q.gh&&typeof q.col==='string'){q.col=redden(q.col);q.gh=1}}
+ /* đòn của bóng trúng người chơi thật */
+ const sc=(e.dmg||1)/g.atk0;
+ for(const h of g.q.splice(0)){if(g.net||!P||P.dead)continue;const h0=P.hp;bxHurt(h.d*sc,e,{kb:Math.min(9,h.o.kb||0)});if(P.hp<h0){if(h.o.stun)P.knock=Math.max(P.knock||0,Math.min(18,h.o.stun/4));if(h.o.poison)GH.pois=Math.max(GH.pois||0,h.o.poison);if(h.o.slow)P.bxSlow=Math.max(P.bxSlow||0,Math.min(120,h.o.slow))}}
+ if(!g.net&&px.vx&&P&&!P.dead)P.bxPush=Math.max(-6,Math.min(6,px.vx));
+ if(!g.net&&px.nmPush&&P&&!P.dead)P.bxPush=Math.max(-10,Math.min(10,px.nmPush));
+ /* đồng bộ thân e theo bóng */
+ if(g.net){if(e.tx!=null){p.x+=(e.tx-p.x)*.35;p.y+=(e.ty-p.y)*.35}}
+ e.x=p.x;e.y=p.y;e.w=p.w;e.h=p.h;e.face=p.face;e.vx=0;e.vy=0;e.onGround=p.onGround;
+ e.state=p.atk&&p.atk.t<10||p.whirl>0||p.cast>0||p.flame>0?'wind':'chase';e.st=0;
+ return true}
+function redden(c){if(c[0]!=='#'||(c.length!==7&&c.length!==4))return c;let h=c.slice(1);if(h.length===3)h=h.split('').map(x=>x+x).join('');const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16),l=(r+g+b)/3;
+ const R=Math.round(Math.min(255,90+l*.75)),G=Math.round(l*.22),B=Math.round(l*.2);return '#'+[R,G,B].map(v=>v.toString(16).padStart(2,'0')).join('')}
+/* ---- móc vào game ---- */
+const isGh=e=>e&&e.def&&e.def.pvp&&!e.noGh&&!(e.net&&!GH.netOK);
+const _ue=updateEnemy;updateEnemy=function(e){
+ if(GH.in)return;
+ if(!isGh(e)||e.dead||!P)return _ue.apply(this,arguments);
+ if(!e.active){if(Math.abs(e.x-P.x)<VW*.7)e.active=true;else return _ue.apply(this,arguments)}
+ e.t2=(e.t2||0)+1;if(e.atkCd>0)e.atkCd--;
+ if(e.net){try{liveEnemyUpdate(e)}catch(err){}}
+ if(!tick(e))return _ue.apply(this,arguments)};
+/* bóng gây sát thương: kẻ địch duy nhất của bóng là proxy */
+const _de=dmgEnemy;dmgEnemy=function(e,amt,o){o=o||{};
+ if(e&&e.proxy){const g=GH.in;if(g&&!g.net&&amt>0&&!o.dot)g.q.push({d:amt,o});return}
+ if(e&&e.gh&&!e.net&&!o.dot&&amt>0&&!e.dead){const p=e.gh.c.P;if(p){
+   if(p.dash>0||p.inv>0){if((e._ghi||0)<frame){e._ghi=frame+12;pop(e.x+e.w/2-16,e.y-8,L_('NÉ!'),'#adb5bd')}return}
+   if(p.block&&((P.x+P.w/2-(p.x+p.w/2))*p.face>=-6||e.gh.hero==='ignis'||e.gh.hero==='bjorn')){p.blockFx=16;try{SFX.parry()}catch(err){}burst(p.x+p.w/2+p.face*16,p.y+20,'#ffe9a0',8,3,3);if((e._ghb||0)<frame){e._ghb=frame+10;pop(e.x-6,e.y-10,L_('CHẶN!'),'#ffe066')}amt*=.3;p.inv=18}
+   else{const armor=p.whirl||p.ult||p.flame>0;p.inv=Math.max(p.inv||0,8);if((o.big||o.stun)&&!armor){p.knock=12;p.atk=null;p.vx=(P.x<p.x?1:-1)*4;p.vy=-3}}}}
+ return _de.apply(this,arguments)};
+/* bóng không bị "người chơi" khác gây hại trong ngữ cảnh của nó (gai, rơi vực…) */
+const _hp=hurtPlayer;hurtPlayer=function(){if(GH.in)return;return _hp.apply(this,arguments)};
+const _kp=killPlayer;killPlayer=function(){if(GH.in)return;return _kp.apply(this,arguments)};
+const _sv=save;save=function(){if(GH.in)return;return _sv.apply(this,arguments)};
+/* độc từ chiêu của bóng (Kaito E) */
+const _up=updatePlay;updatePlay=function(){const r=_up.apply(this,arguments);try{if(GH.pois>0&&state==='play'&&P&&!P.dead){GH.pois--;if(GH.pois%30===0){const e=enemies.find(x=>x.gh);bxHurt(Math.max(1,(e?e.dmg:5)*.22),e||{x:P.x,w:0,trap:1});burst(P.x+P.w/2,P.y+10,'#8ce99a',3,1,3,-.05)}}}catch(err){}return r};
+/* ---- vẽ bóng ---- */
+const TINT='sepia(1) saturate(6) hue-rotate(-45deg) brightness(.75) contrast(1.3)';
+const CANF=(()=>{try{const c=document.createElement('canvas').getContext('2d');return 'filter' in c}catch(e){return false}})();
+function drawGh(e,g){const p=g.c.P;if(!p)return false;
+ if(!enter(g))return false;
+ try{P=p;
+  ctx.fillStyle=g.net?'rgba(60,140,255,.3)':'rgba(255,40,40,.28)';ctx.beginPath();ctx.ellipse(p.x+p.w/2,p.y+p.h,26,6,0,0,7);ctx.fill();
+  const tint=g.mirror&&CANF;
+  /* hiệu ứng chiêu (lớp sau) */
+  ctx.save();if(tint)ctx.filter=((typeof skinFilter==='function'&&skinFilter())||'')+' '+TINT;
+  try{waves.forEach(w=>w.kind?drawPW(w):drawWave(w));heroFx()}catch(err){}
+  ctx.restore();
+  /* thân + lớp trước */
+  if(tint){ctx.save();ctx.filter=TINT;try{drawPlayer(p)}catch(err){}ctx.restore();try{const [k,i]=knightAnim(p);drawKnightSprite(k,i,p.x+p.w/2,p.y+p.h+1,p.face,S.skin)}catch(err){}}
+  else{try{drawPlayer(p)}catch(err){}}
+  if(e.flash>4){ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha=.35;try{const [k,i]=knightAnim(p);drawKnightSprite(k,i,p.x+p.w/2,p.y+p.h+1,p.face,S.skin)}catch(err){}ctx.restore()}
+ }finally{leave(g)}
+ return true}
+GH.draw=drawGh;GH.enter=enter;GH.leave=leave;GH.mkGhost=mkGhost;
+const _dp=drawPvpOpp;drawPvpOpp=function(e){if(e.gh&&!e.dead&&drawGh(e,e.gh))return;return _dp.apply(this,arguments)};
+if(typeof drawNetOpp==='function'){const _dn=drawNetOpp;drawNetOpp=function(e){if(e.gh&&!e.oDead&&drawGh(e,e.gh))return;return _dn.apply(this,arguments)}}
+/* ---- đấu trực tiếp: gửi phím của mình, nhận phím của đối thủ để bóng diễn lại chiêu ---- */
+GH.netOK=true;let myEv=[],evSeq=0;const EVK=['atk','q','e','r','jump','dash','sp'];
+const _upl=updatePlayer;updatePlayer=function(){if(!GH.in&&ENDLESS&&ENDLESS.mode==='live'&&P){for(const k of EVK)if(pressed[k]){myEv.push([++evSeq,k]);if(myEv.length>8)myEv.shift()}}return _upl.apply(this,arguments)};
+function hookNet(){const R=window.RTNET;if(!R||R._gh)return;const o=R.send;R.send=function(st){try{if(st&&ENDLESS&&ENDLESS.mode==='live'&&P){let b=0;['left','right','up','down','block','jh'].forEach((k,i)=>{if(keys[k])b|=1<<i});st.kb=b;st.ev=myEv.slice(-6)}}catch(err){}return o.apply(this,arguments)};R._gh=1}
+const _ls=liveState;liveState=function(st){const r=_ls.apply(this,arguments);try{const E=ENDLESS;if(E&&E.mode==='live'&&E.opp&&st){const e=E.opp;const g=e.gh;if(g){const b=st.kb|0,ks={};['left','right','up','down','block','jh'].forEach((k,i)=>{if(b&1<<i)ks[k]=1});g.nin=ks;
+  for(const ev of st.ev||[])if(ev[0]>g.seq){g.seq=ev[0];g.pq.push(ev[1])}if(g.pq.length>6)g.pq.splice(0,g.pq.length-6)}}}catch(err){}return r};
+const _st=step;step=function(){hookNet();return _st.apply(this,arguments)};
 })();
 </script>
 <script type="module">
