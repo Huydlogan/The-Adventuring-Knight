@@ -7295,8 +7295,9 @@ addEventListener('resize',()=>{edgeT=-999});
    Không tính: chặn khiên, né, vô hiệu hóa, hóa đá. */
 (function(){
 const CAP1=.40,CAP2=.65;
-try{if(typeof GI!=='undefined')for(const k in GI){const st=GI[k]&&GI[k].st;if(st&&st.def&&!GI[k]._dh){st.def=Math.round(st.def*.5*10000)/10000;GI[k]._dh=1}}}catch(e){}
-try{if(typeof GFXS!=='undefined')for(const k in GFXS){const b=GFXS[k]&&GFXS[k][0];if(b&&b.def&&!b._dh){b.def=Math.round(b.def*.5*10000)/10000;b._dh=1}}}catch(e){}
+if(!window._dmgHalf){window._dmgHalf=1;
+ try{if(typeof GI!=='undefined')for(const k in GI){const st=GI[k]&&GI[k].st;if(st&&st.def)st.def=Math.round(st.def*.5*10000)/10000}}catch(e){}
+ try{if(typeof GFXS!=='undefined')for(const k in GFXS){const b=GFXS[k]&&GFXS[k][0];if(b&&b.def)b.def=Math.round(b.def*.5*10000)/10000}}catch(e){}}
 function parts(){const h=S.hero;let k=1-.01*Math.min(UP_MAX,(HU().arm)||0);
  try{if(typeof gOn==='function'&&gOn()){const G=gSum();if(G.def)k*=1-G.def}}catch(e){}
  if(h==='grom')k*=.85;if(h==='knight'&&P&&P.hp<P.maxhp*.3)k*=.75;
