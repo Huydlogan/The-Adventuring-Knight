@@ -3346,7 +3346,7 @@ function rkSpawnOpp(E){const o=E.opp0,H=HEROES[o.hero]||HEROES.knight,rng=!!H.ra
  ED.pvp_opp={n:o.name+L_(' · Cấp ')+o.lv,elite:1,k:rng?'ranged':'melee',hp:100,dmg:10,spd:2.5*(H.spd||1),gold:[0,0],reach:46,wind:16,w:28,h:56,
   proj:rng?(o.hero==='ignis'?'fire':'spear'):undefined,cool:rng?75:undefined,pvp:{hero:HEROES[o.hero]?o.hero:'knight',sid:o.sid||'',skin:o.skin||'bac'}};
  const e=mkEnemy({t:'pvp_opp',x:0,feet:E.spec.groundY},{l:0,w:0});
- const ob=1+Math.max(0,+o.pb||0)/100;e.hp=e.maxhp=Math.round(o.maxhp*5*ob/(1-.01*Math.min(30,o.arm||0)));e.dmg=o.atk*1.2*ob;
+ const ob=1+Math.max(0,+o.pb||0)/100;e.hp=e.maxhp=Math.round(o.maxhp*2*ob/(1-.01*Math.min(30,o.arm||0)));e.dmg=o.atk*1.2*ob;
  const side=P.x<W*TS/2?1:-1;e.x=side<0?TS*2:(W-2)*TS-e.w;e.y=E.spec.groundY-e.h;e.homeX=e.x;e.active=true;e.endless=1;e.state='chase';e.face=e.dir=-side;
  enemies.push(e);E.opp=e;burst(e.x+e.w/2,e.y+e.h/2,'#ff8787',16,4,4)}
 function drawPvpOpp(e){const p=e.def.pvp;let a='idle';
@@ -5730,6 +5730,75 @@ function drawWeapon(p,back){const a=p.atk&&p.atk.wpa?p.atk:null,k=a?a.wpa:p.wp&&
   else{const f=a.t/a.dur;if(f<.35){const t=ease(f/.35);ang=lerp(-2.25,-2.95,t);gx=lerp(3,0,t);gy=lerp(-27,-40,t)}
    else if(f<.6){const t=ease((f-.35)/.25);ang=lerp(-2.95,.95,t);gx=lerp(0,12,t);gy=lerp(-40,-18,t);trail=[-2.95,ang]}
    else{const t=ease((f-.6)/.4);ang=lerp(.95,.6,t);gx=lerp(12,9,t);gy=lerp(-18,-22,t);if(f<.75)trail=[-2.95,.95]}}}
+ else if(k==='spear'){
+  if(!a){gx=7;gy=-21+bob;ang=-1.15+(moving?.35:0)+(air?.25:0)}
+  else{const f=a.t/a.dur;ang=-.04;gy=-24;gx=4;ext=f<.22?-10*ease(f/.22):f<.5?lerp(-10,26,ease((f-.22)/.28)):lerp(26,0,ease((f-.5)/.5))}}
+ else{/* nỏ */
+  if(!a){gx=8;gy=-19+bob;ang=.42+(moving?Math.sin(frame*.2)*.05:0);bolt=true}
+  else{gy=-30;gx=4;ang=0;drawn=a.t<4;bolt=a.t<4||a.t>=a.dur-3;ext=a.t<4?0:-4*Math.max(0,1-(a.t-4)/6);if(a.t>=4&&a.t<8)ang=-.12*(1-(a.t-4)/4)}}
+ if(back!==!front)return;
+ ctx.save();ctx.translate(fx+F*gx,fy+gy);ctx.scale(F,1);
+ if(trail){/* vệt chém của rìu */const f=a.t/a.dur,al=Math.max(0,.8-(f-.35)*1.6);ctx.save();ctx.strokeStyle='rgba(255,169,77,'+al+')';ctx.lineWidth=7;ctx.beginPath();ctx.arc(0,0,58*sc,trail[0],trail[1]);ctx.stroke();ctx.strokeStyle='rgba(255,244,214,'+al+')';ctx.lineWidth=2.5;ctx.stroke();ctx.restore()}
+ ctx.rotate(ang);ctx.translate(ext,0);ctx.scale(sc,sc);
+ if(k==='spear'&&a){const f=a.t/a.dur;if(f>.22&&f<.6){ctx.fillStyle='rgba(116,192,252,.32)';ctx.fillRect(66,-7,56,14);ctx.fillStyle='rgba(255,255,255,.55)';ctx.fillRect(76,-2,50,4)}}
+ if(k==='axe')shapeAxe(ctx);else if(k==='spear')shapeSpear(ctx);else shapeXbow(ctx,bolt,drawn);
+ /* bàn tay nắm cán */
+ ctx.fillStyle='#6b4a32';ctx.fillRect(-3,-4,6,8);ctx.fillStyle='#b98a64';ctx.fillRect(-2,-3.5,4,3);
+ if(k==='spear'||k==='axe'){const h2=k==='axe'?14:20;ctx.fillStyle='#6b4a32';ctx.fillRect(h2-3,-4,6,8);ctx.fillStyle='#b98a64';ctx.fillRect(h2-2,-3.5,4,3)}
+ ctx.restore()}
+/* nỏ: mũi tên bắn ra từ đúng đầu nỏ ở ngang vai */
+const _wt=wpTick;wpTick=function(p,a){if(a&&a.wpa==='xbow'&&a.t===4){const n0=waves.length;const r=_wt.apply(this,arguments);const w=waves[n0];if(w){w.y=p.y+p.h-30-4;const sc=Math.max(.5,Math.min(.8,p.h/48*.62));w.x=p.face>0?p.x+p.w/2+4+40*sc:p.x+p.w/2-4-40*sc-w.w}return r}return _wt.apply(this,arguments)};
+/* biểu tượng nhỏ trên HUD dùng hình mới */
+try{if(typeof wpShape==='function'){const _ws=wpShape;wpShape=function(k,g){g=g||ctx;g.save();g.scale(1.15,1.15);if(k==='axe')shapeAxe(g);else if(k==='spear'){g.translate(-6,0);g.scale(.8,.8);shapeSpear(g)}else{g.translate(10,0);shapeXbow(g,true,false)}g.restore()}}}catch(e){}
+})();
+</script>
+<script>
+/* ================= VŨ KHÍ NHẶT ĐƯỢC (RÌU · GIÁO · NỎ): CẦM NẮM & ĐỘNG TÁC HỢP LÝ ================= */
+(function(){
+if(typeof drawHeldWP!=='function'||typeof knightAnim!=='function')return;
+const ease=t=>t<0?0:t>1?1:t*t*(3-2*t),lerp=(a,b,t)=>a+(b-a)*t;
+/* tư thế cơ thể khi đang ra đòn bằng vũ khí nhặt: đứng thế (không vung vũ khí gốc của chiến binh) */
+const _ka=knightAnim;knightAnim=function(p){if(p&&p.atk&&p.atk.wpa&&!p.dead&&!p.knock&&!p.grab){const a=p.atk;p.atk=null;let r;try{r=_ka.apply(this,arguments)}finally{p.atk=a}
+  if(r&&(r[0]==='k_run'||r[0]==='k_walk'||r[0]==='k_idle'))return['k_idle',0];return r}return _ka.apply(this,arguments)};
+/* độ nghiêng/đẩy thân theo động tác */
+function bodyPose(p){const a=p.atk;if(!a||!a.wpa)return null;const f=a.t/a.dur;
+ if(a.wpa==='axe'){if(f<.35)return{r:-.16*ease(f/.35),dx:-3*ease(f/.35),dy:0};if(f<.6){const t=(f-.35)/.25;return{r:lerp(-.16,.2,ease(t)),dx:lerp(-3,6,ease(t)),dy:lerp(0,3,t)}}const t=(f-.6)/.4;return{r:lerp(.2,0,ease(t)),dx:lerp(6,0,ease(t)),dy:lerp(3,0,t)}}
+ if(a.wpa==='spear'){if(f<.22)return{r:-.06*ease(f/.22),dx:-4*ease(f/.22),dy:1};if(f<.5){const t=(f-.22)/.28;return{r:lerp(-.06,.1,ease(t)),dx:lerp(-4,8,ease(t)),dy:lerp(1,2,t)}}const t=(f-.5)/.5;return{r:lerp(.1,0,ease(t)),dx:lerp(8,0,ease(t)),dy:lerp(2,0,t)}}
+ if(a.wpa==='xbow'){const k=a.t<4?0:Math.max(0,1-(a.t-4)/7);return{r:-.1*k,dx:-5*k,dy:0}}
+ return null}
+const _dp=drawPlayer;drawPlayer=function(p){const bp=p&&!p.dead?bodyPose(p):null;
+ /* vũ khí mang theo phía sau lưng (rìu vác vai) vẽ trước thân */
+ const back=p&&!p.dead&&p.wp&&!(p.atk&&p.atk.wpa)&&p.wp.k==='axe';if(back){try{drawWeapon(p,true)}catch(e){}}
+ p._wpBackDone=back;
+ if(!bp){try{return _dp.apply(this,arguments)}finally{p&&(p._wpBackDone=false)}}
+ const F=p.face,fx=p.x+p.w/2,fy=p.y+p.h;ctx.save();ctx.translate(fx+F*bp.dx,fy+bp.dy);ctx.rotate(F*bp.r);ctx.translate(-fx,-fy);
+ try{return _dp.apply(this,arguments)}finally{ctx.restore();p._wpBackDone=false}};
+drawHeldWP=function(p){if(p._wpBackDone)return;try{drawWeapon(p,false)}catch(e){}};
+/* ---- hình vũ khí (cỡ vừa tay, nét pixel) ---- */
+function shapeAxe(g){/* cán dọc trục x, tay cầm tại 0 */g.fillStyle='#3a2410';g.fillRect(-4,-3.5,52,7);g.fillStyle='#7a4d24';g.fillRect(-4,-3.5,52,4);g.fillStyle='#a8743c';g.fillRect(-4,-3.5,52,1.5);
+ g.fillStyle='#2b1a0b';g.fillRect(2,-4.5,3,9);g.fillRect(9,-4.5,3,9);
+ g.fillStyle='#212529';g.beginPath();g.moveTo(36,-5);g.quadraticCurveTo(44,-24,60,-22);g.quadraticCurveTo(53,0,60,22);g.quadraticCurveTo(44,24,36,5);g.closePath();g.fill();
+ g.fillStyle='#868e96';g.beginPath();g.moveTo(38,-4);g.quadraticCurveTo(46,-20,57,-19);g.quadraticCurveTo(51,0,57,19);g.quadraticCurveTo(46,20,38,4);g.closePath();g.fill();
+ g.fillStyle='#e9ecef';g.beginPath();g.moveTo(55,-18);g.quadraticCurveTo(49,0,55,18);g.lineTo(58,19);g.quadraticCurveTo(52,0,58,-19);g.closePath();g.fill();
+ g.fillStyle='#495057';g.fillRect(34,-6,5,12);g.fillStyle='#343a40';g.fillRect(48,-2,6,4)}
+function shapeSpear(g){g.fillStyle='#3a2410';g.fillRect(-30,-2.5,96,5);g.fillStyle='#8a5a2b';g.fillRect(-30,-2.5,96,2.5);g.fillStyle='#c4925a';g.fillRect(-30,-2.5,96,1);
+ g.fillStyle='#2b1a0b';for(let x=-6;x<10;x+=4)g.fillRect(x,-3,2,6);
+ g.fillStyle='#a51d24';g.beginPath();g.moveTo(63,-2);g.lineTo(57,9);g.lineTo(61,9);g.lineTo(65,2);g.closePath();g.fill();
+ g.fillStyle='#495057';g.fillRect(62,-4,6,8);g.fillStyle='#adb5bd';g.beginPath();g.moveTo(68,-6);g.lineTo(88,0);g.lineTo(68,6);g.closePath();g.fill();
+ g.fillStyle='#f1f3f5';g.beginPath();g.moveTo(70,-3);g.lineTo(86,0);g.lineTo(70,0);g.closePath();g.fill()}
+function shapeXbow(g,bolt,draw){/* báng tì vai: x âm; tay cầm tại 0 */g.fillStyle='#3a2410';g.fillRect(-14,-3,42,7);g.fillStyle='#7a4d24';g.fillRect(-14,-3,42,3.5);g.fillStyle='#2b1a0b';g.fillRect(-2,3,5,8);g.fillStyle='#a8743c';g.fillRect(-14,-3,6,7);
+ const bx=26,pull=draw?8:2;g.strokeStyle='#343a40';g.lineWidth=3.5;g.beginPath();g.moveTo(bx,-17);g.quadraticCurveTo(bx-8,0,bx,17);g.stroke();g.strokeStyle='#adb5bd';g.lineWidth=1.6;g.beginPath();g.moveTo(bx,-17);g.quadraticCurveTo(bx-8,0,bx,17);g.stroke();
+ g.strokeStyle='#e9ecef';g.lineWidth=1;g.beginPath();g.moveTo(bx,-17);g.lineTo(bx-14-pull,0);g.lineTo(bx,17);g.stroke();
+ if(bolt){g.fillStyle='#e9fac8';g.fillRect(bx-14-pull,-1.2,30+pull,2.4);g.fillStyle='#868e96';g.beginPath();g.moveTo(bx+16,-3.5);g.lineTo(bx+21,0);g.lineTo(bx+16,3.5);g.fill();g.fillStyle='#69db7c';g.fillRect(bx-14-pull,-2.5,4,5)}}
+/* ---- đặt vũ khí vào tay theo tư thế ---- */
+function drawWeapon(p,back){const a=p.atk&&p.atk.wpa?p.atk:null,k=a?a.wpa:p.wp&&p.wp.k;if(!k)return;const F=p.face,sc=Math.max(.5,Math.min(.8,p.h/48*.62));
+ const fx=p.x+p.w/2,fy=p.y+p.h,moving=Math.abs(p.vx)>.3&&p.onGround,bob=moving?Math.sin((p.anim||frame*.2)*1.6*Math.PI/4)*1.4:Math.sin(frame*.05)*.5,air=!p.onGround;
+ let gx=6,gy=-22+bob,ang=0,ext=0,front=true,bolt=true,drawn=false,trail=null;
+ if(k==='axe'){
+  if(!a){gx=3;gy=-27+bob;ang=-2.25+(air?-.2:0)+Math.sin(frame*.07)*.04;front=false}
+  else{const f=a.t/a.dur;if(f<.35){const t=ease(f/.35);ang=lerp(-2.25,-2.95,t);gx=lerp(3,0,t);gy=lerp(-27,-40,t)}
+   else if(f<.6){const t=ease((f-.35)/.25);ang=lerp(-2.95,.55,t);gx=lerp(0,13,t);gy=lerp(-40,-24,t);trail=[-2.95,ang]}
+   else{const t=ease((f-.6)/.4);ang=lerp(.55,.35,t);gx=lerp(13,10,t);gy=lerp(-24,-25,t);if(f<.75)trail=[-2.95,.55]}}}
  else if(k==='spear'){
   if(!a){gx=7;gy=-21+bob;ang=-1.15+(moving?.35:0)+(air?.25:0)}
   else{const f=a.t/a.dur;ang=-.04;gy=-24;gx=4;ext=f<.22?-10*ease(f/.22):f<.5?lerp(-10,26,ease((f-.22)/.28)):lerp(26,0,ease((f-.5)/.5))}}
